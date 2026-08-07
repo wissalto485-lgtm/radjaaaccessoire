@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Radjaa Accessoire Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="icon" type="image/png" href="/uploads/logo.png">
+    <link rel="shortcut icon" href="/uploads/logo.png">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Admin Dashboard</h3>
+            <button class="close-sidebar" onclick="closeSidebar()">&#10005;</button>
+        </div>
+        <div class="sidebar-menu">
+            <button onclick="showSectionAndCloseSidebar('add-product-sec')" id="menu-add">
+                <i class="fas fa-plus-circle"></i> إضافة إكسسوار
+            </button>
+            <button onclick="showSectionAndCloseSidebar('products-list-sec')" id="menu-products">
+                <i class="fas fa-boxes"></i> الإكسسوارات
+            </button>
+            <button onclick="showSectionAndCloseSidebar('orders-sec')" id="menu-orders">
+                <i class="fas fa-shopping-cart"></i> الطلبات الجديدة
+            </button>
+            <button onclick="showSectionAndCloseSidebar('stats-sec')" id="menu-stats">
+                <i class="fas fa-file-invoice"></i> إدارة الطلبات
+            </button>
+            <button onclick="showSectionAndCloseSidebar('analytics-sec')" id="menu-analytics">
+                <i class="fas fa-chart-pie"></i> الإحصائيات
+            </button>
+            <button onclick="showSectionAndCloseSidebar('shipping-sec')" id="menu-shipping">
+                <i class="fas fa-truck"></i> أسعار الشحن
+            </button>
+            <button onclick="showSectionAndCloseSidebar('reviews-sec')" id="menu-reviews">
+                <i class="fas fa-star"></i> التقييمات
+            </button>
+            <button onclick="showSectionAndCloseSidebar('about-sec')" id="menu-about">
+                <i class="fas fa-info-circle"></i>صفحة من نحن
+            </button>
+            <button onclick="showSectionAndCloseSidebar('settings-sec')" id="menu-settings">
+                <i class="fas fa-cog"></i> الإعدادات
+            </button>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="navbar-top">
+            <div class="logo">
+                <img src="uploads/logo.png" alt="Radjaa Accessoire" onerror="this.style.display='none'">
+                <h2>Radjaa Accessoire Manager</h2>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="notification-icon-wrapper">
+                    <div class="notification-icon" id="notificationIcon">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notificationBadge">0</span>
+                    </div>
+                    <div class="notifications-dropdown" id="notificationsDropdown">
+                        <div class="notifications-header" style="display: flex; justify-content: space-between; align-items: center; direction: rtl;">
+                            <button class="clear-all-notifications" id="clearAllNotificationsDesktop" style="margin: 0;">حذف الكل</button>
+                            <h4 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-bell"></i> الإشعارات
+                            </h4>
+                        </div>
+                        <div class="notifications-list"></div>
+                    </div>
+                </div>
+                <a href="index.html" class="store-link" title="عرض المتجر"><i class="fas fa-store"></i></a>
+                <button id="desktop-logout-btn" onclick="logout()" style="background: rgba(244, 67, 54, 0.15); border: 1px solid #f44336; color: #f44336; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; position: relative;" onmouseover="this.style.background='#f44336'; this.style.color='white'; this.style.transform='scale(1.05)';" onmouseout="this.style.background='rgba(244, 67, 54, 0.15)'; this.style.color='#f44336'; this.style.transform='scale(1)';">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab" onclick="showSectionDesktop('add-product-sec')" id="tab-add">
+                <i class="fas fa-plus-circle"></i> إضافة إكسسوار
+            </button>
+            <button class="nav-tab" onclick="showSectionDesktop('products-list-sec')" id="tab-products">
+                <i class="fas fa-boxes"></i> الإكسسوارات
+            </button>
+            <button class="nav-tab" onclick="showSectionDesktop('orders-sec')" id="tab-orders">
+                <i class="fas fa-shopping-cart"></i> الطلبات الجديدة
+            </button>
+            <button class="nav-tab" onclick="showSectionDesktop('stats-sec')" id="tab-stats">
+                <i class="fas fa-file-invoice"></i> إدارة الطلبات
+            </button>
+            <button class="nav-tab" onclick="showSectionDesktop('analytics-sec')" id="tab-analytics">
+                <i class="fas fa-chart-pie"></i> الإحصائيات
+            </button>
+            <button class="nav-tab" onclick="showSectionDesktop('shipping-sec')" id="tab-shipping">
+                <i class="fas fa-truck"></i> أسعار الشحن
+            </button>
+            <button class="nav-tab" onclick="showSectionDesktop('reviews-sec')" id="tab-reviews">
+                <i class="fas fa-star"></i> التقييمات
+            </button>
+            <button class="nav-tab" onclick="showSectionDesktop('about-sec')" id="tab-about">
+                <i class="fas fa-info-circle"></i>صفحة من نحن
+            </button>
+            <button class="nav-tab" onclick="showSectionDesktop('settings-sec')" id="tab-settings">
+                <i class="fas fa-cog"></i> الإعدادات
+            </button>
+        </div>
+
+        <div class="navbar-bottom">
+            <button class="menu-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="notification-icon-wrapper">
+                <div class="notification-icon" id="notificationIconMobile">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationBadgeMobile">0</span>
+                </div>
+                <div class="notifications-dropdown" id="notificationsDropdownMobile">
+                    <div class="notifications-header">
+                        <h4><i class="fas fa-bell"></i> الإشعارات</h4>
+                        <button class="clear-all-notifications" id="clearAllNotifications">حذف الكل</button>
+                    </div>
+                    <div class="notifications-list"></div>
+                </div>
+            </div>
+            <button id="mobile-logout-btn" onclick="logout()" style="background: rgba(244, 67, 54, 0.15); border: 1px solid #f44336; color: #f44336; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 1rem; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; flex-shrink: 0;" onmouseover="this.style.background='#f44336'; this.style.color='white'; this.style.transform='scale(1.05)';" onmouseout="this.style.background='rgba(244, 67, 54, 0.15)'; this.style.color='#f44336'; this.style.transform='scale(1)';">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+            <a href="index.html" class="store-link-mobile" title="عرض المتجر"><i class="fas fa-store"></i></a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="container">
+            <!-- Add Product Section -->
+            <section id="add-product-sec" class="admin-section">
+                <div class="admin-card">
+                    <h3><i class="fas fa-plus-circle" style="margin-left: 8px;"></i> إضافة إكسسوار جديد</h3>
+                    <div style="padding: 0 20px 20px 20px;">
+                        <form id="add-product-form">
+                            <div class="lang-fields">
+                                <div class="lang-field">
+                                    <label><i class="fas fa-gem" style="margin-left: 8px;"></i> اسم الإكسسوار (عربي):</label>
+                                    <input type="text" id="p-name-ar" required>
+                                </div>
+                                <div class="lang-field" dir="ltr">
+                                    <label style="text-align: left; display: block;"><i class="fas fa-gem" style="margin-right: 8px;"></i> Nom du Accessoire (Français):</label>
+                                    <input type="text" id="p-name-fr" required style="text-align: left; direction: ltr;">
+                                </div>
+                            </div>
+                            <div class="lang-fields">
+                                <div class="lang-field">
+                                    <label><i class="fas fa-align-left" style="margin-left: 8px;"></i> الوصف (عربي):</label>
+                                    <textarea id="p-desc-ar" rows="3"></textarea>
+                                </div>
+                                <div class="lang-field" dir="ltr">
+                                    <label><i class="fas fa-align-left" style="margin-right: 8px;"></i> Description (Français):</label>
+                                    <textarea id="p-desc-fr" rows="3" style="text-align: left; direction: ltr;"></textarea>
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                                <div>
+                                    <label><i class="fas fa-coins" style="margin-left: 8px;"></i> السعر الأساسي (د.ج):</label>
+                                    <input type="number" id="p-base-price" class="info-input" required oninput="validatePriceOnInput(this)" onchange="validatePrice(this)" onblur="validatePriceOnBlur(this)">
+                                </div>
+                                <div>
+                                    <label><i class="fas fa-folder-open" style="margin-left: 8px;"></i> الفئة:</label>
+                                    <select id="p-category" class="info-input">
+                                        <option value="" disabled selected hidden>اختاري فئة</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="color-select-container">
+                                <label><i class="fas fa-palette" style="margin-left: 8px;"></i> الألوان المتوفرة:</label>
+                                <div class="color-add-row">
+                                    <select id="color-select" class="color-select">
+                                        <option value="" disabled selected hidden>اختاري لونا</option>
+                                    </select>
+                                    <button type="button" class="btn-add-color" onclick="addColorFromSelect()">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <input type="hidden" id="selected-colors" value="[]">
+                                <div id="selected-colors-display" class="selected-colors-list"></div>
+                            </div>
+                            <div style="margin-top: 15px; background: rgba(212, 175, 55, 0.1); padding: 12px; border-radius: 10px;">
+                                <label style="display: inline-flex; align-items: center; gap: 10px; cursor: pointer;">
+                                    <input type="checkbox" id="p-has-sizes" onchange="toggleSizesSection()">
+                                    <i class="fas fa-ruler"></i> هذا الإكسسوار له مقاسات مختلفة
+                                </label>
+                                <div id="sizes-section" style="margin-top: 10px; display: none;">
+                                    <div class="sizes-add-container">
+                                        <div class="size-item-add">
+                                            <select id="new-size-select" class="size-select">
+                                                <option value="" disabled selected hidden>اختاري مقاس</option>
+                                                <option value="قصير">قصير</option>
+                                                <option value="طويل">طويل</option>
+                                                <option value="متوسط">متوسط</option>
+                                                <option value="صغير">صغير</option>
+                                                <option value="كبير">كبير</option>
+                                            </select>
+                                            <input type="number" id="new-size-price" class="size-price-input" placeholder="السعر" oninput="validatePriceOnInput(this)" onchange="validatePrice(this)" onblur="validatePriceOnBlur(this)">
+                                            <button type="button" class="btn-add-size-new" onclick="addNewSize()"><i class="fas fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    <div id="sizes-display" class="sizes-display-container"></div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 15px; background: rgba(212, 175, 55, 0.1); padding: 12px; border-radius: 10px;">
+                                <label style="display: inline-flex; align-items: center; gap: 10px;">
+                                    <input type="checkbox" id="p-has-components" onchange="toggleComponentsSection()">
+                                    <i class="fas fa-cubes"></i> هذا الإكسسوار له أجزاء تباع لوحدها
+                                </label>
+                                <div id="components-section" style="margin-top: 10px; display: none;">
+                                    <div id="components-list" class="sizes-container">
+                                        <div class="component-item">
+                                            <div class="component-fields-row">
+                                                <input type="text" placeholder="اسم الجزء (عربي)" class="component-name-ar">
+                                                <input type="text" placeholder="Nom (Français)" class="component-name-fr">
+                                                <input type="number" placeholder="السعر (د.ج)" class="component-price component-price-field">
+                                            </div>
+                                            <div class="component-image-row" style="display:flex;align-items:center;gap:10px;margin-top:8px;">
+                                                <div class="component-image-preview" onclick="var i=this.closest('.component-item').querySelector('.component-image'); if(i) i.click();" style="cursor:pointer;"></div>
+                                                <input type="file" class="component-image" accept="image/*" style="display:none;">
+                                            </div>
+                                            <div class="component-actions-row">
+                                                <div class="component-checkboxes">
+                                                    <label>
+                                                        <input type="checkbox" class="sell-separately"> شراء منفرد
+                                                    </label>
+                                                    <label>
+                                                        <input type="checkbox" class="allow-full-without"> شراء كامل بدونه
+                                                    </label>
+                                                </div>
+                                                <div class="component-buttons">
+                                                    <button type="button" class="btn-remove-component" onclick="this.closest('.component-item').remove()">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                    <button type="button" class="btn-add-component" onclick="addComponentLine()">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                    <button type="button" class="btn-upload-image" onclick="uploadComponentImage(this)">
+                                                        <i class="fas fa-image"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="categories-manager">
+                                <div style="margin-top: 15px; background: rgba(212, 175, 55, 0.1); padding: 12px; border-radius: 10px;">
+                                    <label style="display: inline-flex; align-items: center; gap: 10px; cursor: pointer;">
+                                        <input type="checkbox" id="p-has-categories" onchange="toggleCategoriesSection()">
+                                        <i class="fas fa-tags"></i> إدارة الفئات (اختياري)
+                                    </label>
+                                    <div id="categories-section" style="display: none;">
+                                        <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+                                            <input type="text" id="new-category-name" class="info-input" placeholder="اسم الفئة الجديدة" style="flex: 1;">
+                                            <button type="button" class="btn-add-category" onclick="addCategory()"><i class="fas fa-plus"></i></button>
+                                        </div>
+                                        <div id="categories-list" style="margin-top: 10px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <label><i class="fas fa-images" style="margin-left: 8px;"></i> صور الإكسسوار:</label>
+                                <input type="file" id="p-images" accept="image/*" multiple class="info-input">
+                                <div id="images-preview" class="images-preview"></div>
+                                <small style="color: #ff0000;"><i class="fas fa-exclamation-triangle" style="margin-left: 8px;"></i> الصورة مطلوبة!</small>
+                            </div>
+                            <button type="submit" class="btn-gold" style="width: 100%; margin-top: 20px;"><i class="fas fa-save" style="margin-left: 8px;"></i> حفظ الإكسسوار</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products List Section -->
+            <section id="products-list-sec" class="admin-section">
+                <div class="admin-card">
+                    <h3><i class="fas fa-boxes" style="margin-left: 8px;"></i> قائمة الإكسسوارات</h3>
+                    <div class="search-box desktop-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="product-search-input" placeholder="ابحثي عن إكسسوار ..." onkeyup="filterProducts()">
+                        <button onclick="clearProductSearch()"><i class="fas fa-times"></i> مسح</button>
+                    </div>
+                    <div class="mobile-search-box">
+                        <div class="mobile-search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="
+                            ext" id="product-search-input-mobile" placeholder="ابحثي عن إكسسوار..." onkeyup="filterProductsMobile()">
+                            <button onclick="clearProductSearchMobile()"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div id="admin-products-list" class="products-grid"></div>
+                </div>
+            </section>
+
+            <!-- Orders Section -->
+            <section id="orders-sec" class="admin-section">
+                <div class="admin-card" style="padding: 0;">
+                    <h3 style="padding: 20px 20px 0 20px;"><i class="fas fa-shopping-cart" style="margin-left: 8px;"></i>الطلبات الجديدة</h3>
+                    <div style="padding: 15px 20px 0 20px;">
+                        <div class="stats-orders-row">
+                            <div class="new-orders-card" id="new-orders-card">
+                                <div class="new-orders-content">
+                                    <i class="fas fa-bell"></i>
+                                    <span>الطلبات الجديدة</span>
+                                    <span class="new-orders-count" id="stat-new-orders">0</span>
+                                </div>
+                            </div>
+                            <div class="repeat-orders-card" id="repeat-orders-card">
+                                <div class="repeat-orders-content">
+                                    <i class="fas fa-repeat"></i>
+                                    <span>الطلبات المكررة</span>
+                                    <span class="repeat-orders-count" id="stat-repeat-orders">0</span>
+                                </div>
+                            </div>
+                            <div class="cancelled-repeat-card" id="cancelled-repeat-card">
+                                <div class="cancelled-repeat-content">
+                                    <i class="fas fa-ban"></i>
+                                    <span>طلبات ملغاة سابقا</span>
+                                    <span class="cancelled-repeat-count" id="stat-cancelled-repeat">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="search-box desktop-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="order-search-input" placeholder="ابحثي برقم الطلب، اسم الزبون، أو رقم الهاتف..." onkeyup="filterOrders()">
+                        <button onclick="clearOrderSearch()"><i class="fas fa-times"></i> مسح</button>
+                        <button class="btn-add-manual" onclick="openAddManualOrderModal()">
+                            <i class="fas fa-plus-circle" style="margin-left: 8px;"></i> إضافة طلب يدوي
+                        </button>
+                    </div>
+
+                    <div class="mobile-search-actions">
+                        <div class="mobile-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="order-search-input-mobile" placeholder="ابحثي برقم الطلب، اسم الزبون، أو رقم الهاتف..." onkeyup="filterOrdersMobile()">
+                        </div>
+                        <div class="mobile-actions-buttons">
+                            <button onclick="clearOrderSearchMobile()" class="mobile-clear-btn">
+                                <i class="fas fa-times"></i> مسح
+                            </button>
+                            <button class="btn-add-manual mobile-add-btn" onclick="openAddManualOrderModal()">
+                                <i class="fas fa-plus-circle"></i> إضافة طلب يدوي
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table id="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>ر/ط</th>
+                                    <th>الاسم</th>
+                                    <th>رقم الهاتف</th>
+                                    <th>الولاية</th>
+                                    <th>البلدية</th>
+                                    <th>الإكسسوار</th>
+                                    <th>الأجزاء الإضافية</th>
+                                    <th>إضافات مخصصة</th>
+                                    <th>اللون</th>
+                                    <th>المقاس</th>
+                                    <th>الكمية</th>
+                                    <th>نوع التوصيل</th>
+                                    <th>المبلغ الإجمالي</th>
+                                    <th onclick="sortOrders('createdAt')">التاريخ <span class="sort-icon"><i class="fas fa-arrow-up-wide-short"></i></span></th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-tbody"></tbody>
+                        </table>
+                    </div>
+                    <div id="orders-cards-view" class="orders-cards-view"></div>
+                    <div id="no-orders-msg" style="display: none; text-align: center; padding: 20px;">لا توجد طلبات جديدة حاليا</div>
+                </div>
+            </section>
+
+            <!-- Stats Section -->
+            <section id="stats-sec" class="admin-section">
+                <div class="admin-card">
+                    <h3><i class="fas fa-file-invoice" style="margin-left: 8px;"></i> إدارة الطلبات</h3>
+                    <div class="stats-grid">
+                        <div class="confirmed-orders-card">
+                            <div class="confirmed-orders-content">
+                                <i class="fas fa-check-circle"></i>
+                                <span>الطلبات المؤكدة</span>
+                                <span class="stats-value" id="stat-confirmed-orders">0</span>
+                            </div>
+                        </div>
+                        <div class="delayed-orders-card">
+                            <div class="delayed-orders-content">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>طلبات متأخرة</span>
+                                <span class="stats-value" id="stat-delayed-orders">0</span>
+                            </div>
+                        </div>
+                        <div class="shipped-orders-card">
+                            <div class="shipped-orders-content">
+                                <i class="fas fa-truck"></i>
+                                <span>قيد الشحن</span>
+                                <span class="stats-value" id="stat-shipped-orders">0</span>
+                            </div>
+                        </div>
+                        <div class="delivered-orders-card">
+                            <div class="delivered-orders-content">
+                                <i class="fas fa-check-double"></i>
+                                <span>طلبات موصلة</span>
+                                <span class="stats-value" id="stat-delivered-orders">0</span>
+                            </div>
+                        </div>
+                        <div class="products-count-card">
+                            <div class="products-count-content">
+                                <i class="fas fa-boxes"></i>
+                                <span>عدد الإكسسوارات</span>
+                                <span class="stats-value" id="stat-products-count">0</span>
+                            </div>
+                        </div>
+                        <div class="revenue-card">
+                            <div class="revenue-content">
+                                <i class="fas fa-coins"></i>
+                                <span>إجمالي الإيرادات</span>
+                                <span class="stats-value" id="stat-total-revenue">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="search-box desktop-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="completed-order-search-input" placeholder="ابحثي برقم الطلب، اسم الزبون، أو رقم الهاتف..." onkeyup="filterCompletedOrders()">
+                        <button onclick="clearCompletedOrderSearch()"><i class="fas fa-times"></i> مسح</button>
+                        <button onclick="exportOrdersToPDF()" class="btn-export" style="background: linear-gradient(135deg, #f44336, #d32f2f);">
+                            <i class="fas fa-file-pdf"></i>PDF
+                        </button>
+                    </div>
+
+                    <div class="mobile-search-actions-completed">
+                        <div class="mobile-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="completed-order-search-input-mobile" placeholder="ابحثي برقم الطلب، اسم الزبون، أو رقم الهاتف..." onkeyup="filterCompletedOrdersMobile()">
+                        </div>
+                        <div class="mobile-actions-buttons">
+                            <button onclick="clearCompletedOrderSearchMobile()" class="mobile-clear-btn">
+                                <i class="fas fa-times"></i> مسح
+                            </button>
+                            <button onclick="exportOrdersToPDF()" class="mobile-export-btn" style="background: linear-gradient(135deg, #f44336, #d32f2f); color: white; border: none; padding: 8px 12px; border-radius: 25px; font-size: 0.75rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; flex: 1;">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </button>
+                            <button onclick="sortCompletedOrdersByStatusMobile()" class="mobile-sort-status-btn" title="ترتيب حسب الحالة">
+                                <i class="fas fa-chart-simple"></i> الحالة
+                            </button>
+                            <button onclick="sortCompletedOrdersByDateMobile()" class="mobile-sort-date-btn" title="ترتيب حسب التاريخ">
+                                <i class="fas fa-calendar"></i> التاريخ
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table id="completed-orders-table">
+                            <thead>
+                                <tr>
+                                    <th>ر/ط</th>
+                                    <th>الاسم</th>
+                                    <th>رقم الهاتف</th>
+                                    <th>الولاية</th>
+                                    <th>البلدية</th>
+                                    <th>الإكسسوار</th>
+                                    <th>الأجزاء الإضافية</th>
+                                    <th>إضافات مخصصة</th>
+                                    <th>اللون</th>
+                                    <th>المقاس</th>
+                                    <th>الكمية</th>
+                                    <th>نوع التوصيل</th>
+                                    <th>المبلغ الإجمالي</th>
+                                    <th onclick="sortCompletedOrders('createdAt')">التاريخ <span class="sort-icon"><i class="fas fa-arrow-up-wide-short"></i></span></th>
+                                    <th onclick="sortCompletedOrdersByStatus()">الحالة <span class="sort-icon"><i class="fas fa-arrow-up-wide-short"></i></span></th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="completed-orders-tbody"></tbody>
+                        </table>
+                    </div>
+                    <div id="completed-orders-cards" class="completed-cards-view"></div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics-sec" class="admin-section" style="display: none;">
+                <div class="admin-card">
+                    <h3><i class="fas fa-chart-pie" style="margin-left: 8px;"></i> الإحصائيات</h3>
+                    <div id="analytics-content" style="padding: 20px; text-align: center; color: var(--text-muted);"></div>
+                </div>
+            </section>
+
+            <!-- Shipping Section -->
+            <section id="shipping-sec" class="admin-section">
+                <div class="admin-card">
+                    <h3><i class="fas fa-truck" style="margin-left: 8px;"></i> إدارة أسعار الشحن</h3>
+                    <div style="padding: 0 20px 20px 20px;">
+                        <div style="background: rgba(212, 175, 55, 0.1); padding: 12px; border-radius: 10px; margin-bottom: 15px;">
+                            <h4 style="color: #d4af37; margin-bottom: 10px;"><i class="fas fa-plus-circle" style="margin-left: 8px;"></i> إضافة ولاية جديدة</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px;">
+                                <div><label>اسم الولاية:</label><input type="text" id="new-wilaya-name" class="info-input" placeholder="ولاية جديدة"></div>
+                                <div><label>رقم الولاية:</label><input type="number" id="new-wilaya-code" class="info-input" placeholder="59"></div>
+                                <div><label>توصيل للمنزل:</label><input type="number" id="new-home-price" class="info-input" placeholder="السعر"></div>
+                                <div><label>توصيل للمكتب:</label><input type="number" id="new-office-price" class="info-input" placeholder="السعر"></div>
+                            </div>
+                            <button onclick="addNewWilaya()" class="btn-gold" style="margin-top: 8px;"><i class="fas fa-plus" style="margin-left: 6px;"></i> إضافة ولاية</button>
+                        </div>
+                        <div class="table-wrapper shipping-table-view">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>الولاية</th>
+                                        <th>رمز الولاية</th>
+                                        <th>توصيل للمنزل (د.ج)</th>
+                                        <th>توصيل للمكتب (د.ج)</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="shipping-rates-tbody"></tbody>
+                            </table>
+                        </div>
+                        <div id="shipping-mobile-view" class="shipping-mobile-view"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reviews Section -->
+            <section id="reviews-sec" class="admin-section">
+                <div class="admin-card">
+                    <h3><i class="fas fa-star" style="margin-left: 8px;"></i> إدارة التقييمات الإكسسوارات</h3>
+                    <div class="reviews-approval" id="reviews-approval-container">
+                        <div style="text-align: center; padding: 20px;">جاري تحميل التقييمات...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings-sec" class="admin-section" style="display: none;">
+                <div class="admin-card">
+                    <h3><i class="fas fa-cog" style="margin-left: 8px;"></i> الإعدادات</h3>
+                    <div style="padding: 20px;">
+                        <div style="border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(212, 175, 55, 0.25);">
+                            <h4 style="color: #D4AF37; margin-bottom: 15px;">
+                                <i class="fas fa-share-alt" style="margin-left: 8px;"></i> روابط وأسماء حسابات مواقع التواصل الاجتماعي
+                            </h4>
+                            <div style="display: grid; gap: 15px;">
+                                <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 15px;">
+                                    <label style="color: #E1306C; display: block; margin-bottom: 8px; font-weight: bold;">
+                                        <i class="fab fa-instagram" style="margin-left: 8px;"></i> Instagram
+                                    </label>
+                                    <input type="text" id="settings-instagram-name" class="info-input" placeholder="اسم الحساب" style="margin-bottom: 8px;">
+                                    <input type="text" id="settings-instagram" class="info-input" placeholder="الرابط الكامل">
+                                </div>
+                                <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 15px;">
+                                    <label style="color: #1877F2; display: block; margin-bottom: 8px; font-weight: bold;">
+                                        <i class="fab fa-facebook" style="margin-left: 8px;"></i> Facebook
+                                    </label>
+                                    <input type="text" id="settings-facebook-name" class="info-input" placeholder="اسم الحساب" style="margin-bottom: 8px;">
+                                    <input type="text" id="settings-facebook" class="info-input" placeholder="الرابط الكامل">
+                                </div>
+                                <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 15px;">
+                                    <label style="color: #FFFFFF; display: block; margin-bottom: 8px; font-weight: bold;">
+                                        <i class="fab fa-tiktok" style="margin-left: 8px;"></i> TikTok
+                                    </label>
+                                    <input type="text" id="settings-tiktok-name" class="info-input" placeholder="اسم الحساب" style="margin-bottom: 8px;">
+                                    <input type="text" id="settings-tiktok" class="info-input" placeholder="الرابط الكامل">
+                                </div>
+                                <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 15px;">
+                                    <label style="color: #25D366; display: block; margin-bottom: 8px; font-weight: bold;">
+                                        <i class="fab fa-whatsapp" style="margin-left: 8px;"></i> WhatsApp
+                                    </label>
+                                    <input type="text" id="settings-whatsapp" class="info-input" placeholder="رقم الهاتف مع رمز الدولة">
+                                </div>
+                                <button onclick="saveSocialLinks()" class="btn-gold" style="width: 100%;">
+                                    <i class="fas fa-save" style="margin-left: 8px;"></i> حفظ جميع الروابط والأسماء
+                                </button>
+                            </div>
+                        </div>
+                        <div style="border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(212, 175, 55, 0.25);">
+                            <h4 style="color: #D4AF37; margin-bottom: 8px;">
+                                <i class="fas fa-images" style="margin-left: 8px;"></i> Hero Slider Photos
+                            </h4>
+                            <p style="color: #ccc; font-size: 0.85rem; margin-bottom: 15px;">حتى 4 صور، كل صورة تظهر في شريحة من شرائح السلايدر بالترتيب، يفضّل صور بجودة عالية</p>
+                            <div id="hero-images-current" style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 15px;"></div>
+                            <input type="file" id="hero-images-input" accept="image/*" multiple class="info-input" style="margin-bottom: 12px;">
+                            <button onclick="uploadHeroImages()" class="btn-gold" style="width: 100%;">
+                                <i class="fas fa-upload" style="margin-left: 8px;"></i> حفظ صور Hero Slider
+                            </button>
+                        </div>
+                        <div style="border-radius: 16px; padding: 20px; border: 1px solid rgba(212, 175, 55, 0.25);">
+                            <h4 style="color: #D4AF37; margin-bottom: 15px;">
+                                <i class="fas fa-users" style="margin-left: 8px;"></i> عدد المتابعين (يظهر في صفحة تابعنا)
+                            </h4>
+                            <div style="display: grid; gap: 15px;">
+                                <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 15px;">
+                                    <label style="color: #E1306C; display: block; margin-bottom: 8px; font-weight: bold;">
+                                        <i class="fab fa-instagram" style="margin-left: 8px;"></i> Instagram
+                                    </label>
+                                    <input type="text" id="settings-ig-followers" class="info-input" placeholder="مثال: 35,900+">
+                                </div>
+                                <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 15px;">
+                                    <label style="color: #1877F2; display: block; margin-bottom: 8px; font-weight: bold;">
+                                        <i class="fab fa-facebook" style="margin-left: 8px;"></i> Facebook
+                                    </label>
+                                    <input type="text" id="settings-fb-followers" class="info-input" placeholder="مثال: 30,800+">
+                                </div>
+                                <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 15px;">
+                                    <label style="color: #FFFFFF; display: block; margin-bottom: 8px; font-weight: bold;">
+                                        <i class="fab fa-tiktok" style="margin-left: 8px;"></i> TikTok
+                                    </label>
+                                    <input type="text" id="settings-tt-followers" class="info-input" placeholder="مثال: 60,600+">
+                                </div>
+                                <button onclick="saveFollowersCount()" class="btn-gold" style="width: 100%;">
+                                    <i class="fas fa-save" style="margin-left: 8px;"></i> حفظ عدد المتابعين
+                                </button>
+                            </div>
+                        </div>
+                        <div style="border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(212, 175, 55, 0.25);">
+                            <h4 style="color: #D4AF37; margin-bottom: 15px;">
+                                <i class="fas fa-image" style="margin-left: 8px;"></i> شهادات زبوناتي
+                                <span style="font-size: 0.75rem; color: var(--text-muted); display: block; font-weight: normal;">أضيفي لقطات شاشة من Instagram, Facebook, TikTok... الحد الأقصى 50</span>
+                            </h4>
+                            <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 15px; margin-bottom: 15px;">
+                                <div style="margin-bottom: 10px;">
+                                    <label style="color: #d4af37; font-size: 0.85rem;">الاسم + الولاية:</label>
+                                    <input type="text" id="testimonial-customer-name" class="info-input" placeholder="مثال: رجاء - وهران">
+                                </div>
+                                <div>
+                                    <label style="color: #d4af37; font-size: 0.85rem;">صورة (لقطة شاشة):</label>
+                                    <input type="file" id="testimonial-image-input" accept="image/*" class="info-input">
+                                    <div id="testimonial-image-preview" style="margin-top: 10px;"></div>
+                                </div>
+                                <button onclick="addTestimonial()" class="btn-gold" style="width: 100%; margin-top: 10px;">
+                                    <i class="fas fa-plus" style="margin-left: 8px;"></i> إضافة شهادة زبونة
+                                </button>
+                            </div>
+                            <div id="testimonials-list" style="display: flex; flex-wrap: wrap; gap: 12px;">
+                                <div style="text-align: center; color: var(--text-muted); padding: 20px;">جاري تحميل الشهادات...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section id="about-sec" class="admin-section">
+                <div class="admin-card">
+                    <h3><i class="fas fa-info-circle" style="margin-left: 8px;"></i> تحرير صفحة "من نحن"</h3>
+                    <div class="about-us-editor">
+                        <div class="lang-fields">
+                            <div class="lang-field">
+                                <label><i class="fas fa-align-left" style="margin-left: 8px;"></i> المحتوى (عربي):</label>
+                                <textarea id="about-content-ar" rows="8" placeholder="اكتبي هنا نبذة عن المحل..."></textarea>
+                            </div>
+                            <div class="lang-field" dir="ltr">
+                                <label><i class="fas fa-align-left" style="margin-right: 8px;"></i> Contenu (Français):</label>
+                                <textarea id="about-content-fr" rows="8" placeholder="Écrivez ici une présentation..." style="text-align: left; direction: ltr;"></textarea>
+                            </div>
+                        </div>
+                        <button onclick="saveAboutContent()" class="btn-gold" style="width: 100%;"><i class="fas fa-save" style="margin-left: 8px;"></i> حفظ المحتوى</button>
+                    </div>
+                    <div class="about-us-preview">
+                        <h4><i class="fas fa-eye" style="margin-left: 8px;"></i> معاينة (عربي):</h4>
+                        <p id="preview-about-ar">لا يوجد محتوى بعد</p>
+                        <hr style="margin: 15px 0; border-color: rgba(212,175,55,0.3);">
+                    </div>
+                    <div class="about-us-preview" dir="ltr">
+                        <h4><i class="fas fa-eye" style="margin-right: 8px;"></i> Aperçu (Français):</h4>
+                        <p id="preview-about-fr">Aucun contenu pour le moment</p>
+                        <hr style="margin: 15px 0; border-color: rgba(212,175,55,0.3);">
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div id="edit-product-modal" class="modal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: center; display: flex; text-align: center; margin-bottom: center;">
+                <h3 style="color: #d4af37;"><i class="fas fa-edit" style="margin-left: 8px;"></i> تعديل الإكسسوار</h3>
+                <button onclick="closeEditModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gold); margin-right: auto;">&#10005;</button>
+            </div>
+            <form id="edit-product-form">
+                <input type="hidden" id="edit-product-id">
+                <div class="lang-fields">
+                    <div class="lang-field">
+                        <label><i class="fas fa-gem" style="margin-left: 8px;"></i>اسم الإكسسوار (عربي):</label>
+                        <input type="text" id="edit-name-ar" class="info-input" required>
+                    </div>
+                    <div class="lang-field" dir="ltr">
+                        <label style="text-align: left; display: block;"><i class="fas fa-gem" style="margin-right: 8px;"></i> Nom du Accessoire (Français):</label>
+                        <input type="text" id="edit-name-fr" class="info-input" required style="text-align: left; direction: ltr;">
+                    </div>
+                </div>
+                <div>
+                    <label><i class="fas fa-coins" style="margin-left: 8px;"></i> السعر الأساسي:</label>
+                    <input type="number" id="edit-price" class="info-input" required>
+                </div>
+                <div class="lang-fields">
+                    <div class="lang-field">
+                        <label><i class="fas fa-align-left" style="margin-left: 8px;"></i>الوصف (عربي):</label>
+                        <textarea id="edit-desc-ar" rows="3" class="info-input"></textarea>
+                    </div>
+                    <div class="lang-field" dir="ltr">
+                        <label><i class="fas fa-align-left" style="margin-right: 8px;"></i>Description (Français):</label>
+                        <textarea id="edit-desc-fr" rows="3" class="info-input" style="text-align: left; direction: ltr;"></textarea>
+                    </div>
+                </div>
+                <div>
+                    <label><i class="fas fa-folder-open" style="margin-left: 8px;"></i> الفئة:</label>
+                    <select id="edit-category" class="info-input"></select>
+                </div>
+                <div class="color-select-container">
+                    <label><i class="fas fa-palette" style="margin-left: 8px;"></i> الألوان المتوفرة:</label>
+                    <div class="color-add-row">
+                        <select id="edit-color-select" class="color-select">
+                            <option value="" disabled selected hidden>اختاري لونا</option>
+                        </select>
+                        <button type="button" class="btn-add-color" onclick="addEditColor()">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <input type="hidden" id="edit-colors" value="[]">
+                    <div id="edit-colors-display" class="selected-colors-list"></div>
+                </div>
+                <div style="margin-top: 15px; background: rgba(212, 175, 55, 0.1); padding: 12px; border-radius: 10px;">
+                    <label style="display: inline-flex; align-items: center; gap: 10px; cursor: pointer;">
+                        <input type="checkbox" id="edit-has-sizes" onchange="toggleEditSizesSection()">
+                        <i class="fas fa-ruler"></i> هذا الإكسسوار له مقاسات مختلفة
+                    </label>
+                    <div id="edit-sizes-section" style="margin-top: 10px; display: none;">
+                        <div id="edit-sizes-display" class="sizes-display-container"></div>
+                        <div class="sizes-add-container">
+                            <div class="size-item-add">
+                                <select id="edit-new-size-select" class="size-select">
+                                    <option value="" disabled selected hidden>اختاري مقاس</option>
+                                    <option value="قصير">قصير</option>
+                                    <option value="طويل">طويل</option>
+                                    <option value="متوسط">متوسط</option>
+                                    <option value="صغير">صغير</option>
+                                    <option value="كبير">كبير</option>
+                                </select>
+                                <input type="number" id="edit-new-size-price" class="size-price-input" placeholder="السعر" oninput="validatePriceOnInput(this)" onchange="validatePrice(this)" onblur="validatePriceOnBlur(this)">
+                                <button type="button" class="btn-add-size-new" onclick="addEditNewSize()"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div style="margin-top: 15px; background: rgba(212, 175, 55, 0.1); padding: 12px; border-radius: 10px;">
+                        <label style="display: inline-flex; align-items: center; gap: 13px; cursor: pointer;">
+                            <input type="checkbox" id="edit-has-components" onchange="toggleEditComponentsSection()">
+                            <i class="fas fa-cubes"></i> هذا الإكسسوار له أجزاء تباع لوحدها
+                        </label>
+                        <div id="edit-components-section" style="margin-top: 10px; display: none;">
+                            <div id="edit-components-list" class="sizes-container"></div>
+                        </div>
+                    </div>
+                    <label style="display: block; margin-top: 15px;"><i class="fas fa-images" style="margin-left: 8px;"></i> الصور الحالية:</label>
+                    <div id="current-images-list" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+                </div>
+                <div>
+                    <label><i class="fas fa-plus-circle" style="margin-left: 8px;"></i> إضافة صور جديدة:</label>
+                    <input type="file" id="edit-images" accept="image/*" multiple class="info-input">
+                    <div id="new-images-preview" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+                </div>
+                <div style="margin-top: 15px; background: rgba(212, 175, 55, 0.1); padding: 12px; border-radius: 10px;">
+                    <label style="display: inline-flex; align-items: center; gap: 10px; cursor: pointer;">
+                        <input type="checkbox" id="replace-all-images">
+                        <i class="fas fa-sync-alt"></i> استبدال جميع الصور
+                    </label>
+                </div>
+                <button type="submit" class="btn-gold" style="width: 100%;"><i class="fas fa-save" style="margin-left: 8px;"></i> حفظ التغييرات</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Order Modal -->
+    <div id="edit-order-modal" class="modal">
+        <div class="modal-content" style="max-width: 750px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: #d4af37; margin: 0;"><i class="fas fa-edit" style="margin-left: 8px;"></i> تعديل الطلب</h3>
+                <button onclick="closeEditOrderModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #d4af37;">&#10005;</button>
+            </div>
+            <form id="edit-order-form">
+                <input type="hidden" id="edit-order-id">
+                <div style="background: rgba(212, 175, 55, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                    <h4 style="color: #d4af37; margin-bottom: 15px;"><i class="fas fa-user" style="margin-left: 8px;"></i> معلومات الزبون</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-user" style="margin-left: 8px;"></i> الاسم الكامل</label>
+                            <input type="text" id="edit-name" class="info-input" required>
+                        </div>
+                        <div>
+                            <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-phone" style="margin-left: 8px;"></i> رقم الهاتف</label>
+                            <input type="tel" id="edit-phone" class="info-input" maxlength="10" required>
+                            <small id="edit-phone-error" style="color: #f44336; display: none; font-size: 0.7rem;">رقم الهاتف يجب أن يبدأ بـ 05، 06، أو 07 ويتكون من 10 أرقام</small>
+                        </div>
+                    </div>
+                </div>
+                <div style="background: rgba(212, 175, 55, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                    <h4 style="color: #d4af37; margin-bottom: 15px;"><i class="fas fa-truck" style="margin-left: 8px;"></i> معلومات التوصيل</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-map-marker-alt" style="margin-left: 8px;"></i> الولاية</label>
+                            <select id="edit-wilaya" class="info-input" onchange="calculateEditTotal()" required>
+                                <option value="">اختر الولاية</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-city" style="margin-left: 8px;"></i>البلدية</label>
+                            <input type="text" id="edit-commune" class="info-input" required>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-shipping-fast" style="margin-left: 8px;"></i> نوع التوصيل</label>
+                        <div style="display: flex; gap: 20px;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="radio" name="edit-shipping-type" value="home" onchange="calculateEditTotal()"> للمنزل
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="radio" name="edit-shipping-type" value="office" onchange="calculateEditTotal()"> للمكتب
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div style="background: rgba(212, 175, 55, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                    <h4 style="color: #d4af37; margin-bottom: 15px;"><i class="fas fa-box" style="margin-left: 8px;"></i> معلومات الإكسسوار</h4>
+                    <div style="margin-bottom: 15px;">
+                        <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-box" style="margin-left: 8px;"></i> الإكسسوار</label>
+                        <select id="edit-product" class="info-input" onchange="updateEditProductDetails()" style="color: var(--text-body);">
+                            <option value="" disabled selected hidden>اختاري الإكسسوار</option>
+                        </select>
+                    </div>
+                    <div id="edit-color-container" style="margin-bottom: 15px; display: none;">
+                        <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-palette" style="margin-left: 8px;"></i> اللون</label>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <select id="edit-color" class="info-input" style="flex: 1;" onchange="updateEditColorCircle()">
+                                <option value="">اختر لون</option>
+                            </select>
+                            <div id="edit-color-circle" style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid #d4af37; background-color: #ccc;"></div>
+                        </div>
+                    </div>
+                    <div id="edit-size-container" style="margin-bottom: 15px; display: none;">
+                        <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-ruler" style="margin-left: 8px;"></i> المقاس</label>
+                        <select id="edit-size" class="info-input" onchange="calculateEditTotal()">
+                            <option value="">اختر مقاس</option>
+                        </select>
+                    </div>
+                    <div id="edit-component-container" style="margin-bottom: 15px; display: none;">
+                        <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-cubes" style="margin-left: 8px;"></i> نوع الشراء</label>
+                        <div id="edit-component-options" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-edit" style="margin-left: 8px;"></i> تفاصيل إضافية (طلب الزبون)</label>
+                        <textarea id="edit-customization" class="info-input" rows="3" placeholder="أي تفاصيل يريدها الزبون..."></textarea>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-coins" style="margin-left: 8px;"></i> السعر (د.ج)</label>
+                            <input type="number" id="edit-order-price" class="info-input" readonly style="background: rgba(0,0,0,0.5); font-weight: bold; color: #FF2D75;">
+                        </div>
+                        <div>
+                            <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-boxes" style="margin-left: 8px;"></i> الكمية</label>
+                            <input type="number" id="edit-quantity" class="info-input" value="1" min="1" onchange="calculateEditTotal()">
+                        </div>
+                    </div>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05)); border-radius: 12px; padding: 15px; border: 1px solid rgba(212, 175, 55, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                        <div>
+                            <span style="color: #d4af37;">المجموع الفرعي:</span>
+                            <span id="edit-subtotal-display" style="color: var(--text-body); margin-left: 10px;">0 د.ج</span>
+                        </div>
+                        <div>
+                            <span style="color: #d4af37;">رسوم التوصيل:</span>
+                            <span id="edit-shipping-cost-display" style="color: var(--text-body); margin-left: 10px;">0 د.ج</span>
+                        </div>
+                        <div style="font-size: 1.2rem;">
+                            <strong style="color: var(--gold);">الإجمالي:</strong>
+                            <strong id="edit-total-display" style="color: var(--accent-pink); margin-left: 10px;">0 د.ج</strong>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" onclick="saveEditOrderEnhanced()" class="save-btn-final" style="width: 100%; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #1A0F14; border: none; padding: 14px 24px; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; margin-top: 25px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <i class="fas fa-save"></i> حفظ التغييرات
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Total Modal -->
+    <div id="edit-total-modal" class="modal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                <h3 style="color: #d4af37;"><i class="fas fa-coins" style="margin-left: 8px;"></i> تعديل المبلغ الإجمالي</h3>
+                <button onclick="closeEditTotalModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #d4af37;">&#10005;</button>
+            </div>
+            <input type="hidden" id="edit-total-order-id">
+            <label>المبلغ الإجمالي الجديد (د.ج):</label>
+            <input type="number" id="edit-total-amount" class="info-input" step="1">
+            <button onclick="saveTotalAmount()" class="btn-gold" style="width:100%; margin-top:15px;"><i class="fas fa-save" style="margin-left: 8px;"></i> حفظ التعديل</button>
+        </div>
+    </div>
+
+    <!-- Add Manual Order Modal -->
+    <div id="add-manual-order-modal" class="modal">
+        <div class="modal-content" style="max-width: 650px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: #d4af37; margin: 0;"><i class="fas fa-plus-circle" style="margin-left: 8px;"></i> إضافة طلب يدوي</h3>
+                <button onclick="closeAddManualOrderModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #d4af37;">&#10005;</button>
+            </div>
+            <form id="manual-order-form">
+                <div style="background: rgba(212, 175, 55, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                    <h4 style="color: #d4af37; margin-bottom: 15px;"><i class="fas fa-user" style="margin-left: 8px;"></i> معلومات الزبون</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-user" style="margin-left: 8px;"></i> الاسم الكامل</label>
+                            <input type="text" id="manual-name" class="info-input" placeholder="الاسم الكامل" required>
+                        </div>
+                        <div>
+                            <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-phone" style="margin-left: 8px;"></i> رقم الهاتف</label>
+                            <input type="tel" id="manual-phone" class="info-input" placeholder="05XXXXXXXX" maxlength="10" required>
+                            <small id="phone-error" style="color: #f44336; display: none; font-size: 0.7rem;">رقم الهاتف يجب أن يبدأ بـ 05، 06، أو 07 ويتكون من 10 أرقام</small>
+                        </div>
+                    </div>
+                </div>
+                <div style="background: rgba(212, 175, 55, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                    <h4 style="color: #d4af37; margin-bottom: 15px;"><i class="fas fa-truck" style="margin-left: 8px;"></i> معلومات التوصيل</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-map-marker-alt" style="margin-left: 8px;"></i> الولاية</label>
+                            <select id="manual-wilaya" class="info-input" onchange="calculateManualTotal()" style="color: var(--text-body);">
+                                <option value="" disabled selected hidden>اختاري الولاية</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-city" style="margin-left: 8px;"></i> البلدية</label>
+                            <input type="text" id="manual-commune" class="info-input" placeholder="البلدية" required>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-shipping-fast" style="margin-left: 8px;"></i> نوع التوصيل</label>
+                        <div style="display: flex; gap: 20px;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="radio" name="manual-shipping-type" value="home" onchange="calculateManualTotal()" checked> للمنزل
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="radio" name="manual-shipping-type" value="office" onchange="calculateManualTotal()"> للمكتب
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div style="background: rgba(212, 175, 55, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                    <h4 style="color: #d4af37; margin-bottom: 15px;"><i class="fas fa-box" style="margin-left: 8px;"></i> معلومات الإكسسوار</h4>
+                    <div>
+                        <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-box" style="margin-left: 8px;"></i> الإكسسوار</label>
+                        <select id="manual-product" class="info-input" onchange="updateManualProductDetails()" style="color: var(--text-body);">
+                            <option value="" disabled selected hidden>اختاري الإكسسوار</option>
+                        </select>
+                    </div>
+                    <div id="manual-color-container" style="margin-top: 15px;">
+                        <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-palette" style="margin-left: 8px;"></i> اللون</label>
+                        <select id="manual-color" class="info-input" onchange="calculateManualTotal()" style="color: var(--text-body);">
+                            <option value="" disabled selected hidden>اختاري لون</option>
+                        </select>
+                    </div>
+                    <div id="manual-size-container" style="margin-top: 15px; display: none;">
+                        <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-ruler" style="margin-left: 8px;"></i> المقاس</label>
+                        <select id="manual-size" class="info-input" onchange="calculateManualTotal()" style="color: var(--text-body);">
+                            <option value="" disabled selected hidden>اختاري مقاس</option>
+                        </select>
+                    </div>
+                    <div id="manual-component-container" style="margin-top: 15px; display: none;">
+                        <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-cubes" style="margin-left: 8px;"></i> نوع الشراء</label>
+                        <div id="manual-component-options" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                        <div>
+                            <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-coins" style="margin-left: 8px;"></i> السعر (د.ج)</label>
+                            <input type="number" id="manual-price" class="info-input" step="1" onchange="calculateManualTotal()" style="background: rgba(0,0,0,0.5); font-weight: bold; color: #FF2D75;">
+                        </div>
+                        <div>
+                            <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-boxes" style="margin-left: 8px;"></i> الكمية</label>
+                            <input type="number" id="manual-quantity" class="info-input" value="1" min="1" onchange="calculateManualTotal()">
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <label style="color: #d4af37; display: block; margin-bottom: 5px;"><i class="fas fa-edit" style="margin-left: 8px;"></i> تفاصيل إضافية</label>
+                        <textarea id="manual-customization" class="info-input" rows="2" placeholder="أي تفاصيل يريدها الزبون (اختياري)" oninput="onManualCustomizationInput()"></textarea>
+                    </div>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05)); border-radius: 12px; padding: 15px; border: 1px solid rgba(212, 175, 55, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                        <div>
+                            <span style="color: #d4af37;">المجموع الفرعي:</span>
+                            <span id="manual-subtotal-display" style="color: var(--text-body); margin-left: 10px;">0 د.ج</span>
+                        </div>
+                        <div>
+                            <span style="color: #d4af37;">رسوم التوصيل:</span>
+                            <span id="manual-shipping-cost-display" style="color: var(--text-body); margin-left: 10px;">0 د.ج</span>
+                        </div>
+                        <div style="font-size: 1.2rem;">
+                            <strong style="color: var(--gold);">الإجمالي:</strong>
+                            <strong id="manual-total" style="color: var(--accent-pink); margin-left: 10px;">0 د.ج</strong>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" onclick="saveManualOrder()" class="save-btn-final" style="width: 100%; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #1A0F14; border: none; padding: 14px 24px; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; margin-top: 25px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <i class="fas fa-save"></i> حفظ الطلب
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="utils.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Radjaa Accessoire - Handmade</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.css">
+    <link rel="icon" type="image/png" href="/uploads/logo.png">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Radjaa Accessoire</h3>
+            <button class="close-sidebar" onclick="toggleSidebar()">&#10005;</button>
+        </div>
+        <div class="sidebar-menu">
+            <a href="#" onclick="closeSidebarAndScrollTo('home'); return false;"><i class="fas fa-home"></i> <span data-i18n="home">الرئيسية</span></a>
+            <div class="sidebar-categories-dropdown">
+                <a href="#" onclick="toggleSidebarCategoriesDropdown(event); return false;"><i class="fas fa-layer-group"></i><span data-i18n="categories">الفئات</span> <span style="float: left;"></span></a>
+                <div class="sidebar-dropdown-content" id="sidebar-categories-dropdown-list">
+                    <a onclick="filterByCategoryAndCloseSidebar('all')" data-i18n="allCategories">جميع الفئات</a>
+                </div>
+            </div>
+            <a href="#" onclick="openFollowModal(); return false;"><i class="fas fa-user-group"></i><span data-i18n="followUs">تابعينا</span></a>
+            <a href="#" onclick="showAboutModal(); return false;"><i class="fas fa-store"></i><span data-i18n="aboutUs">من نحن</span></a>
+            <a href="#" onclick="window.open('https://wa.me/213775087631', '_blank')"><i class="fab fa-whatsapp"></i><span data-i18n="contactUs">اتصلي بنا</span></a>
+        </div>
+        <div class="sidebar-lang">
+            <h4><i class="fas fa-language" style="margin-inline-end: 8px;"></i><span data-i18n="languageLabel">اللغة</span></h4>
+            <div class="sidebar-lang-buttons">
+                <button class="sidebar-lang-btn" onclick="setLanguage('ar')">العربية</button>
+                <button class="sidebar-lang-btn" onclick="setLanguage('fr')">Français</button>
+            </div>
+        </div>
+        <div class="sidebar-social" style="display: flex; justify-content: center; gap: 20px; margin-top: auto; padding-top: 20px;">
+            <a href="https://www.instagram.com/radjaa_accessoiree/" target="_blank" style="color:#d4af37;"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/radjaa.accessoire/" target="_blank" style="color:#d4af37;"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.tiktok.com/@radjaaaccessoire" target="_blank" style="color:#d4af37;"><i class="fab fa-tiktok"></i></a>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="uploads/logo.png" alt="Radjaa Accessoire" onerror="this.style.display='none'">
+            <h2>Radjaa Accessoire</h2>
+        </div>
+        <div class="nav-links">
+            <button class="nav-link-btn" onclick="scrollToHome()">
+                <i class="fas fa-home"></i> <span data-i18n="home">الرئيسية</span>
+            </button>
+            <div class="categories-dropdown">
+                <button class="nav-link-btn" id="categories-dropdown-btn" onclick="toggleCategoriesDropdown(event)">
+                    <i class="fas fa-layer-group"></i> <span data-i18n="categories">الفئات</span>
+                </button>
+                <div class="dropdown-content" id="categories-dropdown-list">
+                    <a onclick="filterByCategoryAndClose('all')" data-i18n="allCategories">جميع الفئات</a>
+                </div>
+            </div>
+            <button class="nav-link-btn" onclick="openFollowModal()">
+                <i class="fas fa-circle-user"></i> <span data-i18n="followUs">تابعينا</span>
+            </button>
+            <button class="nav-link-btn" onclick="showAboutModal()">
+                <i class="fas fa-shop"></i> <span data-i18n="aboutUs">من نحن</span>
+            </button>
+            <button class="nav-link-btn" onclick="window.open('https://wa.me/213775087631', '_blank')">
+                <i class="fab fa-whatsapp"></i> <span data-i18n="contactUs">اتصلي بنا</span>
+            </button>
+        </div>
+        <div class="nav-actions">
+            <div class="search-wrapper">
+                <div class="search-container">
+                    <input type="text" id="search-input" class="search-input" placeholder="ابحثي عن إكسسوار" data-i18n-placeholder="search" style="text-align: right; direction: rtl;">
+                    <div id="search-results" class="search-results"></div>
+                </div>
+            </div>
+            <div class="lang-switcher">
+                <button class="lang-btn active" onclick="setLanguage('ar')" id="lang-ar">AR</button>
+                <button class="lang-btn" onclick="setLanguage('fr')" id="lang-fr">FR</button>
+            </div>
+            <div class="favorites-icon" onclick="toggleFavorites()">
+                <i class="far fa-heart"></i> <span id="favorites-count">0</span>
+            </div>
+            <div class="cart-info" onclick="toggleCart()">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="filter-icon" onclick="openFilterModal()">
+                <i class="fas fa-sliders-h"></i>
+            </div>
+        </div>
+        <div class="mobile-toolbar">
+            <button class="menu-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="search-container">
+                <input type="text" id="search-input-mobile" class="search-input" placeholder="بحث" data-i18n-placeholder="search" style="text-align: right; direction: rtl;">
+                <div id="search-results-mobile" class="search-results"></div>
+            </div>
+            <div class="favorites-icon" onclick="toggleFavorites()">
+                <i class="far fa-heart"></i> <span id="favorites-count-mobile">0</span>
+            </div>
+            <div class="filter-icon" onclick="openFilterModal()">
+                <i class="fas fa-sliders-h"></i> <span data-i18n="filter"></span>
+            </div>
+            <div class="cart-info" onclick="toggleCart()">
+                <i class="fas fa-shopping-cart"></i> <span data-i18n="cart"></span> <span id="cart-count-mobile">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <div id="about-modal" class="modal" onclick="if(event.target===this) closeAboutModal()">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 data-i18n="aboutUsTitle"><i class="fas fa-info-circle"></i> من نحن</h3>
+                <button onclick="closeAboutModal()" class="close-modal">&#10005;</button>
+            </div>
+            <div id="about-modal-text" style="line-height: 1.8; color: rgba(249,234,241,0.85);">
+                جاري التحميل...
+            </div>
+        </div>
+    </div>
+
+    <div id="follow-modal" class="modal" onclick="if(event.target===this) closeFollowModal()">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 data-i18n="followUsTitle"><i class="fas fa-users"></i> تابعينا على مواقع التواصل</h3>
+                <button onclick="closeFollowModal()" class="close-modal">&#10005;</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div style="background: rgba(58,13,40,0.5); border-radius: 15px; padding: 20px; border: 1px solid rgba(212, 175, 55, 0.3);">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                        <i class="fab fa-instagram" style="font-size: 2.5rem; color: #E1306C;"></i>
+                        <div>
+                            <h4 style="color: #d4af37; margin-bottom: 5px;">Instagram</h4>
+                            <p style="color: rgba(249,234,241,0.8);">radjaa_accessoiree</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #d4af37; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-users" style="color: #D4AF37; font-size: 1.2rem;"></i>
+                            <span id="ig-followers" style="color: #E91E63;">35,900+</span><span data-i18n="followers">متابع</span>
+                        </span>
+                        <a href="https://www.instagram.com/radjaa_accessoiree/" target="_blank" style="background: linear-gradient(135deg, #E1306C, #C13584); color: white; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: bold;" data-i18n="follow">متابعة</a>
+                    </div>
+                </div>
+                <div style="background: rgba(58,13,40,0.5); border-radius: 15px; padding: 20px; border: 1px solid rgba(212, 175, 55, 0.3);">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                        <i class="fab fa-facebook" style="font-size: 2.5rem; color: #1877F2;"></i>
+                        <div>
+                            <h4 style="color: #d4af37; margin-bottom: 5px;">Facebook</h4>
+                            <p style="color: rgba(249,234,241,0.8);">Radjaa Accessoire</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #d4af37; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-users" style="color: #D4AF37; font-size: 1.2rem;"></i>
+                            <span id="fb-followers" style="color: #E91E63;">30,800+</span><span data-i18n="followers">متابع</span>
+                        </span>
+                        <a href="https://www.facebook.com/radjaa.accessoire/" target="_blank" style="background: #1877F2; color: white; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: bold;" data-i18n="follow">متابعة</a>
+                    </div>
+                </div>
+                <div style="background: rgba(58,13,40,0.5); border-radius: 15px; padding: 20px; border: 1px solid rgba(212, 175, 55, 0.3);">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                        <i class="fab fa-tiktok" style="font-size: 2.5rem; color: #fff; text-shadow: 0 0 10px #00f2ea;"></i>
+                        <div>
+                            <h4 style="color: #d4af37; margin-bottom: 5px;">TikTok</h4>
+                            <p style="color: rgba(249,234,241,0.8);">radjaaaccessoire</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #d4af37; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-users" style="color: #D4AF37; font-size: 1.2rem;"></i>
+                            <span id="tt-followers" style="color: #E91E63;">60,600+</span><span data-i18n="followers">متابع</span>
+                        </span>
+                        <a href="https://www.tiktok.com/@radjaaaccessoire" target="_blank" style="background: #000; color: white; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: bold;" data-i18n="follow">متابعة</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="floating-reviews-btn" onclick="contactUs()">
+        <i class="fas fa-phone"></i> <span data-i18n="contactUs">اتصلي بنا</span>
+    </button>
+
+    <div class="hero-slider-container swiper" id="hero-slider">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide hero-slide">
+                <div class="hero-slide-media" data-hero-img=""></div>
+                <div class="hero-overlay"></div>
+                <div class="hero-content-wrap">
+                    <div class="hero-content">
+                        <h1 data-i18n="handmade">صنع يدوي بأنامل جزائرية</h1>
+                        <p data-i18n="newCollection">إكسسوارات عصرية وتقليدية تناسب جمالك</p>
+                        <a href="#products-container" class="hero-cta" data-i18n="heroCta">تسوقي الآن</a>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide hero-slide">
+                <div class="hero-slide-media" data-hero-img=""></div>
+                <div class="hero-overlay"></div>
+                <div class="hero-content-wrap">
+                    <div class="hero-content">
+                        <h1 data-i18n="fastDelivery">توصيل سريع لجميع الولايات والبلديات</h1>
+                        <p data-i18n="allStates">نتعامل مع شركة يالدين للتوصيل</p>
+                        <a href="#products-container" class="hero-cta" data-i18n="heroCta">تسوقي الآن</a>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide hero-slide">
+                <div class="hero-slide-media" data-hero-img=""></div>
+                <div class="hero-overlay"></div>
+                <div class="hero-content-wrap">
+                    <div class="hero-content">
+                        <h1 data-i18n="yourStyle">إطلالتك ستكون أجمل بأناملنا</h1>
+                        <p data-i18n="excellentRatings">أنت ملكة الحفل بإكسسواراتنا</p>
+                        <a href="#products-container" class="hero-cta" data-i18n="heroCta">تسوقي الآن</a>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide hero-slide">
+                <div class="hero-slide-media" data-hero-img=""></div>
+                <div class="hero-overlay"></div>
+                <div class="hero-content-wrap">
+                    <div class="hero-content">
+                        <h1 data-i18n="support247">أكثر من 600 زبونة راضية عن إكسسواراتنا</h1>
+                        <p data-i18n="callok">ثقة زبائننا غايتنا</p>
+                        <a href="#products-container" class="hero-cta" data-i18n="heroCta">تسوقي الآن</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+        <div class="hero-shape-divider">
+            <svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,35 C220,90 420,0 720,28 C1020,56 1240,5 1440,45 L1440,100 L0,100 Z" fill="url(#heroDividerGradient)"></path>
+                <defs>
+                    <linearGradient id="heroDividerGradient" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#1A0F14"/>
+                        <stop offset="50%" stop-color="#2D1A24"/>
+                        <stop offset="100%" stop-color="#0D080B"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+    </div>
+
+    <main>
+        <div id="products-container">
+            <div style="text-align: center; grid-column: 1/-1; padding: 50px; color: #d4af37;">جاري تحميل الإكسسوارات...</div>
+        </div>
+        <div id="product-detail-container"></div>
+    </main>
+
+    <div class="filter-overlay" id="filter-overlay" onclick="closeFilterModal()"></div>
+    <div class="filter-modal" id="filter-modal" onclick="if(event.target===this) closeFilterModal()">
+        <div class="filter-modal-content">
+            <div class="filter-modal-header">
+                <h3>
+                    <i class="fas fa-sliders-h"></i>
+                    <span data-i18n="filter">فلترة المنتجات</span>
+                </h3>
+                <button class="filter-close-btn" onclick="closeFilterModal()">&#10005;</button>
+            </div>
+            <div class="filter-modal-body">
+                <div class="filter-group-box">
+                    <label class="filter-label">
+                        <i class="fas fa-folder"></i>
+                        <span data-i18n="category">الفئة:</span>
+                    </label>
+                    <select id="filter-category" class="filter-select">
+                        <option value="all" data-i18n="allCategories">جميع الفئات</option>
+                        <option value="تيجان وإكسسوارات الشعر">تيجان وإكسسوارات الشعر</option>
+                        <option value="طقم بالأحجار الكريمة والجوهر">طقم بالأحجار الكريمة والجوهر</option>
+                        <option value="إكسسوارات العروس">إكسسوارات العروس</option>
+                        <option value="إكسسوارات تقليدية">إكسسوارات تقليدية</option>
+                        <option value="أطقم المروحة والمشوارة">أطقم المروحة والمشوارة</option>
+                        <option value="خواتم بالأحجار">خواتم بالأحجار</option>
+                        <option value="حقائب اللؤلؤ">حقائب اللؤلؤ</option>
+                    </select>
+                </div>
+                <div class="filter-group-box">
+                    <label class="filter-label">
+                        <i class="fas fa-sort-amount-down"></i>
+                        <span data-i18n="sortByPrice">الترتيب حسب السعر:</span>
+                    </label>
+                    <select id="filter-sort" class="filter-select">
+                        <option value="default" data-i18n="defaultSort">الترتيب الافتراضي</option>
+                        <option value="price_asc" data-i18n="priceAsc">من الأقل للأعلى</option>
+                        <option value="price_desc" data-i18n="priceDesc">من الأعلى للأقل</option>
+                    </select>
+                </div>
+                <div class="filter-group-box">
+                    <label class="filter-label">
+                        <i class="fas fa-chart-line"></i>
+                        <span data-i18n="priceRange">نطاق السعر:</span>
+                    </label>
+                    <div class="filter-price-range">
+                        <input type="number" id="filter-min" class="filter-input" data-i18n-placeholder="minPrice" placeholder="أقل سعر">
+                        <input type="number" id="filter-max" class="filter-input" data-i18n-placeholder="maxPrice" placeholder="أقصى سعر">
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button class="filter-btn-apply" onclick="applyFilter()">
+                        <i class="fas fa-check"></i>
+                        <span data-i18n="applyFilter">تطبيق الفلترة</span>
+                    </button>
+                    <button class="filter-btn-reset" onclick="resetFilter()">
+                        <i class="fas fa-undo"></i>
+                        <span data-i18n="resetFilter">إعادة تعيين</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="testimonials-modal" class="modal" onclick="if(event.target===this) closeTestimonialsModal()">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3><i class="fas fa-star" style="margin-left: 8px;"></i> شهادات الزبائن</h3>
+                <button onclick="closeTestimonialsModal()" class="close-modal">&#10005;</button>
+            </div>
+            <div id="testimonials-modal-list" style="max-height: 70vh; overflow-y: auto; padding: 5px;">
+                <div style="text-align: center; padding: 30px; color: var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
+                    <br>جاري تحميل الشهادات...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-panel" id="cart-panel">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart" style="margin-inline-end: 8px;"></i><span data-i18n="cart">سلة المشتريات</span></h3>
+            <button class="close-cart" onclick="toggleCart()">&#10005;</button>
+        </div>
+        <div id="cart-items-list"></div>
+        <hr style="margin:15px 0; border-color:rgba(212,175,55,0.3);">
+        <div style="margin-top:20px;">
+            <h4 data-i18n="deliveryInfo" style="color:#d4af37;">معلومات التوصيل</h4>
+            <div class="cash-on-delivery-note" style="background: rgba(212, 175, 55, 0.15); border-right: 3px solid #d4af37; padding: 10px; margin: 10px 0; border-radius: 8px; font-size: 0.8rem; color: #d4af37;">
+                <i class="fas fa-hand-holding-usd" style="margin-inline-end: 8px;"></i> <strong data-i18n="cashOnDeliveryLabel">الدفع عند الاستلام</strong>
+            </div>
+            <div class="will-call-note" style="background: rgba(76, 175, 80, 0.15); border-right: 3px solid #4caf50; padding: 10px; margin: 10px 0; border-radius: 8px; font-size: 0.8rem; color: #4caf50;">
+                <i class="fas fa-truck" style="margin-inline-end: 8px;"></i> <span data-i18n="beforeShipping">سنتصل بك لتأكيد الطلبية قبل الشحن</span>
+            </div>
+            <div style="margin: 15px 0;">
+                <label style="color: #d4af37; margin-bottom: 5px; display: block;"><i class="fas fa-edit" style="margin-inline-end: 8px;"></i> <span data-i18n="notesLabel">تفاصيل إضافية (اختياري)</span></label>
+                <textarea id="cust-notes" class="info-input" rows="2" data-i18n-placeholder="notesPlaceholder" placeholder="أي تفاصيل إضافية..." style="resize: vertical;"></textarea>
+                <small style="color: #ff0202d7; font-size: 0.8rem;">
+                    <span style="display: inline-block; margin-inline-end: 5px;"><i class="fas fa-exclamation-triangle" style="margin-inline-end: 8px;"></i></span><span data-i18n="notesWarning">إضافة تفاصيل خاصة قد تزيد من السعر النهائي</span>
+                </small>
+            </div>
+            <select id="cust-wilaya" class="info-input" required onchange="updateCartTotal()">
+                <option value="" data-i18n="selectWilaya">اختاري الولاية</option>
+            </select>
+            <input type="text" id="cust-commune" data-i18n-placeholder="commune" placeholder="البلدية" class="info-input" required>
+            <input type="text" id="cust-name" data-i18n-placeholder="fullName" placeholder="الاسم الكامل" class="info-input" required>
+            <div style="margin: 8px 0;">
+                <input type="tel" id="cust-phone" data-i18n-placeholder="phone" placeholder="رقم الهاتف" class="info-input" required maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
+            <div class="shipping-options" style="margin:15px 0;">
+                <h4 data-i18n="shippingType" style="color:#d4af37;">نوع التوصيل:</h4>
+                <label style="display: block; margin: 8px 0; color:rgba(249,234,241,0.8);"><input type="radio" name="shipping" value="office" onchange="updateCartTotal()"> <span data-i18n="officePickup">الاستلام من مكتب البريد</span></label>
+                <label style="display: block; margin: 8px 0; color:rgba(249,234,241,0.8);"><input type="radio" name="shipping" value="home" onchange="updateCartTotal()" checked> <span data-i18n="homeDelivery">التوصيل إلى المنزل</span></label>
+            </div>
+            <div style="background: rgba(212, 175, 55, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid rgba(212,175,55,0.2);">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; color:rgba(249,234,241,0.85);">
+                    <span data-i18n="subtotal">المجموع الفرعي:</span>
+                    <span id="cart-subtotal">0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; color:rgba(249,234,241,0.85);">
+                    <span data-i18n="shippingFee">رسوم التوصيل:</span>
+                    <span id="cart-shipping-fee">0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; border-top: 1px solid #d4af37; padding-top: 10px; color:#d4af37;">
+                    <span data-i18n="total">الإجمالي:</span>
+                    <span id="cart-total">0</span>
+                </div>
+            </div>
+            <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <button onclick="submitOrder()" style="background: linear-gradient(135deg, #d4af37, #b8942e); color: #3A0D28; border: none; padding: 14px 20px; border-radius: 10px; flex: 3; font-weight: 700; cursor: pointer;">
+                    <i class="fas fa-check" style="margin-inline-end: 8px;"></i> <span data-i18n="submitOrder">تأكيد الطلب</span>
+                </button>
+                <button onclick="window.open('https://wa.me/213775087631', '_blank')" style="background: #25D366; color: white; border: none; width: 60px; border-radius: 10px; flex: 1; font-size: 1.5rem; cursor: pointer;">
+                    <i class="fab fa-whatsapp"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="favorites-panel" id="favorites-panel">
+        <div class="favorites-header">
+            <h3 style="display: inline-flex; align-items: center; gap: 8px;"><i class="fas fa-heart" style="color: #E91E63;"></i><span data-i18n="favoritesTitle">قائمة المفضلات</span></h3>
+            <button class="close-favorites" onclick="toggleFavorites()">&#10005;</button>
+        </div>
+        <div id="favorites-list"></div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-brand-row">
+                    <img src="uploads/logo.png" alt="Radjaa Accessoire" class="footer-logo" onerror="this.style.display='none'">
+                    <span class="footer-brand-name">Radjaa Accessoire</span>
+                </div>
+                <p class="footer-brand-desc" data-i18n="footerBrandDesc">إكسسوارات راقية تصنع بعناية بأنامل جزائرية، تجمع بين جودة الصنع وجمال التصميم، وتفخر بثقة ورضا أكثر من 600 زبونة اخترن تصاميمنا</p>
+            </div>
+            <div>
+                <h4 class="footer-title" data-i18n="quickLinks">روابط سريعة</h4>
+                <ul class="footer-links">
+                    <li><a onclick="scrollToHome()"><i class="fas fa-chevron-right"></i> <span data-i18n="home">الرئيسية</span></a></li>
+                    <li><a onclick="goToAllProductsFromFooter()"><i class="fas fa-chevron-right"></i> <span data-i18n="products">المنتجات</span></a></li>
+                    <li><a onclick="showAboutModal()"><i class="fas fa-chevron-right"></i> <span data-i18n="aboutUs">من نحن</span></a></li>
+                    <li><a onclick="openFollowModal()"><i class="fas fa-chevron-right"></i> <span data-i18n="followUs">تابعينا</span></a></li>
+                    <li><a onclick="openTestimonialsModal()"><i class="fas fa-chevron-right"></i> <span>شهادات الزبائن</span></a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title" data-i18n="deliveryInfo">معلومات التوصيل</h4>
+                <div class="footer-delivery">
+                    <span class="footer-delivery-item"><i class="fas fa-truck"></i> <span data-i18n="willCallLabel">الشحن داخل الجزائر فقط</span></span>
+                    <span class="footer-delivery-item"><i class="fas fa-map-marked-alt"></i> <span data-i18n="deliveryAllStates">التوصيل إلى 69 ولاية</span></span>
+                    <span class="footer-delivery-item"><i class="fas fa-hand-holding-usd"></i> <span data-i18n="cashOnDeliveryLabel">الدفع عند الاستلام</span></span>
+                    <span class="footer-delivery-item"><i class="fas fa-clock"></i> <span data-i18n="deliveryTime">24h / 48h</span></span>
+                </div>
+            </div>
+            <div>
+                <h4 class="footer-title" data-i18n="contactUsTitle">تواصل معنا</h4>
+                <div class="footer-contact">
+                    <span class="footer-contact-item"><i class="fas fa-phone"></i> <a href="tel:+213775087631">+213 775 08 76 31</a></span>
+                    <span class="footer-contact-item"><i class="fas fa-envelope"></i> <a href="mailto:radjaa.accessoire@gmail.com">radjaa.accessoire@gmail.com</a></span>
+                    <span class="footer-contact-item"><i class="fas fa-map-marker-alt"></i> <span>Oran - Algérie</span></span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-social">
+            <a href="https://www.instagram.com/radjaa_accessoiree/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/radjaa.accessoire/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.tiktok.com/@radjaaaccessoire" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="https://wa.me/213775087631" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <div class="footer-bottom" style="flex-direction: column; gap: 8px; padding: 18px 20px;">
+            <div class="footer-copyright" style="text-align: center; color: var(--text-muted); font-size: 0.9rem; direction: ltr !important;">
+                <span>&copy; 2026 Radjaa Accessoire</span> <span data-i18n="allRightsReserved">Tous droits réservés</span>
+            </div>
+            <div class="footer-designed" style="text-align: center; font-family: 'StoreFont', sans-serif !important; font-size: 0.7rem; letter-spacing: 2px;">
+                <span>Developed by ABOUBAKAR</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.js"></script>
+    <script src="utils.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# البيئة والمفاتيح
+.env
+.env.local
+.env.*.local
+
+# الملفات المؤقتة والمجلدات
+uploads/
+*.log
+.DS_Store
+Thumbs.db
+
+# ملفات التحرير
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# ملفات البناء
+dist/
+build/

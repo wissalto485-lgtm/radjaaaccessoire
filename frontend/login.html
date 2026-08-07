@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radjaa Accessoire - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="golden-lines" id="goldenLines"></div>
+    <div class="login-container">
+        <div class="login-glow"></div>
+        <div class="login-box">
+            <div class="logo-section">
+                <div class="logo-circle">
+                    <img src="/uploads/logo.png" alt="Radjaa" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-crown\' style=\'font-size: 35px; color: #D4AF37;\'></i>';">
+                </div>
+                <div class="logo-text">RADJAA</div>
+                <div class="logo-subtitle">ACCESSOIRE</div>
+            </div>
+            <div class="login-title">
+                <span class="line"></span>
+                <span>Admin Dashboard Login</span>
+                <i class="fas fa-lock"></i>
+                <span class="line"></span>
+            </div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <input type="text" id="username" placeholder="اسم المستخدم" required autocomplete="username">
+                    <i class="fas fa-user icon"></i>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="كلمة المرور" required autocomplete="current-password">
+                    <i class="fas fa-key icon"></i>
+                </div>
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span class="btn-shine"></span>
+                    <i class="fas fa-sign-in-alt" style="margin-left: 8px;"></i>
+                    Login
+                </button>
+            </form>
+            <div class="error-msg" id="loginError">
+                <i class="fas fa-exclamation-triangle"></i>
+                اسم المستخدم أو كلمة المرور غير صحيحة
+            </div>
+            <div class="login-footer">
+                <i class="fas fa-shield-alt"></i>
+                Radjaa Accessoire Dashboard
+                <i class="fas fa-shield-alt"></i>
+            </div>
+        </div>
+    </div>
+    <script src="login.js"></script>
+</body>
+</html>
