@@ -1242,7 +1242,7 @@ td {
     .new-orders-content span:not(.new-orders-count):not(.repeat-orders-count):not(.cancelled-repeat-count),
     .repeat-orders-content span:not(.new-orders-count):not(.repeat-orders-count):not(.cancelled-repeat-count),
     .cancelled-repeat-content span:not(.new-orders-count):not(.repeat-orders-count):not(.cancelled-repeat-count) {
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: bold;
         color: #1A0F14;
         text-align: center;

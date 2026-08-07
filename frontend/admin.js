@@ -2650,7 +2650,7 @@ document.getElementById("add-product-form").addEventListener("submit", async fun
     }
     const btn = document.querySelector('#add-product-form button[type="submit"]');
     const orig = btn.innerText;
-    btn.innerText = "جاري...";
+    btn.innerText = "جاري التحميل...";
     btn.disabled = true;
     try {
         const res = await fetchWithAuth(API_BASE + "/add", {
@@ -4020,7 +4020,8 @@ async function addTestimonial() {
     }
     const formData = new FormData();
     formData.append('customerName', name);
-    formData.append('image', testimonialImageFile);
+    const compressedTestimonialImg = await compressImage(testimonialImageFile, 1000, 0.8);
+    formData.append('image', compressedTestimonialImg, testimonialImageFile.name);
     try {
         const res = await fetchWithAuth(API_BASE + '/testimonials', {
             method: 'POST',
