@@ -4594,7 +4594,7 @@ select option {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 6px;
+        gap: 3px;
     }
     
     .mobile-search-actions-completed .mobile-clear-btn {
