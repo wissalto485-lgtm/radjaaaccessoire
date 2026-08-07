@@ -44,6 +44,7 @@ app.use(helmet({
 const corsOptions = {
     origin: function (origin, callback) {
         const allowedOrigins = [
+            'https://radjaaaccessoire.onrender.com',
             'http://localhost:5500',
             'http://127.0.0.1:5500',
             'http://localhost:5000',
