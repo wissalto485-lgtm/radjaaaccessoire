@@ -875,6 +875,10 @@ async function openEditModal(productId) {
                 option.textContent = currentLang === "ar" ? color.ar : color.fr;
                 editColorSelect.appendChild(option);
             });
+            const editCustomOption = document.createElement("option");
+            editCustomOption.value = "custom";
+            editCustomOption.textContent = "حسب الطلب";
+            editColorSelect.appendChild(editCustomOption);
         }
         const hasSizesCheckbox = document.getElementById("edit-has-sizes");
         hasSizesCheckbox.checked = p.sizes && p.sizes.length > 0;
@@ -1190,9 +1194,21 @@ async function loadEditProductDetails(product, orderItem) {
             colorSelect.innerHTML += '<option value="' + escapeHtml(color.name) + '" data-hex="' + escapeHtml(color.hexCode) + '" ' + selected + '>' + escapeHtml(color.name) + '</option>';
         });
         if (orderItem.selectedColor?.hexCode) {
-            colorCircle.style.backgroundColor = orderItem.selectedColor.hexCode;
+            if (orderItem.selectedColor.hexCode === "custom") {
+                colorCircle.style.cssText += "background-color:rgba(212,175,55,0.15);display:flex;align-items:center;justify-content:center;font-size:0.5rem;color:var(--gold);text-align:center;line-height:1.1;";
+                colorCircle.innerHTML = "حسب<br>الطلب";
+            } else {
+                colorCircle.style.backgroundColor = orderItem.selectedColor.hexCode;
+                colorCircle.innerHTML = "";
+            }
         } else if (product.colors[0]) {
-            colorCircle.style.backgroundColor = product.colors[0].hexCode;
+            if (product.colors[0].hexCode === "custom") {
+                colorCircle.style.cssText += "background-color:rgba(212,175,55,0.15);display:flex;align-items:center;justify-content:center;font-size:0.5rem;color:var(--gold);text-align:center;line-height:1.1;";
+                colorCircle.innerHTML = "حسب<br>الطلب";
+            } else {
+                colorCircle.style.backgroundColor = product.colors[0].hexCode;
+                colorCircle.innerHTML = "";
+            }
         }
         colorSelect.onchange = function() {
             const selectedOption = colorSelect.options[colorSelect.selectedIndex];
@@ -1323,9 +1339,23 @@ function updateEditColorCircle() {
     const selectedOption = colorSelect.options[colorSelect.selectedIndex];
     if (selectedOption && selectedOption.value) {
         const hexCode = selectedOption.getAttribute("data-hex") || "#D4AF37";
-        colorCircle.style.backgroundColor = hexCode;
+        if (hexCode === "custom") {
+            colorCircle.style.backgroundColor = "rgba(212,175,55,0.15)";
+            colorCircle.style.display = "flex";
+            colorCircle.style.alignItems = "center";
+            colorCircle.style.justifyContent = "center";
+            colorCircle.style.fontSize = "0.5rem";
+            colorCircle.style.color = "var(--gold)";
+            colorCircle.style.textAlign = "center";
+            colorCircle.style.lineHeight = "1.1";
+            colorCircle.innerHTML = "حسب<br>الطلب";
+        } else {
+            colorCircle.style.backgroundColor = hexCode;
+            colorCircle.innerHTML = "";
+        }
     } else {
         colorCircle.style.backgroundColor = "#ccc";
+        colorCircle.innerHTML = "";
     }
 }
 
@@ -2011,6 +2041,10 @@ function populateColorSelect() {
         option.textContent = currentLang === "ar" ? color.ar : color.fr;
         colorSelect.appendChild(option);
     });
+    const customOption = document.createElement("option");
+    customOption.value = "custom";
+    customOption.textContent = "حسب الطلب";
+    colorSelect.appendChild(customOption);
 }
 
 populateColorSelect();
@@ -2163,7 +2197,11 @@ function updateColorsDisplay() {
     if (!display) return;
     let html = "";
     selectedColorsList.forEach((color, index) => {
-        html += '\n            <div class="selected-color-swatch" style="position: relative; display: inline-flex; align-items: center; justify-content: center;">\n                <div class="color-circle" style="width: 40px; height: 40px; border-radius: 50%; background-color: ' + color.hexCode + '; border: 2px solid var(--gold); cursor: pointer; transition: 0.2s;"></div>\n                <span class="remove-color-swatch" onclick="removeColor(' + index + ')" style="position: absolute; top: -5px; right: -5px; background: #f44336; color: white; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; font-weight: bold; border: 1px solid white;">X</span>\n            </div>\n        ';
+        const isCustom = color.hexCode === "custom";
+        const circleHtml = isCustom
+            ? '<div class="color-circle custom-order-badge" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(212,175,55,0.15); border: 2px solid var(--gold); cursor: pointer; display:flex; align-items:center; justify-content:center; font-size: 0.55rem; color: var(--gold); text-align:center; line-height:1.1; padding:2px;">حسب<br>الطلب</div>'
+            : '<div class="color-circle" style="width: 40px; height: 40px; border-radius: 50%; background-color: ' + color.hexCode + '; border: 2px solid var(--gold); cursor: pointer; transition: 0.2s;"></div>';
+        html += '\n            <div class="selected-color-swatch" style="position: relative; display: inline-flex; align-items: center; justify-content: center;">\n                ' + circleHtml + '\n                <span class="remove-color-swatch" onclick="removeColor(' + index + ')" style="position: absolute; top: -5px; right: -5px; background: #f44336; color: white; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; font-weight: bold; border: 1px solid white;">X</span>\n            </div>\n        ';
     });
     display.innerHTML = html;
     document.getElementById("selected-colors").value = JSON.stringify(selectedColorsList);
@@ -2179,7 +2217,11 @@ function updateEditColorsDisplay() {
     if (!display) return;
     let html = "";
     editColorsList.forEach((color, index) => {
-        html += '\n            <div class="selected-color-swatch" style="position: relative; display: inline-flex; align-items: center; justify-content: center;">\n                <div class="color-circle" style="width: 40px; height: 40px; border-radius: 50%; background-color: ' + color.hexCode + '; border: 2px solid var(--gold); cursor: pointer; transition: 0.2s;"></div>\n                <span class="remove-color-swatch" onclick="removeEditColor(' + index + ')" style="position: absolute; top: -5px; right: -5px; background: #f44336; color: white; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; font-weight: bold; border: 1px solid white;">X</span>\n            </div>\n        ';
+        const isCustom = color.hexCode === "custom";
+        const circleHtml = isCustom
+            ? '<div class="color-circle custom-order-badge" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(212,175,55,0.15); border: 2px solid var(--gold); cursor: pointer; display:flex; align-items:center; justify-content:center; font-size: 0.55rem; color: var(--gold); text-align:center; line-height:1.1; padding:2px;">حسب<br>الطلب</div>'
+            : '<div class="color-circle" style="width: 40px; height: 40px; border-radius: 50%; background-color: ' + color.hexCode + '; border: 2px solid var(--gold); cursor: pointer; transition: 0.2s;"></div>';
+        html += '\n            <div class="selected-color-swatch" style="position: relative; display: inline-flex; align-items: center; justify-content: center;">\n                ' + circleHtml + '\n                <span class="remove-color-swatch" onclick="removeEditColor(' + index + ')" style="position: absolute; top: -5px; right: -5px; background: #f44336; color: white; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; font-weight: bold; border: 1px solid white;">X</span>\n            </div>\n        ';
     });
     display.innerHTML = html;
     document.getElementById("edit-colors").value = JSON.stringify(editColorsList);

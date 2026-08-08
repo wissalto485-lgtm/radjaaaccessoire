@@ -12,7 +12,7 @@ const colorSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: function(v) {
-                if (v === 'all' || v === 'unified') return true;
+                if (v === 'all' || v === 'unified' || v === 'custom') return true;
                 return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(v);
             },
             message: props => `${props.value} ليس رمز لون صالح`

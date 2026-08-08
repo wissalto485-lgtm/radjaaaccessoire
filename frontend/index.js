@@ -105,7 +105,7 @@ const translations = {
         handmade: "صنع يدوي بأنامل جزائرية",
         newCollection: "إكسسوارات عصرية وتقليدية تناسب جمالك",
         fastDelivery: "توصيل سريع لجميع الولايات والبلديات",
-        allStates: "الشحن داخل الجزائر فقط",
+        allStates: "نتعامل مع شركة Anderson للتوصيل",
         yourStyle: "إطلالتك ستكون أجمل بأناملنا",
         excellentRatings: "أنت ملكة الحفل بإكسسواراتنا",
         support247: "أكثر من 600 زبونة راضية عن إكسسواراتنا",
@@ -215,7 +215,7 @@ const translations = {
         handmade: "Fabriqué à la main par des Algériennes",
         newCollection: "Accessoires modernes et traditionnels pour sublimer votre beauté",
         fastDelivery: "Livraison rapide pour tous les wilayas et les communes",
-        allStates: "Livraison uniquement en Algérie",
+        allStates: "Nous travaillons avec la société de livraison Anderson",
         yourStyle: "Votre style sublimé par nos mains",
         excellentRatings: "Vous êtes la reine de la fête avec nos accessoires",
         support247: "Plus de 600 clients satisfaits de nos accessoires",
@@ -549,6 +549,50 @@ document.addEventListener("click", function(event) {
     if (favoritesPanel && favoritesPanel.classList.contains("open") && !event.target.closest(".favorites-panel") && !event.target.closest(".favorites-icon")) {
         favoritesPanel.classList.remove("open");
     }
+});
+
+// السحب للإغلاق (Swipe to close) على الهاتف: السلة، المفضلة، والقائمة الجانبية
+// كلها تنزلق من اليمين، لذا السحب نحو اليمين (خارج الشاشة) يُغلقها.
+function enableSwipeToClose(panelId, closeFn) {
+    const panel = document.getElementById(panelId);
+    if (!panel) return;
+    let startX = 0;
+    let startY = 0;
+    let tracking = false;
+    const SWIPE_THRESHOLD = 60;
+    panel.addEventListener("touchstart", function(e) {
+        if (!panel.classList.contains("open") || !e.touches || !e.touches.length) return;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        tracking = true;
+    }, { passive: true });
+    panel.addEventListener("touchmove", function(e) {
+        if (!tracking || !e.touches || !e.touches.length) return;
+        const dx = e.touches[0].clientX - startX;
+        const dy = e.touches[0].clientY - startY;
+        if (Math.abs(dy) > Math.abs(dx)) {
+            tracking = false;
+        }
+    }, { passive: true });
+    panel.addEventListener("touchend", function(e) {
+        if (!tracking) return;
+        tracking = false;
+        const touch = e.changedTouches && e.changedTouches[0];
+        const endX = touch ? touch.clientX : startX;
+        if (endX - startX > SWIPE_THRESHOLD) {
+            closeFn();
+        }
+    }, { passive: true });
+}
+
+enableSwipeToClose("cart-panel", function() {
+    document.getElementById("cart-panel")?.classList.remove("open");
+});
+enableSwipeToClose("favorites-panel", function() {
+    document.getElementById("favorites-panel")?.classList.remove("open");
+});
+enableSwipeToClose("sidebar", function() {
+    document.getElementById("sidebar")?.classList.remove("open");
 });
 
 function updateDetailPageTranslation() {
@@ -1401,6 +1445,9 @@ function displayProducts(products) {
                 const hexCode = escapeHtml(c.hexCode || "#D4AF37");
                 const colorName = escapeHtml(c.name || "");
                 const colorImage = escapeHtml(c.image || "");
+                if (hexCode === "custom") {
+                    return '<div class="color-swatch custom-order-swatch" style="width: auto; min-width: ' + (swatchSize + 10) + 'px; height: ' + swatchSize + 'px; padding: 0 6px; border-radius: 10px; border: 1.5px solid var(--gold); cursor: pointer; flex-shrink: 0; display:flex; align-items:center; justify-content:center; font-size: 0.55rem; color: var(--gold); background: rgba(212,175,55,0.12); white-space:nowrap;" onclick="event.stopPropagation(); changeCardImage(\'' + productId + '\', \'' + colorImage + '\')" title="' + colorName + '">حسب الطلب</div>';
+                }
                 return '<div class="color-swatch" style="background-color: ' + hexCode + '; width: ' + swatchSize + 'px; height: ' + swatchSize + 'px; border-radius: 50%; border: 2px solid ' + getSwatchBorderColor(hexCode) + '; cursor: pointer; flex-shrink: 0;" onclick="event.stopPropagation(); changeCardImage(\'' + productId + '\', \'' + colorImage + '\')" title="' + colorName + '"></div>';
             }).join("") + '\n            </div>';
         } else {
@@ -1488,7 +1535,7 @@ function shareProduct(id, name, price) {
 
 function orderNowProduct(productId) {
     addToCart(productId, 1);
-    toggleCart();
+    openCart();
 }
 
 function calculateProductPrice(product, selectedComponent, selectedSize) {
@@ -1600,7 +1647,12 @@ function updateCartUI() {
     cartList.innerHTML = cart.map((item, idx) => {
         let optionsHtml = "";
         if (item.selectedColor) {
-            optionsHtml += '<div class="cart-option-line">\n            <div class="cart-option-badge color-badge">\n                <i class="fas fa-palette" style="margin-inline-end: 8px;"></i> ' + (currentLang === "fr" ? "Couleur" : "اللون") + ': ' + item.selectedColor.name + '\n            </div>\n        </div>';
+            const colorHex = item.selectedColor.hexCode || "#D4AF37";
+            const colorNameEsc = escapeHtml(item.selectedColor.name || "");
+            const colorValueHtml = (colorHex === "custom")
+                ? '<span style="color:var(--gold); font-weight:600;">حسب الطلب</span>'
+                : '<span class="cart-color-swatch" style="display:inline-block; width:18px; height:18px; border-radius:50%; background-color:' + escapeHtml(colorHex) + '; border:2px solid ' + getSwatchBorderColor(colorHex) + '; vertical-align:middle; margin-inline-start:6px;" title="' + colorNameEsc + '"></span>';
+            optionsHtml += '<div class="cart-option-line">\n            <div class="cart-option-badge color-badge">\n                <i class="fas fa-palette" style="margin-inline-end: 8px;"></i> ' + (currentLang === "fr" ? "Couleur" : "اللون") + ': ' + colorValueHtml + '\n            </div>\n        </div>';
         }
         if (item.selectedSize) {
             optionsHtml += '<div class="cart-option-line">\n            <div class="cart-option-badge size-badge">\n                <i class="fas fa-ruler" style="margin-inline-end: 8px;"></i> ' + (currentLang === "fr" ? "Taille" : "المقاس") + ': ' + (typeof translateSize === "function" && currentLang === "fr" ? translateSize(item.selectedSize.size, "fr") : item.selectedSize.size) + '\n            </div>\n        </div>';
@@ -1671,6 +1723,10 @@ function toggleCart() {
     document.getElementById("cart-panel").classList.toggle("open");
 }
 
+function openCart() {
+    document.getElementById("cart-panel").classList.add("open");
+}
+
 let currentSelectedComponent = null;
 let detailSlider = null;
 
@@ -1715,6 +1771,9 @@ function showProductDetail(productId) {
             const hexCode = escapeHtml(c.hexCode || "#D4AF37");
             const colorName = escapeHtml(c.name || "");
             const colorImage = escapeHtml(c.image || "");
+            if (hexCode === "custom") {
+                return '<div class="detail-color-swatch custom-order-swatch" style="width: auto; min-width: 50px; height: 50px; padding: 0 10px; border-radius: 14px; border: 2px solid var(--gold); cursor: pointer; transition: 0.2s; display:flex; align-items:center; justify-content:center; font-size: 0.75rem; color: var(--gold); background: rgba(212,175,55,0.12); white-space:nowrap;" onclick="selectDetailColor(\'custom\',\'' + colorName + '\',\'' + colorImage + '\')" title="' + colorName + '">حسب الطلب</div>';
+            }
             return '<div class="detail-color-swatch" style="background-color: ' + hexCode + '; width: 50px; height: 50px; border-radius: 50%; border: 3px solid ' + getSwatchBorderColor(hexCode) + '; cursor: pointer; transition: 0.2s;" onclick="selectDetailColor(\'' + hexCode + '\',\'' + colorName + '\',\'' + colorImage + '\')" title="' + colorName + '"></div>';
         }).join("") + '\n        </div>';
     } else {
@@ -2061,7 +2120,7 @@ function addToCartFromDetail() {
 
 function orderNowFromDetail() {
     addToCartFromDetail();
-    toggleCart();
+    openCart();
 }
 
 async function loadProducts() {
@@ -2447,7 +2506,7 @@ function addToCartFromFavorite(productId) {
 
 function orderNowFromFavorite(productId) {
     addToCart(productId, 1);
-    toggleCart();
+    openCart();
     toggleFavorites();
 }
 
