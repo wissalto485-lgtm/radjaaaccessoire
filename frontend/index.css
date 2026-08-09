@@ -862,12 +862,12 @@ html:lang(fr) .product-price {
     line-height: 1.4;
     
     display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-top: 12px;
+    margin-top: 10px;
 }
 
 .product-buttons {
@@ -1467,8 +1467,8 @@ select.info-input {
     border: none;
 }
 .img-slider-dot.active { background: var(--gold); width: 18px; border-radius: 8px; }
-.product-card .img-slider-wrap { height: 200px; }
-.product-card .img-slider-slide img { height: 200px; object-fit: cover; }
+.product-card .img-slider-wrap { height: 260px; }
+.product-card .img-slider-slide img { height: 260px; object-fit: cover; }
 
 .lazy { opacity: 0; transition: opacity 0.3s ease-in; }
 .lazy.loaded { opacity: 1; }

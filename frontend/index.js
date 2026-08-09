@@ -1437,54 +1437,11 @@ function displayProducts(products) {
         const productId = escapeHtml(product._id);
         const basePrice = product.basePrice || 0;
         const cardCurrencySymbol = currentLang === "fr" ? " DA" : " د.ج";
-        let colorsHtml = "";
-        if (product.colors && product.colors.length > 0) {
-            const totalColors = product.colors.length;
-            let swatchSize = 32;
-            let gapSize = 8;
-            let wrapperClass = "";
-            if (totalColors > 6) {
-                swatchSize = 24;
-                gapSize = 4;
-                wrapperClass = "has-many-colors";
-            }
-            if (totalColors > 8) {
-                swatchSize = 20;
-                gapSize = 3;
-                wrapperClass = "has-many-colors-8";
-            }
-            if (totalColors >= 10) {
-                swatchSize = 18;
-                gapSize = 2;
-                wrapperClass = "has-many-colors-8";
-            }
-
-            colorsHtml = '<div class="colors-wrapper ' + wrapperClass + '" style="display: flex; flex-wrap: nowrap; gap: ' + gapSize + 'px; align-items: center; overflow: visible;">\n                ' + product.colors.map(c => {
-                const hexCode = escapeHtml(c.hexCode || "#D4AF37");
-                const colorName = escapeHtml(c.name || "");
-                const colorImage = escapeHtml(c.image || "");
-                if (hexCode === "custom") {
-                    return '<span class="color-swatch custom-order-swatch" style="display: inline-flex; align-items: center; justify-content: center; width: ' + Math.max(swatchSize, 28) + 'px; min-width: ' + Math.max(swatchSize, 28) + 'px; height: ' + Math.max(swatchSize, 28) + 'px; min-height: ' + Math.max(swatchSize, 28) + 'px; padding: 2px 4px; border-radius: 50%; border: 2px solid var(--gold); cursor: pointer; flex-shrink: 0; font-size: 0.5rem; line-height: 1.1; color: var(--gold); background: rgba(212,175,55,0.12); text-align: center; white-space: nowrap;" onclick="event.stopPropagation(); changeCardImage(\'' + productId + '\', \'' + colorImage + '\')" title="' + colorName + '">' + t("customOrder") + '</span>';
-                }
-                return '<span class="color-swatch" style="background-color: ' + hexCode + '; width: ' + swatchSize + 'px; height: ' + swatchSize + 'px; border-radius: 50%; border: 2px solid ' + getSwatchBorderColor(hexCode) + '; cursor: pointer; flex-shrink: 0; display: inline-block;" onclick="event.stopPropagation(); changeCardImage(\'' + productId + '\', \'' + colorImage + '\')" title="' + colorName + '"></span>';
-            }).join("") + '\n            </div>';
-        } else {
-            colorsHtml = "";
-        }
-        let sizesHtml = "";
-        if (product.sizes && product.sizes.length > 0) {
-            const sizesToShow = product.sizes.slice(0, 3);
-            sizesHtml = '<div class="sizes-wrapper">' + sizesToShow.map(s => {
-                const sizeName = escapeHtml(currentLang === "fr" ? translateSize(s.size, "fr") : s.size);
-                const sizePrice = s.price || 0;
-                return '<div class="size-square" onclick="event.stopPropagation(); selectCardSize(\'' + productId + '\', \'' + escapeHtml(s.size) + '\', ' + sizePrice + ', this)">' + sizeName + '</div>';
-            }).join("") + '</div>';
-        }
         const hasComponents = product.hasComponents || product.components && product.components.length > 0;
         const partsHtml = hasComponents ? '<div class="parts-available">' + escapeHtml(t("availableParts")) + '</div>' : "";
         const descHtml = displayDesc ? '<div class="product-desc">' + displayDesc + '</div>' : "";
         const buttonsHtml = '\n            <div class="product-buttons">\n                <button class="btn-add-cart" onclick="event.stopPropagation(); addToCart(\'' + productId + '\')">\n                    <i class="fas fa-shopping-cart" style="margin-inline-end: 8px;"></i>' + escapeHtml(t("addToCart")) + '\n                </button>\n                <button class="btn-order-now" onclick="event.stopPropagation(); orderNowProduct(\'' + productId + '\')">\n                    ' + escapeHtml(t("orderNow")) + '\n                </button>\n                <button class="btn-favorite ' + (isFavorite(product._id) ? "active" : "") + '" onclick="event.stopPropagation(); toggleFavorite(\'' + productId + '\', this)">\n                    <i class="fas fa-heart"></i>\n                </button>\n                <button class="btn-share" onclick="event.stopPropagation(); shareProduct(\'' + productId + '\', \'' + displayName + '\', ' + basePrice + ')" title="' + escapeHtml(t("share")) + '">\n                    <i class="fas fa-share-alt"></i><span>' + escapeHtml(t("share")) + '</span>\n                </button>\n            </div>';
-        return '\n            <div class="product-card" data-id="' + productId + '" onclick="showProductDetail(\'' + productId + '\')">\n                <div id="pslider-' + productId + '" style="height:200px; background:#3A0D28; overflow:hidden;"></div>\n                <div class="product-header">\n                    <span class="product-name">' + displayName + '</span>\n                    <span class="product-price">' + basePrice + cardCurrencySymbol + '</span>\n                </div>\n                <div class="product-options-row">\n                    ' + colorsHtml + '\n                    ' + sizesHtml + '\n                </div>\n                ' + partsHtml + '\n                ' + descHtml + '\n                ' + buttonsHtml + '\n            </div>';
+        return '\n            <div class="product-card" data-id="' + productId + '" onclick="showProductDetail(\'' + productId + '\')">\n                <div id="pslider-' + productId + '" style="height:260px; background:#3A0D28; overflow:hidden;"></div>\n                <div class="product-header">\n                    <span class="product-name">' + displayName + '</span>\n                    <span class="product-price">' + basePrice + cardCurrencySymbol + '</span>\n                </div>\n                ' + partsHtml + '\n                ' + descHtml + '\n                ' + buttonsHtml + '\n            </div>';
     }).join("");
     setTimeout(() => {
         products.forEach(product => {
@@ -1494,11 +1451,11 @@ function displayProducts(products) {
             sliderEl.setAttribute("data-slider-initialized", "true");
             const imgs = [product.mainImage, ...product.images || []].filter(img => img && img !== "").filter((v, i, a) => a.indexOf(v) === i).map(img => "" + img);
             if (imgs.length === 0) {
-                sliderEl.innerHTML = '<img src="' + PLACEHOLDER_IMG + '" style="width:100%;height:200px;object-fit:cover;display:block;">';
+                sliderEl.innerHTML = '<img src="' + PLACEHOLDER_IMG + '" style="width:100%;height:260px;object-fit:cover;display:block;">';
                 return;
             }
             if (imgs.length === 1) {
-                sliderEl.innerHTML = '<img src="' + imgs[0] + '" onerror="handleImgError(this)" style="width:100%;height:200px;object-fit:cover;display:block;direction:ltr;">';
+                sliderEl.innerHTML = '<img src="' + imgs[0] + '" onerror="handleImgError(this)" style="width:100%;height:260px;object-fit:cover;display:block;direction:ltr;">';
                 return;
             }
             new ImageSlider(sliderEl, imgs, false, true, 4000);
