@@ -200,7 +200,7 @@
                                                 <option value="كبير">كبير</option>
                                             </select>
                                             <input type="number" id="new-size-price" class="size-price-input" placeholder="السعر" oninput="validatePriceOnInput(this)" onchange="validatePrice(this)" onblur="validatePriceOnBlur(this)">
-                                            <button type="button" class="btn-add-size-new" onclick="addNewSize()"><i class="fas fa-plus"></i></button>
+                                            <button type="button" class="btn-add-size-new" onclick="addNewSize('new-size-select','new-size-price','sizes-display',addedSizes)"><i class="fas fa-plus"></i></button>
                                         </div>
                                     </div>
                                     <div id="sizes-display" class="sizes-display-container"></div>
@@ -236,10 +236,10 @@
                                                     <button type="button" class="btn-remove-component" onclick="this.closest('.component-item').remove()">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
-                                                    <button type="button" class="btn-add-component" onclick="addComponentLine()">
+                                                    <button type="button" class="btn-add-component" onclick="addComponentLine('components-list', false)">
                                                         <i class="fas fa-plus"></i>
                                                     </button>
-                                                    <button type="button" class="btn-upload-image" onclick="uploadComponentImage(this)">
+                                                    <button type="button" class="btn-upload-image" onclick="uploadComponentImage(this, false)">
                                                         <i class="fas fa-image"></i>
                                                     </button>
                                                 </div>
