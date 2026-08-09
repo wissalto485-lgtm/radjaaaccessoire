@@ -2208,11 +2208,9 @@ select.info-input option {
     background: rgba(26, 15, 20, 0.6);
     backdrop-filter: blur(4px);
     border-radius: 16px;
-    padding: 15px;
     margin-bottom: 15px;
-    border: 1px solid rgba(212, 175, 55, 0.25);
     transition: 0.3s;
-    margin-top: 15px;
+
 }
 
 .categories-manager:hover {
@@ -4339,6 +4337,7 @@ html[lang="fr"] .selected-color-tag {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    margin-top: 15px;
 }
 
 .size-display-remove:hover {
