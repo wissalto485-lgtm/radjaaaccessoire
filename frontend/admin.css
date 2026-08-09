@@ -2131,7 +2131,7 @@ select.info-input option {
     padding: 12px;
     margin-bottom: 10px;
     display: flex;
-    gap: 10px;
+    gap: 4px;
     flex-wrap: wrap;
     align-items: center;
 }
@@ -3774,7 +3774,7 @@ html[lang="fr"] .selected-color-tag {
 
     #add-product-sec .lang-fields { grid-template-columns: 1fr; gap: 15px; }
 
-    #add-product-sec .component-item    { padding: 15px; margin-bottom: 15px; }
+    #add-product-sec .component-item    { padding: 4px; margin-bottom: 15px; }
 
     #add-product-sec .component-fields-row {
         flex-direction: column;
@@ -3809,7 +3809,7 @@ html[lang="fr"] .selected-color-tag {
         flex-direction: row !important;
         justify-content: center;
         align-items: center !important;
-        gap: 10px !important;
+        gap: 4px !important;
         flex-wrap: nowrap !important;
     }
 
