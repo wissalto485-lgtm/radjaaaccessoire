@@ -728,7 +728,6 @@ a:hover {
 
 .search-box {
     padding: 15px 20px;
-    background: rgba(0, 0, 0, 0.3);
     border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     display: flex;
     gap: 10px;
@@ -4304,6 +4303,7 @@ html[lang="fr"] .selected-color-tag {
     transition: all 0.3s ease;
     width: auto !important;
     min-width: 160px;
+      margin-top: 15px; 
 }
 
 .size-display-item:hover {
@@ -4908,7 +4908,6 @@ select option {
     .mobile-search-box {
         display: block !important;
         padding: 10px 15px;
-        background: rgba(0, 0, 0, 0.3);
         border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     }
     
