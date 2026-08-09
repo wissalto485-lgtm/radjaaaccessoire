@@ -553,8 +553,6 @@ document.addEventListener("click", function(event) {
     }
 });
 
-// السحب للإغلاق (Swipe to close) على الهاتف: السلة، المفضلة، والقائمة الجانبية
-// كلها تنزلق من اليمين، لذا السحب نحو اليمين (خارج الشاشة) يُغلقها.
 function enableSwipeToClose(panelId, closeFn) {
     const panel = document.getElementById(panelId);
     if (!panel) return;

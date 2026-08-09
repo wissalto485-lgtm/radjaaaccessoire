@@ -36,23 +36,6 @@ function fetchWithAuth(url, options = {}) {
             ...options.headers,
             Authorization: "Bearer " + token
         }
-    }).then(async (response) => {
-        // ✅ إذا كان الرد خطأ، اعرض التفاصيل
-        if (!response.ok) {
-            const text = await response.text();
-            console.error("❌ خطأ في الطلب:", response.status, response.statusText);
-            console.error("📄 تفاصيل الخطأ:", text);
-            
-            // ✅ إذا كان التوكن غير صالح (401)، أعد توجيه المستخدم لتسجيل الدخول
-            if (response.status === 401) {
-                sessionStorage.removeItem("adminToken");
-                window.location.href = "/login.html";
-                return Promise.reject("Unauthorized - Please login again");
-            }
-            
-            return Promise.reject(`Error ${response.status}: ${response.statusText}`);
-        }
-        return response;
     });
 }
 

@@ -5162,8 +5162,6 @@ select option {
     }
 }
 
-/* أزرار قسم الأجزاء (Check/حذف/صورة/+) على الشاشات الضيقة جداً — تخفيف إضافي
-   لمنع خروجها عن حدود البطاقة على هواتف أندرويد الصغيرة (~320-360px) */
 @media (max-width: 400px) {
     #add-product-sec .component-buttons button,
     #edit-product-modal .component-buttons button {

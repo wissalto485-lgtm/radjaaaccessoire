@@ -31,9 +31,7 @@ app.use(helmet({
             "img-src": ["'self'", "data:", "https:", "blob:"],
         },
     },
-    // HSTS يخبر المتصفح بعدم استخدام HTTP إطلاقاً لهذا الدومين مستقبلاً — يُفعَّل فقط في
-    // production (حيث يُفترض أن الموقع يعمل فعلياً عبر HTTPS)؛ المتصفحات تتجاهل هذا الترويسة
-    // أصلاً عند استقبالها عبر HTTP العادي، لذا لا ضرر من تركه false محلياً على localhost.
+
     hsts: process.env.NODE_ENV === 'production' ? {
         maxAge: 63072000, // سنتان
         includeSubDomains: true,
@@ -88,8 +86,6 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// xss()/mongoSanitize() must run AFTER the body parsers above — otherwise
-// req.body doesn't exist yet when they run and nothing gets sanitized.
 app.use(xss());
 app.use(mongoSanitize());
 
