@@ -171,7 +171,8 @@ const translations = {
         products: "المنتجات",
         contactUsTitle: "تواصل معنا",
         deliveryTime: "24h / 48h",
-        allRightsReserved: "جميع الحقوق محفوظة"
+        allRightsReserved: "جميع الحقوق محفوظة",
+        customOrder: "حسب الطلب"
     },
     fr: {
         search: "Rechercher un produit",
@@ -281,7 +282,8 @@ const translations = {
         products: "Produits",
         contactUsTitle: "Contactez-nous",
         deliveryTime: "24h / 48h",
-        allRightsReserved: "Tous droits réservés"
+        allRightsReserved: "Tous droits réservés",
+        customOrder: "Sur commande"
     }
 };
 
@@ -759,6 +761,21 @@ function setLanguage(lang) {
         if (lang === "ar" && btn.textContent.trim() === "العربية" || lang === "fr" && btn.textContent.trim() === "Français") {
             btn.classList.add("active");
         }
+    });
+
+    document.querySelectorAll(".color-swatch.custom-order-swatch").forEach(el => {
+        el.textContent = t("customOrder");
+        if (currentLang === "fr" && el.textContent.length > 10) {
+            el.style.fontSize = "0.35rem";
+            el.style.padding = "1px 2px";
+        } else {
+            el.style.fontSize = "";
+            el.style.padding = "";
+        }
+    });
+
+    document.querySelectorAll(".detail-color-swatch.custom-order-swatch").forEach(el => {
+        el.textContent = t("customOrder");
     });
 }
 
@@ -1441,14 +1458,13 @@ function displayProducts(products) {
                 gapSize = 2;
                 wrapperClass = "has-many-colors-8";
             }
-            
+
             colorsHtml = '<div class="colors-wrapper ' + wrapperClass + '" style="display: flex; flex-wrap: nowrap; gap: ' + gapSize + 'px; align-items: center; overflow: visible;">\n                ' + product.colors.map(c => {
                 const hexCode = escapeHtml(c.hexCode || "#D4AF37");
                 const colorName = escapeHtml(c.name || "");
                 const colorImage = escapeHtml(c.image || "");
                 if (hexCode === "custom") {
-
-                    return '<span class="color-swatch custom-order-swatch" style="display: inline-flex; align-items: center; justify-content: center; width: ' + Math.max(swatchSize, 28) + 'px; min-width: ' + Math.max(swatchSize, 28) + 'px; height: ' + Math.max(swatchSize, 28) + 'px; min-height: ' + Math.max(swatchSize, 28) + 'px; padding: 2px 4px; border-radius: 50%; border: 2px solid var(--gold); cursor: pointer; flex-shrink: 0; font-size: 0.5rem; line-height: 1.1; color: var(--gold); background: rgba(212,175,55,0.12); text-align: center; white-space: nowrap;" onclick="event.stopPropagation(); changeCardImage(\'' + productId + '\', \'' + colorImage + '\')" title="' + colorName + '">حسب<br>الطلب</span>';
+                    return '<span class="color-swatch custom-order-swatch" style="display: inline-flex; align-items: center; justify-content: center; width: ' + Math.max(swatchSize, 28) + 'px; min-width: ' + Math.max(swatchSize, 28) + 'px; height: ' + Math.max(swatchSize, 28) + 'px; min-height: ' + Math.max(swatchSize, 28) + 'px; padding: 2px 4px; border-radius: 50%; border: 2px solid var(--gold); cursor: pointer; flex-shrink: 0; font-size: 0.5rem; line-height: 1.1; color: var(--gold); background: rgba(212,175,55,0.12); text-align: center; white-space: nowrap;" onclick="event.stopPropagation(); changeCardImage(\'' + productId + '\', \'' + colorImage + '\')" title="' + colorName + '">' + t("customOrder") + '</span>';
                 }
                 return '<span class="color-swatch" style="background-color: ' + hexCode + '; width: ' + swatchSize + 'px; height: ' + swatchSize + 'px; border-radius: 50%; border: 2px solid ' + getSwatchBorderColor(hexCode) + '; cursor: pointer; flex-shrink: 0; display: inline-block;" onclick="event.stopPropagation(); changeCardImage(\'' + productId + '\', \'' + colorImage + '\')" title="' + colorName + '"></span>';
             }).join("") + '\n            </div>';
@@ -1959,9 +1975,15 @@ function selectDetailColor(hexCode, name, imageUrl) {
         el.style.border = "2px solid var(--gold)";
         el.classList.remove("selected");
     });
+    
     const currentSwatch = event.currentTarget;
     currentSwatch.style.border = "3px solid white";
     currentSwatch.classList.add("selected");
+    
+    if (hexCode === "custom") {
+        const displayName = currentLang === "fr" ? "Sur mesure" : "حسب الطلب";
+    }
+    
     if (imageUrl && imageUrl !== "" && detailSlider) {
         const imgUrl = "" + imageUrl;
         const idx = detailSlider.images.indexOf(imgUrl);

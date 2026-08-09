@@ -3814,9 +3814,9 @@ html[lang="fr"] .selected-color-tag {
     }
 
     #add-product-sec .component-checkboxes label {
-        padding: 8px 10px !important;
+        padding: 8px 8px !important;
         font-size: 0.8rem !important;
-        gap: 8px !important;
+        gap: 4px !important;
         white-space: nowrap !important;
     }
 
