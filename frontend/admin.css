@@ -4550,7 +4550,6 @@ select option {
     .mobile-search-actions-completed {
         display: block;
         padding: 10px 15px;
-        background: rgba(0, 0, 0, 0.3);
         border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     }
     
