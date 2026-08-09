@@ -2295,11 +2295,14 @@ select.info-input option {
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(212, 175, 55, 0.35);
     border-radius: 16px;
+    padding: 15px;
     margin-bottom: 20px;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     max-width: 100%;
     overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 #add-product-sec .component-item:hover {
@@ -2310,23 +2313,26 @@ select.info-input option {
 
 #add-product-sec .component-fields-row {
     display: flex;
-    gap: 12px;
     flex-wrap: wrap;
+    gap: 10px;
     align-items: center;
-    margin-bottom: 12px;
     width: 100%;
+    max-width: 100%;
+    margin-bottom: 12px;
 }
 
 #add-product-sec .component-fields-row input {
-    flex: 1;
-    min-width: 140px;
+    flex: 1 1 120px;
+    min-width: 100px;
+    max-width: 100%;
     background: rgba(13, 8, 11, 0.8);
     border: 1px solid rgba(212, 175, 55, 0.35);
     border-radius: 12px;
-    padding: 12px 14px;
+    padding: 10px 12px;
     color: var(--text-body);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 #add-product-sec .component-fields-row input:focus {
@@ -2417,17 +2423,21 @@ select.info-input option {
 
 #add-product-sec .component-buttons {
     display: flex;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
     align-items: center;
+    width: 100%;
 }
 
 #add-product-sec .component-buttons button {
-    width: 100px;
-    height: 42px;
-    padding: 0;
-    border-radius: 42px;
+    flex: 1 1 auto;
+    min-width: 70px;
+    max-width: 100%;
+    height: 38px;
+    padding: 6px 12px;
+    border-radius: 30px;
     cursor: pointer;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
@@ -2435,6 +2445,9 @@ select.info-input option {
     gap: 6px;
     font-weight: 600;
     border: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #add-product-sec .btn-upload-image {
@@ -3823,16 +3836,25 @@ html[lang="fr"] .selected-color-tag {
     #add-product-sec .component-buttons {
         justify-content: center;
         flex-wrap: wrap;
-        gap: 12px;
+        gap: 6px;
     }
-
+    
     #add-product-sec .component-buttons button {
-        flex: 1;
-        min-width: 90px;
-        justify-content: center;
-        padding: 10px 12px;
-        font-size: 0.75rem;
+        flex: 1 1 0;
+        min-width: 55px;
+        height: 34px;
+        padding: 4px 8px;
+        font-size: 0.65rem;
+        border-radius: 25px;
         white-space: nowrap;
+    }
+    
+    #add-product-sec .component-buttons .btn-upload-image span {
+        display: none;
+    }
+    #add-product-sec .component-buttons .btn-upload-image i {
+        margin: 0;
+        font-size: 0.8rem;
     }
 
     #add-product-sec .btn-upload-image span { display: none; }

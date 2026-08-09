@@ -911,6 +911,17 @@ async function openEditModal(productId) {
             hasComponentsCheckbox.checked = false;
             editComponentsSection.style.display = "none";
         }
+
+        hasComponentsCheckbox.onchange = function() {
+            if (this.checked) {
+                editComponentsSection.style.display = "block";
+                if (editComponentsList.children.length === 0) {
+                    addEditComponentLine();
+                }
+            } else {
+                editComponentsSection.style.display = "none";
+            }
+        };
         const imagesList = document.getElementById("current-images-list");
         imagesList.innerHTML = "";
         imagesToDelete = [];
@@ -2257,7 +2268,18 @@ function toggleComponentsSection(sectionId, checkboxId) {
 }
 
 function toggleEditComponentsSection() {
-    toggleComponentsSection("edit-components-section", "edit-has-components");
+    const checkbox = document.getElementById("edit-has-components");
+    const section = document.getElementById("edit-components-section");
+    const list = document.getElementById("edit-components-list");
+    
+    if (checkbox.checked) {
+        section.style.display = "block";
+        if (list && list.children.length === 0) {
+            addEditComponentLine();
+        }
+    } else {
+        section.style.display = "none";
+    }
 }
 
 function uploadComponentImage(btn, isEdit) {
