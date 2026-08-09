@@ -1441,14 +1441,16 @@ function displayProducts(products) {
                 gapSize = 2;
                 wrapperClass = "has-many-colors-8";
             }
+            
             colorsHtml = '<div class="colors-wrapper ' + wrapperClass + '" style="display: flex; flex-wrap: nowrap; gap: ' + gapSize + 'px; align-items: center; overflow: visible;">\n                ' + product.colors.map(c => {
                 const hexCode = escapeHtml(c.hexCode || "#D4AF37");
                 const colorName = escapeHtml(c.name || "");
                 const colorImage = escapeHtml(c.image || "");
                 if (hexCode === "custom") {
-                    return '<div class="color-swatch custom-order-swatch" style="width: auto; min-width: ' + (swatchSize + 14) + 'px; height: auto; min-height: ' + Math.max(swatchSize, 22) + 'px; padding: 3px 7px; border-radius: 8px; border: 1.5px solid var(--gold); cursor: pointer; flex-shrink: 0; display:flex; align-items:center; justify-content:center; font-size: 0.62rem; line-height: 1.2; color: var(--gold); background: rgba(212,175,55,0.12); white-space:nowrap;" onclick="event.stopPropagation(); changeCardImage(\'' + productId + '\', \'' + colorImage + '\')" title="' + colorName + '">حسب الطلب</div>';
+
+                    return '<span class="color-swatch custom-order-swatch" style="display: inline-flex; align-items: center; justify-content: center; width: ' + Math.max(swatchSize, 28) + 'px; min-width: ' + Math.max(swatchSize, 28) + 'px; height: ' + Math.max(swatchSize, 28) + 'px; min-height: ' + Math.max(swatchSize, 28) + 'px; padding: 2px 4px; border-radius: 50%; border: 2px solid var(--gold); cursor: pointer; flex-shrink: 0; font-size: 0.5rem; line-height: 1.1; color: var(--gold); background: rgba(212,175,55,0.12); text-align: center; white-space: nowrap;" onclick="event.stopPropagation(); changeCardImage(\'' + productId + '\', \'' + colorImage + '\')" title="' + colorName + '">حسب<br>الطلب</span>';
                 }
-                return '<div class="color-swatch" style="background-color: ' + hexCode + '; width: ' + swatchSize + 'px; height: ' + swatchSize + 'px; border-radius: 50%; border: 2px solid ' + getSwatchBorderColor(hexCode) + '; cursor: pointer; flex-shrink: 0;" onclick="event.stopPropagation(); changeCardImage(\'' + productId + '\', \'' + colorImage + '\')" title="' + colorName + '"></div>';
+                return '<span class="color-swatch" style="background-color: ' + hexCode + '; width: ' + swatchSize + 'px; height: ' + swatchSize + 'px; border-radius: 50%; border: 2px solid ' + getSwatchBorderColor(hexCode) + '; cursor: pointer; flex-shrink: 0; display: inline-block;" onclick="event.stopPropagation(); changeCardImage(\'' + productId + '\', \'' + colorImage + '\')" title="' + colorName + '"></span>';
             }).join("") + '\n            </div>';
         } else {
             colorsHtml = "";
