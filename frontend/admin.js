@@ -123,6 +123,11 @@ const colorOptions = [{
     hexCode: "#8B4513",
     fr: "Marron",
     ar: "بني"
+}, {
+    name: "blanc",
+    hexCode: "#FFFFFF",
+    fr: "Blanc",
+    ar: "أبيض"
 }];
 
 let lastOrderCheck = new Date();

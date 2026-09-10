@@ -60,6 +60,11 @@ const colorOptions = [ {
     hexCode: "#800000",
     fr: "Marron",
     ar: "بني"
+}, {
+    name: "blanc",
+    hexCode: "#FFFFFF",
+    fr: "Blanc",
+    ar: "أبيض"
 } ];
 
 const translations = {
