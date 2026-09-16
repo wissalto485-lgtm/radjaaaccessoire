@@ -1932,11 +1932,11 @@ main { flex: 1; }
     transform: none;
 }
 .logo h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     white-space: nowrap;
     margin: 0;
     margin-left: 2px;
-    letter-spacing: 2px;
+    letter-spacing: 5px;
 }
 .logo h2:first-child {
     margin-left: 8px;
@@ -3031,7 +3031,7 @@ html[lang="fr"] .detail-size-option {
     }
     
     .logo h2 {
-        font-size: 1.3rem !important;
+        font-size: 1.9rem !important;
     }
     
     .logo img {
@@ -3470,7 +3470,7 @@ html[lang="fr"] .detail-size-option {
         gap: 10px;
     }
     .logo { gap: 8px; }
-    .logo h2 { font-size: 1rem; }
+    .logo h2 { font-size: 1.5rem; }
     .logo img { width: 36px; height: 36px; }
     .search-wrapper {
         min-width: 130px;
@@ -3592,8 +3592,8 @@ html[lang="fr"] .detail-size-option {
     }
     
     .logo h2 {
-        font-size: 1.1rem !important;
-        letter-spacing: 2px !important;
+        font-size: 1.5rem !important;
+        letter-spacing: 5px !important;
     }
     .logo img {
         height: 26px !important;
@@ -3672,8 +3672,8 @@ html[lang="fr"] .detail-size-option {
     }
     
     .logo h2 {
-        font-size: 1.1rem !important;
-        letter-spacing: 1.5px !important;
+        font-size: 1.3rem !important;
+        letter-spacing: 4px !important;
     }
     .logo img {
         height: 22px !important;
@@ -3834,8 +3834,8 @@ html[lang="fr"] .detail-size-option {
     }
     
     .logo h2 {
-        font-size: 1rem !important;
-        letter-spacing: 0.5px !important;
+        font-size: 1.5rem !important;
+        letter-spacing: 5px !important;
     }
     .logo img {
         height: 18px !important;
