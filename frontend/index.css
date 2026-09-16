@@ -25,13 +25,13 @@
 
 @font-face {
     font-family: 'StoreFont';
-    src: url('fonts/AlexBrush-Regular.ttf') format('truetype');
+    src: url('fonts/PinyonScript-Regular.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
 }
 @font-face {
     font-family: 'StoreFont';
-    src: url('fonts/AlexBrush-Regular.ttf') format('truetype');
+    src: url('fonts/PinyonScript-Regular.ttf') format('truetype');
     font-weight: 800;
     font-style: normal;
 }
