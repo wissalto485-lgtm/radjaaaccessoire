@@ -395,7 +395,8 @@ html[lang="fr"] .logo h2 {
 .sidebar-header h3 {
     color: #FFF8F4;
     font-family: 'UnifiedFont', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.9rem;
+    letter-spacing: 2rem;
 }
 .close-sidebar {
     background: none;
@@ -3163,7 +3164,7 @@ html[lang="fr"] .detail-size-option {
 
 .footer-brand-name {
     font-family: 'StoreFont', sans-serif !important;
-    font-size: 1.6rem;
+    font-size: 2rem;
     font-weight: 800;
     color: var(--gold);
     letter-spacing: 6px;
@@ -3425,7 +3426,7 @@ html[lang="fr"] .detail-size-option {
     }
 
     .footer-brand-name {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         letter-spacing: 3px;
     }
 

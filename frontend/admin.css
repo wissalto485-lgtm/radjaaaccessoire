@@ -315,7 +315,7 @@ a:hover {
 
 .sidebar-header h3 {
     color: var(--gold);
-    font-size: 1.5rem;
+    font-size: 1.9rem;
     font-family: 'StoreFont', sans-serif;
     margin: 0;
 }
@@ -5110,8 +5110,8 @@ select option {
 
 @media (min-width: 769px) and (max-width: 1024px) {
     .navbar .logo h2 {
-        font-size: 2rem !important;
-        letter-spacing: 1px !important;
+        font-size: 2.3rem !important;
+        letter-spacing: 1.1px !important;
     }
     
     .navbar .logo img {
