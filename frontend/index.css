@@ -1932,7 +1932,7 @@ main { flex: 1; }
     transform: none;
 }
 .logo h2 {
-    font-size: 1.3rem;
+    font-size: 1.8rem;
     white-space: nowrap;
     margin: 0;
     margin-left: 2px;
@@ -3672,7 +3672,7 @@ html[lang="fr"] .detail-size-option {
     }
     
     .logo h2 {
-        font-size: 0.95rem !important;
+        font-size: 1.1rem !important;
         letter-spacing: 1.5px !important;
     }
     .logo img {
@@ -3752,7 +3752,7 @@ html[lang="fr"] .detail-size-option {
     }
     
     .logo h2 {
-        font-size: 0.85rem !important;
+        font-size: 1.1rem !important;
         letter-spacing: 1px !important;
     }
     .logo img {
@@ -3834,7 +3834,7 @@ html[lang="fr"] .detail-size-option {
     }
     
     .logo h2 {
-        font-size: 0.75rem !important;
+        font-size: 1rem !important;
         letter-spacing: 0.5px !important;
     }
     .logo img {

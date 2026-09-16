@@ -181,7 +181,7 @@
         
         .logo-subtitle {
             font-family: 'StoreFont', sans-serif !important;
-            font-size: 0.9rem;
+            font-size: 1.3rem;
             color: rgba(212, 175, 55, 0.8);
             letter-spacing: 6px;
             margin-top: 5px;
@@ -361,7 +361,7 @@
     }
     
     .logo-text {
-        font-size: 1.5rem !important;
+        font-size: 1.8rem !important;
     }
     
     .login-title {

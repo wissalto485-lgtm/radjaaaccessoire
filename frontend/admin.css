@@ -3361,7 +3361,7 @@ html[lang="fr"] .selected-color-tag {
     }
 
 .navbar .logo h2 {
-    font-size: 1.10rem;
+    font-size: 2rem;
     white-space: nowrap;
     margin: 0;
     order: 2;
@@ -3370,7 +3370,7 @@ html[lang="fr"] .selected-color-tag {
 
 @media (max-width: 360px) {
     .navbar .logo h2 {
-        font-size: 1.02rem !important;
+        font-size: 2rem !important;
         letter-spacing: 0.5px !important;
     }
     
@@ -5042,7 +5042,7 @@ select option {
 @media (min-width: 769px) and (max-width: 1280px) {
     
     .navbar .logo h2 {
-        font-size: 1.2rem !important;
+        font-size: 2rem !important;
         letter-spacing: 2px !important;
     }
     
@@ -5110,7 +5110,7 @@ select option {
 
 @media (min-width: 769px) and (max-width: 1024px) {
     .navbar .logo h2 {
-        font-size: 1rem !important;
+        font-size: 2rem !important;
         letter-spacing: 1px !important;
     }
     
