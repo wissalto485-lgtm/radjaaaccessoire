@@ -25,13 +25,13 @@
 
 @font-face {
     font-family: 'StoreFont';
-    src: url('fonts/RubikDistressed-Regular.ttf') format('truetype');
+    src: url('fonts/AlexBrush-Regular.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
 }
 @font-face {
     font-family: 'StoreFont';
-    src: url('fonts/RubikDistressed-Regular.ttf') format('truetype');
+    src: url('fonts/AlexBrush-Regular.ttf') format('truetype');
     font-weight: 800;
     font-style: normal;
 }
@@ -3035,7 +3035,7 @@ html[lang="fr"] .detail-size-option {
     }
     
     .logo img {
-        height: 28px !important;
+        height: 32px !important;
     }
 }
 
