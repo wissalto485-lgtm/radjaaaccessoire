@@ -3868,40 +3868,41 @@ async function loadVisitorsStats() {
         const { totalVisits, todayVisits, deviceStats, sourceStats, dailyStats } = data.stats;
         
         const deviceNames = {
-            desktop: { fr: 'Ordinateur', icon: 'fa-desktop', type: 'fas', color: '#2196f3' },
-            mobile: { fr: 'Mobile', icon: 'fa-mobile-alt', type: 'fas', color: '#4caf50' },
-            tablet: { fr: 'Tablet', icon: 'fa-tablet-alt', type: 'fas', color: '#ff9800' },
-            unknown: { fr: 'Unknown', icon: 'fa-question', type: 'fas', color: '#888' }
+            desktop: { name: 'Desktop', icon: 'fa-desktop', type: 'fas', color: '#2196f3' },
+            mobile: { name: 'Mobile', icon: 'fa-mobile-alt', type: 'fas', color: '#4caf50' },
+            tablet: { name: 'Tablet', icon: 'fa-tablet-alt', type: 'fas', color: '#ff9800' },
+            unknown: { name: 'Unknown', icon: 'fa-question', type: 'fas', color: '#888' }
+        };
+        
+        const sourceNames = {
+            facebook: { name: 'Facebook', icon: 'fa-facebook', type: 'fab', color: '#1877F2' },
+            instagram: { name: 'Instagram', icon: 'fa-instagram', type: 'fab', color: '#E1306C' },
+            tiktok: { name: 'TikTok', icon: 'fa-tiktok', type: 'fab', color: '#000' },
+            whatsapp: { name: 'WhatsApp', icon: 'fa-whatsapp', type: 'fab', color: '#25D366' },
+            google: { name: 'Google', icon: 'fa-google', type: 'fab', color: '#DB4437' },
+            direct: { name: 'Direct', icon: 'fa-user', type: 'fas', color: '#D4AF37' }, 
+            other: { name: 'Other', icon: 'fa-globe', type: 'fas', color: '#888' }
         };
 
-        const sourceNames = {
-            facebook: { fr: 'Facebook', icon: 'fa-facebook', type: 'fab', color: '#1877F2' },
-            instagram: { fr: 'Instagram', icon: 'fa-instagram', type: 'fab', color: '#E1306C' },
-            tiktok: { fr: 'TikTok', icon: 'fa-tiktok', type: 'fab', color: '#000' },
-            whatsapp: { fr: 'WhatsApp', icon: 'fa-whatsapp', type: 'fab', color: '#25D366' },
-            google: { fr: 'Google', icon: 'fa-google', type: 'fab', color: '#DB4437' },
-            direct: { fr: 'Direct', icon: 'fa-link', type: 'fas', color: '#D4AF37' },
-            other: { fr: 'Autre', icon: 'fa-globe', type: 'fas', color: '#888' }
-        };
         let html = `
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
                 <div class="confirmed-orders-card">
                     <div class="confirmed-orders-content">
-                        <i class="fas fa-chart-line"></i>
+                        <i class="fas fa-chart-line" style="margin-left: 8px;"></i>
                         <span>إجمالي الزوار</span>
                         <span class="stats-value">${totalVisits}</span>
                     </div>
                 </div>
                 <div class="delivered-orders-card">
                     <div class="delivered-orders-content">
-                        <i class="fas fa-calendar-day"></i>
+                        <i class="fas fa-calendar-day" style="margin-left: 8px;"></i>
                         <span>زوار اليوم</span>
                         <span class="stats-value">${todayVisits}</span>
                     </div>
                 </div>
             </div>
         `;
-        
+
         html += `
             <div style="background: rgba(0,0,0,0.3); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(212,175,55,0.3);">
                 <h4 style="color: #d4af37; margin-bottom: 15px; text-align: center;">
@@ -3915,8 +3916,8 @@ async function loadVisitorsStats() {
             const percentage = totalVisits > 0 ? Math.round(device.count / totalVisits * 100) : 0;
             html += `
                 <div style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 15px; text-align: center; border-right: 3px solid ${info.color};">
-                    <i class="fas ${info.icon}" style="font-size: 2rem; color: ${info.color}; display: block; margin-bottom: 10px;"></i>
-                    <div style="color: #F0D3DF; font-size: 1.1rem; font-weight: bold;">${info.ar}</div>
+                    <i class="${info.type} ${info.icon}" style="font-size: 2rem; color: ${info.color}; display: block; margin-bottom: 10px;"></i>
+                    <div style="color: #F0D3DF; font-size: 1.1rem; font-weight: bold;">${info.name}</div>
                     <div style="color: #d4af37; font-size: 1.5rem; font-weight: bold; margin: 8px 0;">${device.count}</div>
                     <div style="color: var(--text-muted); font-size: 0.8rem;">${percentage}%</div>
                 </div>
@@ -3924,7 +3925,7 @@ async function loadVisitorsStats() {
         });
         
         html += `</div></div>`;
-        
+
         html += `
             <div style="background: rgba(0,0,0,0.3); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(212,175,55,0.3);">
                 <h4 style="color: #d4af37; margin-bottom: 15px; text-align: center;">
@@ -3938,8 +3939,8 @@ async function loadVisitorsStats() {
             const percentage = totalVisits > 0 ? Math.round(source.count / totalVisits * 100) : 0;
             html += `
                 <div style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 15px; text-align: center; border-right: 3px solid ${info.color};">
-                    <i class="fab ${info.icon}" style="font-size: 2rem; color: ${info.color}; display: block; margin-bottom: 10px;"></i>
-                    <div style="color: #F0D3DF; font-size: 1.1rem; font-weight: bold;">${info.ar}</div>
+                    <i class="${info.type} ${info.icon}" style="font-size: 2rem; color: ${info.color}; display: block; margin-bottom: 10px;"></i>
+                    <div style="color: #F0D3DF; font-size: 1.1rem; font-weight: bold;">${info.name}</div>
                     <div style="color: #d4af37; font-size: 1.5rem; font-weight: bold; margin: 8px 0;">${source.count}</div>
                     <div style="color: var(--text-muted); font-size: 0.8rem;">${percentage}%</div>
                 </div>
@@ -3952,7 +3953,7 @@ async function loadVisitorsStats() {
             html += `
                 <div style="background: rgba(0,0,0,0.3); border-radius: 16px; padding: 20px; border: 1px solid rgba(212,175,55,0.3);">
                     <h4 style="color: #d4af37; margin-bottom: 15px; text-align: center;">
-                        <i class="fas fa-calendar-alt" style="margin-left: 8px;"></i> توزيع الزوار حسب التاريخ
+                        <i class="fas fa-calendar-alt" style="margin-left: 8px;"></i> عدد الزوار بالتاريخ
                     </h4>
                     <div style="max-height: 300px; overflow-y: auto;">
                         <table style="width: 100%; border-collapse: collapse;">
