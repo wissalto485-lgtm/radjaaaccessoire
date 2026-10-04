@@ -238,6 +238,9 @@ function showSection(id) {
     if (id === "analytics-sec") {
         loadAnalyticsData();
     }
+    if (id === "visitors-sec") {
+        loadVisitorsStats();
+    }
     if (id === "settings-sec") loadSettings();
 }
 
@@ -3847,6 +3850,142 @@ async function saveOrderToAnalytics(orderId) {
 
 let currentSelectedYear = (new Date()).getFullYear();
 
+async function loadVisitorsStats() {
+    const period = document.getElementById('visitors-period')?.value || 7;
+    const container = document.getElementById('visitors-content');
+    
+    if (!container) return;
+    
+    try {
+        const res = await fetchWithAuth(API_BASE + '/analytics/visitors?days=' + period);
+        const data = await res.json();
+        
+        if (!data.success) {
+            container.innerHTML = '<div style="text-align:center;padding:20px;color:#f44336;">فشل تحميل الإحصائيات</div>';
+            return;
+        }
+        
+        const { totalVisits, todayVisits, deviceStats, sourceStats, dailyStats } = data.stats;
+        
+        const deviceNames = {
+            desktop: { ar: 'Computer', icon: 'fa-desktop', color: '#2196f3' },
+            mobile: { ar: 'Phone', icon: 'fa-mobile-alt', color: '#4caf50' },
+            tablet: { ar: 'Tablet', icon: 'fa-tablet-alt', color: '#ff9800' },
+            unknown: { ar: 'Unknown', icon: 'fa-question', color: '#888' }
+        };
+        
+        const sourceNames = {
+            facebook: { ar: 'Facebook', icon: 'fa-facebook', color: '#1877F2' },
+            instagram: { ar: 'Instagram', icon: 'fa-instagram', color: '#E1306C' },
+            tiktok: { ar: 'TikTok', icon: 'fa-tiktok', color: '#000' },
+            whatsapp: { ar: 'WhatsApp', icon: 'fa-whatsapp', color: '#25D366' },
+            google: { ar: 'Google', icon: 'fa-google', color: '#DB4437' },
+            direct: { ar: 'Direct', icon: 'fa-link', color: '#D4AF37' },
+            other: { ar: 'Other', icon: 'fa-globe', color: '#888' }
+        };
+        
+        let html = `
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <div class="confirmed-orders-card">
+                    <div class="confirmed-orders-content">
+                        <i class="fas fa-chart-line"></i>
+                        <span>إجمالي الزوار</span>
+                        <span class="stats-value">${totalVisits}</span>
+                    </div>
+                </div>
+                <div class="delivered-orders-card">
+                    <div class="delivered-orders-content">
+                        <i class="fas fa-calendar-day"></i>
+                        <span>زوار اليوم</span>
+                        <span class="stats-value">${todayVisits}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        html += `
+            <div style="background: rgba(0,0,0,0.3); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(212,175,55,0.3);">
+                <h4 style="color: #d4af37; margin-bottom: 15px; text-align: center;">
+                    <i class="fas fa-laptop" style="margin-left: 8px;"></i> توزيع الزوار حسب الجهاز
+                </h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+        `;
+        
+        deviceStats.forEach(device => {
+            const info = deviceNames[device._id] || deviceNames.unknown;
+            const percentage = totalVisits > 0 ? Math.round(device.count / totalVisits * 100) : 0;
+            html += `
+                <div style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 15px; text-align: center; border-right: 3px solid ${info.color};">
+                    <i class="fas ${info.icon}" style="font-size: 2rem; color: ${info.color}; display: block; margin-bottom: 10px;"></i>
+                    <div style="color: #F0D3DF; font-size: 1.1rem; font-weight: bold;">${info.ar}</div>
+                    <div style="color: #d4af37; font-size: 1.5rem; font-weight: bold; margin: 8px 0;">${device.count}</div>
+                    <div style="color: var(--text-muted); font-size: 0.8rem;">${percentage}%</div>
+                </div>
+            `;
+        });
+        
+        html += `</div></div>`;
+        
+        html += `
+            <div style="background: rgba(0,0,0,0.3); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(212,175,55,0.3);">
+                <h4 style="color: #d4af37; margin-bottom: 15px; text-align: center;">
+                    <i class="fas fa-share-alt" style="margin-left: 8px;"></i> توزيع الزوار حسب مصدر الزيارة
+                </h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+        `;
+        
+        sourceStats.forEach(source => {
+            const info = sourceNames[source._id] || sourceNames.other;
+            const percentage = totalVisits > 0 ? Math.round(source.count / totalVisits * 100) : 0;
+            html += `
+                <div style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 15px; text-align: center; border-right: 3px solid ${info.color};">
+                    <i class="fab ${info.icon}" style="font-size: 2rem; color: ${info.color}; display: block; margin-bottom: 10px;"></i>
+                    <div style="color: #F0D3DF; font-size: 1.1rem; font-weight: bold;">${info.ar}</div>
+                    <div style="color: #d4af37; font-size: 1.5rem; font-weight: bold; margin: 8px 0;">${source.count}</div>
+                    <div style="color: var(--text-muted); font-size: 0.8rem;">${percentage}%</div>
+                </div>
+            `;
+        });
+        
+        html += `</div></div>`;
+        
+        if (dailyStats.length > 0) {
+            html += `
+                <div style="background: rgba(0,0,0,0.3); border-radius: 16px; padding: 20px; border: 1px solid rgba(212,175,55,0.3);">
+                    <h4 style="color: #d4af37; margin-bottom: 15px; text-align: center;">
+                        <i class="fas fa-calendar-alt" style="margin-left: 8px;"></i> توزيع الزوار حسب التاريخ
+                    </h4>
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead style="position: sticky; top: 0; background: #1A0F14;">
+                                <tr>
+                                    <th style="color: #d4af37; padding: 10px; text-align: center;">التاريخ</th>
+                                    <th style="color: #d4af37; padding: 10px; text-align: center;">عدد الزوار</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+            
+            dailyStats.forEach(day => {
+                const dateStr = `${day._id.day}/${day._id.month}/${day._id.year}`;
+                html += `
+                    <tr style="border-bottom: 1px solid rgba(212,175,55,0.1);">
+                        <td style="color: #F0D3DF; padding: 10px; text-align: center;">${dateStr}</td>
+                        <td style="color: #d4af37; padding: 10px; text-align: center; font-weight: bold;">${day.count}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `</tbody></table></div></div>`;
+        }
+        
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('خطأ في تحميل إحصائيات الزوار:', error);
+        container.innerHTML = '<div style="text-align:center;padding:20px;color:#f44336;">خطأ في الاتصال</div>';
+    }
+}
+
 async function loadAnalyticsData(year) {
     try {
         const selectedYear = year || currentSelectedYear;
@@ -3873,7 +4012,7 @@ function renderAnalyticsDashboard(stats, selectedYear) {
     const availableYears = stats.availableYears || [selectedYear || (new Date()).getFullYear()];
     const currentYear = selectedYear || (new Date()).getFullYear();
     const hasData = totalSavedOrders > 0;
-    let html = '\n        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; background: rgba(0,0,0,0.3); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(212,175,55,0.2);">\n            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">\n                <label style="color: #d4af37; font-weight: bold; font-size: 1rem;">\n                    <i class="fas fa-calendar-alt" style="margin-left: 8px;"></i> السنة:\n                </label>\n                <select id="year-selector" onchange="onYearChange()" style="background: rgba(13,8,11,0.8); border: 1px solid rgba(212,175,55,0.35); border-radius: 12px; padding: 10px 15px; color: var(--text-body); font-size: 0.95rem; min-width: 120px; cursor: pointer;">\n                    ' + availableYears.map(year => '\n                        <option value="' + year + '" ' + (year === currentYear ? "selected" : "") + '>' + year + '</option>\n                    ').join("") + '\n                </select>\n            </div>\n        </div>\n        <div class="stats-orders-row" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; margin-bottom: 30px; padding: 0 0px;">\n            <div class="new-orders-card" style="background: linear-gradient(135deg, #D4AF37, #B8860B); border-radius: 20px; padding: 20px 25px; display: flex; align-items: center; transition: all 0.3s ease; cursor: pointer; position: relative; overflow: hidden; backdrop-filter: blur(5px); border: 1px solid rgba(255,215,0,0.5); box-shadow: 0 8px 25px rgba(212,175,55,0.25);">\n                <div class="new-orders-content" style="display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%; position: relative; z-index: 1;">\n                    <i class="fas fa-coins" style="font-size: 2.5rem; color: #1A0F14; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); transition: transform 0.3s ease; width: 55px; text-align: center;"></i>\n                    <span style="font-size: 1.5rem; font-weight: 700; color: #1A0F14; text-shadow: 0 1px 2px rgba(255,255,255,0.2); flex: 1; text-align: center;">إجمالي الإيرادات</span>\n                    <span class="new-orders-count" style="background: rgba(26,15,20,0.9); backdrop-filter: blur(10px); padding: 8px 22px; border-radius: 50px; font-size: 1.8rem; font-weight: 800; min-width: 75px; text-align: center; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.2); color: #FFD700 !important; text-shadow: 0 0 5px rgba(255,215,0,0.5);">' + totalRevenue.toLocaleString() + ' د.ج</span>\n                </div>\n            </div>\n            <div class="repeat-orders-card" style="background: linear-gradient(135deg, #2196f3, #1976d2); border-radius: 20px; padding: 20px 25px; display: flex; align-items: center; transition: all 0.3s ease; cursor: pointer; position: relative; overflow: hidden; backdrop-filter: blur(5px); border: 1px solid rgba(33,150,243,0.5); box-shadow: 0 8px 25px rgba(33,150,243,0.25);">\n                <div class="repeat-orders-content" style="display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%; position: relative; z-index: 1;">\n                    <i class="fas fa-save" style="font-size: 2.5rem; color: #1A0F14; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); transition: transform 0.3s ease; width: 55px; text-align: center;"></i>\n                    <span style="font-size: 1.5rem; font-weight: 700; color: #1A0F14; text-shadow: 0 1px 2px rgba(255,255,255,0.2); flex: 1; text-align: center;">الطلبات المحفوظة</span>\n                    <span class="repeat-orders-count" style="background: rgba(26,15,20,0.9); backdrop-filter: blur(10px); padding: 8px 22px; border-radius: 50px; font-size: 1.8rem; font-weight: 800; min-width: 75px; text-align: center; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.2); color: #FFE0B2 !important; text-shadow: 0 0 5px rgba(255,152,0,0.5);">' + totalSavedOrders + '</span>\n                </div>\n            </div>\n        </div>\n    ';
+    let html = '\n        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; padding: 15px 20px;">\n            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">\n                <label style="color: #d4af37; font-weight: bold; font-size: 1rem;">\n                    <i class="fas fa-calendar-alt" style="margin-left: 8px;"></i> السنة:\n                </label>\n                <select id="year-selector" onchange="onYearChange()" style="background: rgba(13,8,11,0.8); border: 1px solid rgba(212,175,55,0.35); border-radius: 12px; padding: 10px 15px; color: var(--text-body); font-size: 0.95rem; min-width: 120px; cursor: pointer;">\n                    ' + availableYears.map(year => '\n                        <option value="' + year + '" ' + (year === currentYear ? "selected" : "") + '>' + year + '</option>\n                    ').join("") + '\n                </select>\n            </div>\n        </div>\n        <div class="stats-orders-row" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; margin-bottom: 30px; padding: 0 0px;">\n            <div class="new-orders-card" style="background: linear-gradient(135deg, #D4AF37, #B8860B); border-radius: 20px; padding: 20px 25px; display: flex; align-items: center; transition: all 0.3s ease; cursor: pointer; position: relative; overflow: hidden; backdrop-filter: blur(5px); border: 1px solid rgba(255,215,0,0.5); box-shadow: 0 8px 25px rgba(212,175,55,0.25);">\n                <div class="new-orders-content" style="display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%; position: relative; z-index: 1;">\n                    <i class="fas fa-coins" style="font-size: 2.5rem; color: #1A0F14; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); transition: transform 0.3s ease; width: 55px; text-align: center;"></i>\n                    <span style="font-size: 1.5rem; font-weight: 700; color: #1A0F14; text-shadow: 0 1px 2px rgba(255,255,255,0.2); flex: 1; text-align: center;">إجمالي الإيرادات</span>\n                    <span class="new-orders-count" style="background: rgba(26,15,20,0.9); backdrop-filter: blur(10px); padding: 8px 22px; border-radius: 50px; font-size: 1.8rem; font-weight: 800; min-width: 75px; text-align: center; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.2); color: #FFD700 !important; text-shadow: 0 0 5px rgba(255,215,0,0.5);">' + totalRevenue.toLocaleString() + ' د.ج</span>\n                </div>\n            </div>\n            <div class="repeat-orders-card" style="background: linear-gradient(135deg, #2196f3, #1976d2); border-radius: 20px; padding: 20px 25px; display: flex; align-items: center; transition: all 0.3s ease; cursor: pointer; position: relative; overflow: hidden; backdrop-filter: blur(5px); border: 1px solid rgba(33,150,243,0.5); box-shadow: 0 8px 25px rgba(33,150,243,0.25);">\n                <div class="repeat-orders-content" style="display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%; position: relative; z-index: 1;">\n                    <i class="fas fa-save" style="font-size: 2.5rem; color: #1A0F14; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); transition: transform 0.3s ease; width: 55px; text-align: center;"></i>\n                    <span style="font-size: 1.5rem; font-weight: 700; color: #1A0F14; text-shadow: 0 1px 2px rgba(255,255,255,0.2); flex: 1; text-align: center;">الطلبات المحفوظة</span>\n                    <span class="repeat-orders-count" style="background: rgba(26,15,20,0.9); backdrop-filter: blur(10px); padding: 8px 22px; border-radius: 50px; font-size: 1.8rem; font-weight: 800; min-width: 75px; text-align: center; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.2); color: #FFE0B2 !important; text-shadow: 0 0 5px rgba(255,152,0,0.5);">' + totalSavedOrders + '</span>\n                </div>\n            </div>\n        </div>\n    ';
     if (!hasData) {
         html += '\n            <div style="text-align: center; padding: 60px 20px; background: rgba(0,0,0,0.3); border-radius: 16px; border: 1px dashed rgba(212,175,55,0.3);">\n                <i class="fas fa-chart-pie" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 15px; display: block;"></i>\n                <h3 style="color: var(--text-muted);">لا توجد بيانات للسنة ' + currentYear + '</h3>\n                <p style="color: var(--text-muted); font-size: 0.9rem;">قومي بحفظ الطلبات الموصلة لعرض الإحصائيات</p>\n            </div>\n        ';
     } else {

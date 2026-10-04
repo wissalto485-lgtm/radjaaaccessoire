@@ -2365,7 +2365,66 @@ function showNotification(msg, type = "success") {
     setTimeout(() => n.remove(), 2500);
 }
 
+function detectDeviceType() {
+    const ua = navigator.userAgent;
+    if (/tablet|ipad|playbook|silk/i.test(ua)) {
+        return 'tablet';
+    }
+    if (/mobile|iphone|ipod|android|blackberry|opera mini|iemobile/i.test(ua)) {
+        return 'mobile';
+    }
+    return 'desktop';
+}
+
+function detectSource() {
+    const referrer = document.referrer.toLowerCase();
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const utmSource = urlParams.get('utm_source');
+    if (utmSource) {
+        if (utmSource.includes('facebook') || utmSource.includes('fb')) return 'facebook';
+        if (utmSource.includes('instagram') || utmSource.includes('ig')) return 'instagram';
+        if (utmSource.includes('tiktok')) return 'tiktok';
+        if (utmSource.includes('whatsapp') || utmSource.includes('wa')) return 'whatsapp';
+        if (utmSource.includes('google')) return 'google';
+    }
+    
+    if (referrer.includes('facebook.com') || referrer.includes('fb.com')) return 'facebook';
+    if (referrer.includes('instagram.com')) return 'instagram';
+    if (referrer.includes('tiktok.com')) return 'tiktok';
+    if (referrer.includes('whatsapp.com') || referrer.includes('wa.me')) return 'whatsapp';
+    if (referrer.includes('google.')) return 'google';
+    if (referrer === '') return 'direct';
+    
+    return 'other';
+}
+
+async function trackVisit() {
+    try {
+        if (sessionStorage.getItem('adminToken')) return;
+
+        if (sessionStorage.getItem('visitTracked')) return;
+        
+        const data = {
+            deviceType: detectDeviceType(),
+            source: detectSource(),
+            referrer: document.referrer || ''
+        };
+        
+        await fetch(API_URL + '/track-visit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        sessionStorage.setItem('visitTracked', 'true');
+    } catch (error) {
+        console.error('خطأ في تسجيل الزيارة:', error);
+    }
+}
+
 window.onload = async () => {
+    trackVisit();
     updateFollowersFromSettings();
     initHeroSlider();
     await loadShippingRates();

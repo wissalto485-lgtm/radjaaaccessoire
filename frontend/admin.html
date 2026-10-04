@@ -32,6 +32,9 @@
             <button onclick="showSectionAndCloseSidebar('analytics-sec')" id="menu-analytics">
                 <i class="fas fa-chart-pie"></i> الإحصائيات
             </button>
+            <button onclick="showSectionAndCloseSidebar('visitors-sec')" id="menu-visitors">
+                <i class="fas fa-users"></i> إحصائيات الزوار
+            </button>
             <button onclick="showSectionAndCloseSidebar('shipping-sec')" id="menu-shipping">
                 <i class="fas fa-truck"></i> أسعار الشحن
             </button>
@@ -91,6 +94,9 @@
             </button>
             <button class="nav-tab" onclick="showSectionDesktop('analytics-sec')" id="tab-analytics">
                 <i class="fas fa-chart-pie"></i> الإحصائيات
+            </button>
+            <button class="nav-tab" onclick="showSectionDesktop('visitors-sec')" id="tab-visitors">
+                <i class="fas fa-users"></i> إحصائيات الزوار
             </button>
             <button class="nav-tab" onclick="showSectionDesktop('shipping-sec')" id="tab-shipping">
                 <i class="fas fa-truck"></i> أسعار الشحن
@@ -488,6 +494,29 @@
                 <div class="admin-card">
                     <h3><i class="fas fa-chart-pie" style="margin-left: 8px;"></i> الإحصائيات</h3>
                     <div id="analytics-content" style="padding: 20px; text-align: center; color: var(--text-muted);"></div>
+                </div>
+            </section>
+
+            <section id="visitors-sec" class="admin-section" style="display: none;">
+                <div class="admin-card">
+                    <h3><i class="fas fa-users" style="margin-left: 8px;"></i> إحصائيات الزوار</h3>
+                    
+                    <div style="padding: 15px 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                        <label style="color: var(--gold);">الفترة:</label>
+                        <select id="visitors-period" class="info-input" onchange="loadVisitorsStats()" style="width: auto;">
+                            <option value="1">آخر 24 ساعة</option>
+                            <option value="7" selected>آخر 07 أيام</option>
+                            <option value="30">آخر 30 يوما</option>
+                            <option value="90">آخر 03 أشهر</option>
+                        </select>
+                    </div>
+                    
+                    <div id="visitors-content" style="padding: 20px;">
+                        <div style="text-align: center; padding: 30px; color: var(--text-muted);">
+                            <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
+                            <br>جاري تحميل الإحصائيات...
+                        </div>
+                    </div>
                 </div>
             </section>
 

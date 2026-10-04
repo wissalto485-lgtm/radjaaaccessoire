@@ -7,6 +7,7 @@ const Product = require('../models/Product');
 const Order = require('../models/Order');
 const SavedOrder = require('../models/SavedOrder');
 const ShippingRate = require('../models/ShippingRate');
+const Visit = require('../models/Visit');
 const upload = require('../middleware/upload');
 const { auth, isAdmin } = require('../middleware/auth');
 const { 
@@ -1366,4 +1367,85 @@ router.delete('/:id/reviews/:reviewIndex', auth, isAdmin, async (req, res) => {
     }
 });
 
+router.post('/track-visit', async (req, res) => {
+    try {
+        const { deviceType, source, referrer } = req.body;
+
+        const validDevices = ['desktop', 'mobile', 'tablet', 'unknown'];
+        const validSources = ['facebook', 'instagram', 'tiktok', 'whatsapp', 'google', 'direct', 'other'];
+        
+        const visit = new Visit({
+            deviceType: validDevices.includes(deviceType) ? deviceType : 'unknown',
+            source: validSources.includes(source) ? source : 'direct',
+            referrer: referrer ? referrer.substring(0, 200) : ''
+        });
+        
+        await visit.save();
+        
+        res.json({ success: true });
+    } catch (error) {
+        console.error('خطأ في تسجيل الزيارة:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+router.get('/analytics/visitors', auth, isAdmin, async (req, res) => {
+    try {
+        const days = parseInt(req.query.days) || 7;
+        const sinceDate = new Date();
+        sinceDate.setDate(sinceDate.getDate() - days);
+        
+        const deviceStats = await Visit.aggregate([
+            { $match: { createdAt: { $gte: sinceDate } } },
+            { $group: { _id: '$deviceType', count: { $sum: 1 } } },
+            { $sort: { count: -1 } }
+        ]);
+
+        const sourceStats = await Visit.aggregate([
+            { $match: { createdAt: { $gte: sinceDate } } },
+            { $group: { _id: '$source', count: { $sum: 1 } } },
+            { $sort: { count: -1 } }
+        ]);
+
+        const totalVisits = await Visit.countDocuments({
+            createdAt: { $gte: sinceDate }
+        });
+
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
+        const todayVisits = await Visit.countDocuments({
+            createdAt: { $gte: todayStart }
+        });
+
+        const dailyStats = await Visit.aggregate([
+            { $match: { createdAt: { $gte: sinceDate } } },
+            {
+                $group: {
+                    _id: {
+                        year: { $year: '$createdAt' },
+                        month: { $month: '$createdAt' },
+                        day: { $dayOfMonth: '$createdAt' }
+                    },
+                    count: { $sum: 1 }
+                }
+            },
+            { $sort: { '_id.year': 1, '_id.month': 1, '_id.day': 1 } }
+        ]);
+        
+        res.json({
+            success: true,
+            stats: {
+                totalVisits,
+                todayVisits,
+                deviceStats,
+                sourceStats,
+                dailyStats,
+                days
+            }
+        });
+    } catch (error) {
+        console.error('خطأ في جلب إحصائيات الزوار:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
 module.exports = router;
