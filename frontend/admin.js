@@ -4013,7 +4013,7 @@ function renderAnalyticsDashboard(stats, selectedYear) {
     const currentYear = selectedYear || (new Date()).getFullYear();
     const hasData = totalSavedOrders > 0;
 let html = `
-    <div style="background: rgba(0,0,0,0.3); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(212,175,55,0.3);">
+    <div style="padding: 20px; margin-bottom: 20px;">
         <label style="color: #d4af37; font-weight: bold; font-size: 1rem; display: block; margin-bottom: 10px;">
             <i class="fas fa-calendar-alt" style="margin-left: 8px;"></i> السنة:
         </label>
