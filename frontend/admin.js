@@ -3889,7 +3889,7 @@ async function loadVisitorsStats() {
             },
             other: {
                 name: 'Other',
-                icon: 'fa-share-nodes',
+                icon: 'fa-globe',
                 type: 'fas',
                 color: '#888'
             }
