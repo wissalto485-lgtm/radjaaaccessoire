@@ -2838,3 +2838,21 @@ function openProductDetail(productId) {
         }, 100);
     }
 })();
+
+// ✅ فتح/إغلاق قائمة واتساب
+function toggleWhatsAppMenu() {
+    const options = document.getElementById('whatsapp-options');
+    if (options) {
+        options.classList.toggle('show');
+    }
+}
+
+// ✅ إغلاق القائمة عند الضغط خارجها
+document.addEventListener('click', function(event) {
+    const container = document.querySelector('.floating-whatsapp-container');
+    const options = document.getElementById('whatsapp-options');
+    
+    if (container && options && !container.contains(event.target)) {
+        options.classList.remove('show');
+    }
+});
