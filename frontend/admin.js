@@ -3919,18 +3919,20 @@ async function loadVisitorsStats() {
                 <h4 style="color: #d4af37; margin-bottom: 15px; text-align: center;">
                     <i class="fas fa-laptop" style="margin-left: 8px;"></i> توزيع الزوار حسب الجهاز
                 </h4>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                <div class="device-stats-grid">
         `;
-        
+                
         deviceStats.forEach(device => {
             const info = deviceNames[device._id] || deviceNames.unknown;
             const percentage = totalVisits > 0 ? Math.round(device.count / totalVisits * 100) : 0;
             html += `
-                <div style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 15px; text-align: center; border-right: 3px solid ${info.color};">
-                    <i class="${info.type} ${info.icon}" style="font-size: 2rem; color: ${info.color}; display: block; margin-bottom: 10px;"></i>
-                    <div style="color: #F0D3DF; font-size: 1.1rem; font-weight: bold;">${info.name}</div>
-                    <div style="color: #d4af37; font-size: 1.5rem; font-weight: bold; margin: 8px 0;">${device.count}</div>
-                    <div style="color: var(--text-muted); font-size: 0.8rem;">${percentage}%</div>
+                <div class="device-stat-card" style="border-right-color: ${info.color};">
+                    <div class="device-stat-icon" style="background: ${info.color}20; color: ${info.color}; border-color: ${info.color}60;">
+                        <i class="${info.type} ${info.icon}"></i>
+                    </div>
+                    <div class="device-stat-name">${info.name}</div>
+                    <div class="device-stat-count">${device.count}</div>
+                    <div class="device-stat-percent" style="color: ${info.color};">${percentage}%</div>
                 </div>
             `;
         });
@@ -3940,28 +3942,32 @@ async function loadVisitorsStats() {
         html += `
             <div style="background: rgba(0,0,0,0.3); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(212,175,55,0.3);">
                 <h4 style="color: #d4af37; margin-bottom: 15px; text-align: center;">
-                    <i class="fas fa-share-alt" style="margin-left: 8px;"></i> توزيع الزوار حسب مصدر الزيارة
+                    <i class="fas fa-share-alt" style="margin-left: 8px;"></i> توزيع الزوار حسب المنصة 
                 </h4>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                <div class="source-stats-grid">
         `;
         
         sourceStats.forEach(source => {
             const info = sourceNames[source._id] || sourceNames.other;
             const percentage = totalVisits > 0 ? Math.round(source.count / totalVisits * 100) : 0;
-
+            
             const hintText = source._id === 'other' 
-                ? `<div style="color: #ff9800; font-size: 0.7rem; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255,152,0,0.3); line-height: 1.5; text-align: left;">
-                    <i class="fas fa-exclamation-circle" style="margin-left: 4px;"></i>
-                    <strong>Alert:</strong> "Other" indicates that the access from Facebook, Google, Telegram or WhatsApp.
+                ? `<div style="color: #ff9800; font-size: 0.65rem; margin-top: 8px; padding-top: 6px; border-top: 1px solid rgba(255,152,0,0.3); line-height: 1.4; text-align: center;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    قد يكون من: Telegram, Facebook, Messenger, Google, WhatsApp
                 </div>` 
                 : '';
             
             html += `
-                <div style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 15px; text-align: center; border-right: 3px solid ${info.color};">
-                    <i class="${info.type} ${info.icon}" style="font-size: 2rem; color: ${info.color}; display: block; margin-bottom: 10px;"></i>
-                    <div style="color: #F0D3DF; font-size: 1.1rem; font-weight: bold;">${info.name}</div>
-                    <div style="color: #d4af37; font-size: 1.5rem; font-weight: bold; margin: 8px 0;">${source.count}</div>
-                    <div style="color: var(--text-muted); font-size: 0.8rem;">${percentage}%</div>
+                <div class="source-stat-card" style="border-right-color: ${info.color};">
+                    <div class="source-stat-row">
+                        <div class="source-stat-icon" style="background: ${info.color}20; color: ${info.color}; border-color: ${info.color}60;">
+                            <i class="${info.type} ${info.icon}"></i>
+                        </div>
+                        <div class="source-stat-name">${info.name}</div>
+                        <div class="source-stat-count">${source.count}</div>
+                        <div class="source-stat-percent" style="color: ${info.color};">${percentage}%</div>
+                    </div>
                     ${hintText}
                 </div>
             `;

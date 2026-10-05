@@ -5174,3 +5174,186 @@ select option {
         gap: 6px;
     }
 }
+
+.device-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.source-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.device-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0,0,0,0.4);
+    border-radius: 12px;
+    padding: 12px 15px;
+    border-right: 3px solid #888;
+    transition: all 0.3s ease;
+    min-width: 0;
+}
+
+.device-stat-card:hover {
+    background: rgba(0,0,0,0.6);
+    transform: translateY(-2px);
+}
+
+.device-stat-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    border: 1.5px solid;
+    flex-shrink: 0;
+}
+
+.device-stat-name {
+    color: #F0D3DF;
+    font-size: 0.95rem;
+    font-weight: 600;
+    flex: 1;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.device-stat-count {
+    color: #d4af37;
+    font-size: 1.2rem;
+    font-weight: 800;
+    min-width: 40px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.device-stat-percent {
+    font-size: 0.85rem;
+    font-weight: 700;
+    min-width: 45px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.source-stat-card {
+    background: rgba(0,0,0,0.4);
+    border-radius: 12px;
+    padding: 12px 15px;
+    border-right: 3px solid #888;
+    transition: all 0.3s ease;
+    min-width: 0;
+}
+
+.source-stat-card:hover {
+    background: rgba(0,0,0,0.6);
+    transform: translateY(-2px);
+}
+
+.source-stat-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.source-stat-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    border: 1.5px solid;
+    flex-shrink: 0;
+}
+
+.source-stat-name {
+    color: #F0D3DF;
+    font-size: 0.95rem;
+    font-weight: 600;
+    flex: 1;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.source-stat-count {
+    color: #d4af37;
+    font-size: 1.2rem;
+    font-weight: 800;
+    min-width: 40px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.source-stat-percent {
+    font-size: 0.85rem;
+    font-weight: 700;
+    min-width: 45px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .device-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .source-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .device-stat-card,
+    .source-stat-card {
+        padding: 10px 12px;
+    }
+    
+    .device-stat-icon,
+    .source-stat-icon {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        font-size: 1rem;
+    }
+    
+    .device-stat-name,
+    .source-stat-name {
+        font-size: 0.85rem;
+    }
+    
+    .device-stat-count,
+    .source-stat-count {
+        font-size: 1.05rem;
+        min-width: 35px;
+    }
+    
+    .device-stat-percent,
+    .source-stat-percent {
+        font-size: 0.75rem;
+        min-width: 40px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .device-stats-grid,
+    .source-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
