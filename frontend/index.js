@@ -2379,22 +2379,18 @@ function detectDeviceType() {
 function detectSource() {
     const referrer = document.referrer.toLowerCase();
     const urlParams = new URLSearchParams(window.location.search);
-
+    
     const utmSource = urlParams.get('utm_source');
     if (utmSource) {
-        if (utmSource.includes('facebook') || utmSource.includes('fb')) return 'facebook';
         if (utmSource.includes('instagram') || utmSource.includes('ig')) return 'instagram';
         if (utmSource.includes('tiktok')) return 'tiktok';
-        if (utmSource.includes('whatsapp') || utmSource.includes('wa')) return 'whatsapp';
-        if (utmSource.includes('google')) return 'google';
+        if (utmSource.includes('telegram') || utmSource.includes('tg')) return 'telegram';
+        return 'other';
     }
     
-    if (referrer.includes('facebook.com') || referrer.includes('fb.com')) return 'facebook';
     if (referrer.includes('instagram.com')) return 'instagram';
     if (referrer.includes('tiktok.com')) return 'tiktok';
-    if (referrer.includes('whatsapp.com') || referrer.includes('wa.me')) return 'whatsapp';
-    if (referrer.includes('google.')) return 'google';
-    if (referrer === '') return 'direct';
+    if (referrer.includes('telegram.org') || referrer.includes('t.me')) return 'telegram';
     
     return 'other';
 }

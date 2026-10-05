@@ -3875,13 +3875,30 @@ async function loadVisitorsStats() {
         };
         
         const sourceNames = {
-            facebook: { name: 'Facebook', icon: 'fa-facebook', type: 'fab', color: '#1877F2' },
-            instagram: { name: 'Instagram', icon: 'fa-instagram', type: 'fab', color: '#E1306C' },
-            tiktok: { name: 'TikTok', icon: 'fa-tiktok', type: 'fab', color: '#000' },
-            whatsapp: { name: 'WhatsApp', icon: 'fa-whatsapp', type: 'fab', color: '#25D366' },
-            google: { name: 'Google', icon: 'fa-google', type: 'fab', color: '#DB4437' },
-            direct: { name: 'Direct', icon: 'fa-user', type: 'fas', color: '#D4AF37' }, 
-            other: { name: 'Other', icon: 'fa-globe', type: 'fas', color: '#888' }
+            instagram: {
+                name: 'Instagram',
+                icon: 'fa-instagram',
+                type: 'fab',
+                color: '#E1306C'
+            },
+            tiktok: {
+                name: 'TikTok',
+                icon: 'fa-tiktok',
+                type: 'fab',
+                color: '#000'
+            },
+            telegram: {
+                name: 'Telegram',
+                icon: 'fa-telegram',
+                type: 'fab',
+                color: '#0088cc'
+            },
+            other: {
+                name: 'Other',
+                icon: 'fa-question-circle',
+                type: 'fas',
+                color: '#888'
+            }
         };
 
         let html = `
@@ -3937,12 +3954,25 @@ async function loadVisitorsStats() {
         sourceStats.forEach(source => {
             const info = sourceNames[source._id] || sourceNames.other;
             const percentage = totalVisits > 0 ? Math.round(source.count / totalVisits * 100) : 0;
+
+            const hintText = source._id === 'other' 
+                ? `<div style="color: #ff9800; font-size: 0.7rem; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255,152,0,0.3); line-height: 1.5; text-align: right;">
+                    <i class="fas fa-exclamation-circle" style="margin-left: 4px;"></i>
+                    <strong>تنبيه:</strong> يشير "Other" إلى أن الولوج تم من إحدى المنصات التالية: Facebook أو Messenger أو Google أو WhatsApp.
+                    <br>
+                    <small style="color: #B38BA3; font-size: 0.65rem;">
+                        يتم تجميع هذه المنصات ضمن Other ولا تظهر كخيارات مستقلة.
+                    </small>
+                </div>` 
+                : '';
+            
             html += `
                 <div style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 15px; text-align: center; border-right: 3px solid ${info.color};">
                     <i class="${info.type} ${info.icon}" style="font-size: 2rem; color: ${info.color}; display: block; margin-bottom: 10px;"></i>
                     <div style="color: #F0D3DF; font-size: 1.1rem; font-weight: bold;">${info.name}</div>
                     <div style="color: #d4af37; font-size: 1.5rem; font-weight: bold; margin: 8px 0;">${source.count}</div>
                     <div style="color: var(--text-muted); font-size: 0.8rem;">${percentage}%</div>
+                    ${hintText}
                 </div>
             `;
         });

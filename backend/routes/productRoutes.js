@@ -1372,11 +1372,11 @@ router.post('/track-visit', async (req, res) => {
         const { deviceType, source, referrer } = req.body;
 
         const validDevices = ['desktop', 'mobile', 'tablet', 'unknown'];
-        const validSources = ['facebook', 'instagram', 'tiktok', 'whatsapp', 'google', 'direct', 'other'];
+        const validSources = ['instagram', 'tiktok', 'telegram', 'other'];
         
         const visit = new Visit({
             deviceType: validDevices.includes(deviceType) ? deviceType : 'unknown',
-            source: validSources.includes(source) ? source : 'direct',
+            source: validSources.includes(source) ? source : 'other',
             referrer: referrer ? referrer.substring(0, 200) : ''
         });
         

@@ -9,11 +9,11 @@ const visitSchema = new mongoose.Schema({
         index: true
     },
 
-    source: {
-        type: String,
-        enum: ['facebook', 'instagram', 'tiktok', 'whatsapp', 'google', 'direct', 'other'],
-        default: 'direct',
-        index: true
+   source: {
+    type: String,
+    enum: ['instagram', 'tiktok', 'telegram', 'other'],
+    default: 'other',
+    index: true
     },
 
     referrer: { type: String, default: '' },
