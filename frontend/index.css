@@ -4088,81 +4088,26 @@ html[lang="fr"] .color-swatch.custom-order-swatch {
     aspect-ratio: 1 / 1 !important;
 }
 
-/* ========================================
-   ✅ قائمة واتساب العائمة (الشامل)
-   ======================================== */
-
-.floating-whatsapp-container {
+.floating-whatsapp-btn {
     position: fixed;
     bottom: 30px;
     right: 30px;
     z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;
-}
-
-/* ========================================
-   ✅ القائمة المنسدلة
-   ======================================== */
-
-.whatsapp-options {
-    display: none;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 5px;
-    animation: fadeInOptions 0.3s ease;
-}
-
-.whatsapp-options.show {
-    display: flex;
-}
-
-.whatsapp-option {
-    background: white;
-    color: #1A0F14;
-    padding: 12px 18px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    font-family: 'UnifiedFont', sans-serif;
-}
-
-.whatsapp-option:hover {
-    background: #25D366;
-    color: white;
-    transform: translateX(-5px);
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-}
-
-/* ========================================
-   ✅ الزر الرئيسي
-   ======================================== */
-
-.floating-whatsapp-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
     background: linear-gradient(135deg, #25D366, #128C7E);
     color: white;
-    border: none;
+    text-decoration: none;
     padding: 16px 28px;
     border-radius: 60px;
     font-weight: 800;
     font-size: 1.2rem;
-    cursor: pointer;
     box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
     transition: all 0.3s ease;
     font-family: 'UnifiedFont', sans-serif;
     animation: whatsappPulse 2s ease-in-out infinite;
-    text-decoration: none;
 }
 
 .floating-whatsapp-btn:hover {
@@ -4184,10 +4129,6 @@ html[lang="fr"] .color-swatch.custom-order-swatch {
     white-space: nowrap;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
-
-/* ========================================
-   ✅ الحركات (Animations)
-   ======================================== */
 
 @keyframes whatsappPulse {
     0%, 100% {
@@ -4213,28 +4154,10 @@ html[lang="fr"] .color-swatch.custom-order-swatch {
     }
 }
 
-@keyframes fadeInOptions {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ========================================
-   ✅ Responsive - الهاتف
-   ======================================== */
-
 @media (max-width: 768px) {
-    .floating-whatsapp-container {
+    .floating-whatsapp-btn {
         bottom: 20px;
         right: 20px;
-    }
-    
-    .floating-whatsapp-btn {
         padding: 12px 20px;
         gap: 8px;
         font-size: 1rem;
@@ -4246,11 +4169,6 @@ html[lang="fr"] .color-swatch.custom-order-swatch {
     
     .floating-whatsapp-text {
         font-size: 1rem;
-    }
-    
-    .whatsapp-option {
-        font-size: 0.8rem;
-        padding: 10px 15px;
     }
 }
 
