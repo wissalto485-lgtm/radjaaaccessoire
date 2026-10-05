@@ -2384,14 +2384,11 @@ function detectSource() {
     if (utmSource) {
         if (utmSource.includes('instagram') || utmSource.includes('ig')) return 'instagram';
         if (utmSource.includes('tiktok')) return 'tiktok';
-        if (utmSource.includes('telegram') || utmSource.includes('tg')) return 'telegram';
         return 'other';
     }
     
     if (referrer.includes('instagram.com')) return 'instagram';
     if (referrer.includes('tiktok.com')) return 'tiktok';
-    if (referrer.includes('telegram.org') || referrer.includes('t.me')) return 'telegram';
-    
     return 'other';
 }
 

@@ -3885,13 +3885,7 @@ async function loadVisitorsStats() {
                 name: 'TikTok',
                 icon: 'fa-tiktok',
                 type: 'fab',
-                color: '#000'
-            },
-            telegram: {
-                name: 'Telegram',
-                icon: 'fa-telegram',
-                type: 'fab',
-                color: '#0088cc'
+                color: '#FFFFFF'
             },
             other: {
                 name: 'Other',
@@ -3956,13 +3950,9 @@ async function loadVisitorsStats() {
             const percentage = totalVisits > 0 ? Math.round(source.count / totalVisits * 100) : 0;
 
             const hintText = source._id === 'other' 
-                ? `<div style="color: #ff9800; font-size: 0.7rem; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255,152,0,0.3); line-height: 1.5; text-align: right;">
+                ? `<div style="color: #ff9800; font-size: 0.7rem; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255,152,0,0.3); line-height: 1.5; text-align: left;">
                     <i class="fas fa-exclamation-circle" style="margin-left: 4px;"></i>
-                    <strong>تنبيه:</strong> يشير "Other" إلى أن الولوج تم من إحدى المنصات التالية: Facebook أو Messenger أو Google أو WhatsApp.
-                    <br>
-                    <small style="color: #B38BA3; font-size: 0.65rem;">
-                        يتم تجميع هذه المنصات ضمن Other ولا تظهر كخيارات مستقلة.
-                    </small>
+                    <strong>Alert:</strong> "Other" indicates that the access from Facebook, Google, Telegram or WhatsApp.
                 </div>` 
                 : '';
             

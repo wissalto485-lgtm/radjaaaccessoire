@@ -1370,9 +1370,9 @@ router.delete('/:id/reviews/:reviewIndex', auth, isAdmin, async (req, res) => {
 router.post('/track-visit', async (req, res) => {
     try {
         const { deviceType, source, referrer } = req.body;
-
+        
         const validDevices = ['desktop', 'mobile', 'tablet', 'unknown'];
-        const validSources = ['instagram', 'tiktok', 'telegram', 'other'];
+        const validSources = ['instagram', 'tiktok', 'other'];
         
         const visit = new Visit({
             deviceType: validDevices.includes(deviceType) ? deviceType : 'unknown',
