@@ -176,6 +176,24 @@ app.get('/admin.html', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/admin.html'));
 });
 
+app.get('/api/products/new-count', async (req, res) => {
+    try {
+        const Product = require('./models/Product');
+        
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+        
+        const count = await Product.countDocuments({
+            createdAt: { $gte: sevenDaysAgo }
+        });
+        
+        res.json({ success: true, count });
+    } catch (error) {
+        console.error('خطأ في جلب عدد المنتجات الجديدة:', error);
+        res.json({ success: false, count: 0 });
+    }
+});
+
 app.use((req, res) => {
     res.status(404).json({
         success: false,
