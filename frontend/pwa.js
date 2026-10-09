@@ -1,15 +1,14 @@
-// ✅ تسجيل Service Worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
             .then((registration) => {
-                console.log('✅ Service Worker registered:', registration.scope);
+                console.log('Service Worker registered:', registration.scope);
 
                 registration.addEventListener('updatefound', () => {
                     const newWorker = registration.installing;
                     newWorker.addEventListener('statechange', () => {
                         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            console.log('🔄 New version available');
+                            console.log('New version available');
                             if (confirm('تحديث جديد متوفر! هل تريد إعادة التحميل؟')) {
                                 newWorker.postMessage({ type: 'SKIP_WAITING' });
                                 window.location.reload();
@@ -19,18 +18,16 @@ if ('serviceWorker' in navigator) {
                 });
             })
             .catch((err) => {
-                console.warn('⚠️ Service Worker registration failed:', err);
+                console.warn('Service Worker registration failed:', err);
             });
     });
 }
 
-// ✅ إخفاء الشاشة البيضاء فوراً عند تحميل DOM
 document.addEventListener('DOMContentLoaded', () => {
     document.body.style.visibility = 'visible';
     document.body.style.opacity = '1';
 });
 
-// ✅ Badging API - عدد المنتجات الجديدة
 async function updateAppBadge() {
     try {
         if (!('setAppBadge' in navigator)) {
@@ -49,7 +46,7 @@ async function updateAppBadge() {
             await navigator.clearAppBadge();
         }
     } catch (err) {
-        console.warn('⚠️ Badge update failed:', err);
+        console.warn('Badge update failed:', err);
     }
 }
 
