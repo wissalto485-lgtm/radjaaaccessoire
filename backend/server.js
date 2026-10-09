@@ -11,6 +11,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
 const xss = require('xss-clean');
 const multer = require('multer');
+const Product = require('./models/Product');
 
 const productRoutes = require('./routes/productRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
@@ -178,8 +179,6 @@ app.get('/admin.html', (req, res) => {
 
 app.get('/api/products/new-count', async (req, res) => {
     try {
-        const Product = require('./models/Product');
-        
         const sevenDaysAgo = new Date();
         sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
         

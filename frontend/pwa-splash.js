@@ -1,19 +1,26 @@
-// ✅ شاشة البداية (Splash Screen)
+// ✅ شاشة البداية (Splash Screen) - تظهر فقط في وضع التطبيق المثبت
 (function() {
+    // ✅ التحقق: هل التطبيق مثبت ويعمل في وضع standalone؟
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+                        window.navigator.standalone === true ||
+                        document.referrer.includes('android-app://');
+
+    // ❌ إذا لم يكن التطبيق مثبتاً (الزائر من المتصفح العادي) → لا نُظهر الشاشة
+    if (!isStandalone) {
+        console.log('🌐 Browser mode detected - splash screen skipped');
+        return;
+    }
+
     // ✅ التحقق: هل تم عرض الشاشة سابقاً في هذه الجلسة؟
     const splashShown = sessionStorage.getItem('pwaSplashShown');
-    
-    // ✅ التحقق: هل المستخدم في لوحة الإدارة؟
-    const isAdminPage = window.location.pathname.includes('admin.html') || 
-                        window.location.pathname.includes('login.html');
-    
-    // ❌ لا نُظهر الشاشة في لوحة الإدارة
-    if (isAdminPage) return;
-
-    // ✅ إظهار الشاشة فقط مرة واحدة في الجلسة
     if (splashShown === 'true') {
         return;
     }
+
+    // ❌ لا نُظهر الشاشة في لوحة الإدارة (لها شاشة خاصة)
+    const isAdminPage = window.location.pathname.includes('admin.html') || 
+                        window.location.pathname.includes('login.html');
+    if (isAdminPage) return;
 
     // ✅ إنشاء شاشة البداية
     const splash = document.createElement('div');
@@ -36,7 +43,6 @@
         padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     `;
 
-    // ✅ الشعار
     const logo = document.createElement('img');
     logo.src = 'https://res.cloudinary.com/kiuoxrvp/image/upload/w_300,h_300,c_fit/v1791551402/IMG_20260916_222650_743_tpiwiu.jpg';
     logo.alt = 'Radjaa Accessoire';
@@ -51,7 +57,6 @@
         animation: splashLogoPulse 2s ease-in-out infinite;
     `;
 
-    // ✅ اسم المتجر
     const storeName = document.createElement('div');
     storeName.textContent = 'Radjaa Accessoire';
     storeName.style.cssText = `
@@ -64,7 +69,6 @@
         animation: splashTextFade 2s ease-in-out infinite;
     `;
 
-    // ✅ إضافة الحركات
     const style = document.createElement('style');
     style.textContent = `
         @keyframes splashLogoPulse {
@@ -82,10 +86,8 @@
     splash.appendChild(storeName);
     document.body.appendChild(splash);
 
-    // ✅ تعيين علامة "تم العرض"
     sessionStorage.setItem('pwaSplashShown', 'true');
 
-    // ✅ إخفاء الشاشة بعد 3 ثوانٍ
     setTimeout(() => {
         splash.style.opacity = '0';
         setTimeout(() => {

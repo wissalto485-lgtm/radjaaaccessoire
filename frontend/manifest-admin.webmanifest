@@ -1,0 +1,27 @@
+{
+    "name": "Radjaa Accessoire Manager",
+    "short_name": "Radjaa Admin",
+    "description": "Radjaa Accessoire Admin Dashboard",
+    "start_url": "/admin.html",
+    "scope": "/admin.html",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#1A0F14",
+    "theme_color": "#D4AF37",
+    "lang": "ar",
+    "dir": "rtl",
+    "icons": [
+        {
+            "src": "https://res.cloudinary.com/kiuoxrvp/image/upload/w_192,h_192,c_fill/v1791551402/IMG_20260916_222650_743_tpiwiu.jpg",
+            "sizes": "192x192",
+            "type": "image/jpeg",
+            "purpose": "any"
+        },
+        {
+            "src": "https://res.cloudinary.com/kiuoxrvp/image/upload/w_512,h_512,c_fill/v1791551402/IMG_20260916_222650_743_tpiwiu.jpg",
+            "sizes": "512x512",
+            "type": "image/jpeg",
+            "purpose": "any"
+        }
+    ]
+}
