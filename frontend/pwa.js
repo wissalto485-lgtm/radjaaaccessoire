@@ -5,7 +5,6 @@ if ('serviceWorker' in navigator) {
             .then((registration) => {
                 console.log('✅ Service Worker registered:', registration.scope);
 
-                // ✅ التحقق من التحديثات
                 registration.addEventListener('updatefound', () => {
                     const newWorker = registration.installing;
                     newWorker.addEventListener('statechange', () => {
@@ -24,6 +23,12 @@ if ('serviceWorker' in navigator) {
             });
     });
 }
+
+// ✅ إخفاء الشاشة البيضاء فوراً عند تحميل DOM
+document.addEventListener('DOMContentLoaded', () => {
+    document.body.style.visibility = 'visible';
+    document.body.style.opacity = '1';
+});
 
 // ✅ Badging API - عدد المنتجات الجديدة
 async function updateAppBadge() {
