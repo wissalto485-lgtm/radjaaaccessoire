@@ -4186,3 +4186,20 @@ html[lang="fr"] .color-swatch.custom-order-swatch {
         font-size: 0.9rem;
     }
 }
+
+#privacy-modal .modal-content {
+    background: linear-gradient(135deg, #2D1A24 0%, #1A0F14 100%) !important;
+    border: 1px solid rgba(212, 175, 55, 0.4) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+#privacy-modal .modal-content h3 {
+    color: var(--gold) !important;
+}
+
+#privacy-modal .modal-content p,
+#privacy-modal .modal-content div,
+#privacy-modal .modal-content h4 {
+    color: var(--text-body) !important;
+}

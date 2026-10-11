@@ -177,7 +177,9 @@ const translations = {
         contactUsTitle: "تواصل معنا",
         deliveryTime: "24h / 48h",
         allRightsReserved: "جميع الحقوق محفوظة",
-        customOrder: "حسب الطلب"
+        customOrder: "حسب الطلب",
+        privacyPolicy: "سياسة الخصوصية",
+        privacyPolicyTitle: "سياسة الخصوصية"
     },
     fr: {
         search: "Rechercher un produit",
@@ -288,7 +290,9 @@ const translations = {
         contactUsTitle: "Contactez-nous",
         deliveryTime: "24h / 48h",
         allRightsReserved: "Tous droits réservés",
-        customOrder: "Sur commande"
+        customOrder: "Sur commande",
+        privacyPolicy: "Politique de confidentialité",
+        privacyPolicyTitle: "Politique de confidentialité"
     }
 };
 
@@ -918,16 +922,71 @@ function goToAllProductsFromFooter() {
     scrollToProducts();
 }
 
-function showAboutModal() {
-    const aboutAr = localStorage.getItem("aboutContentAr");
-    const aboutFr = localStorage.getItem("aboutContentFr");
-    const content = currentLang === "ar" ? aboutAr || "لا يوجد محتوى بعد" : aboutFr || "Aucun contenu disponible pour le moment";
-    document.getElementById("about-modal-text").innerHTML = content.replace(/\n/g, "<br>");
-    document.getElementById("about-modal").style.display = "flex";
+async function showAboutModal() {
+    try {
+        const res = await fetch(API_URL + "/settings");
+        const data = await res.json();
+        const settings = data.settings || {};
+        const content = currentLang === "ar" 
+            ? settings.aboutContentAr || "لا يوجد محتوى بعد" 
+            : settings.aboutContentFr || "Aucun contenu disponible pour le moment";
+        document.getElementById("about-modal-text").innerHTML = content.replace(/\n/g, "<br>");
+        document.getElementById("about-modal").style.display = "flex";
+    } catch (e) {
+        console.error("خطأ في تحميل محتوى من نحن:", e);
+        document.getElementById("about-modal-text").innerHTML = currentLang === "ar" ? "خطأ في التحميل" : "Erreur de chargement";
+        document.getElementById("about-modal").style.display = "flex";
+    }
 }
 
 function closeAboutModal() {
     document.getElementById("about-modal").style.display = "none";
+}
+
+function showPrivacyModal() {
+    const content = currentLang === "ar" ? `
+        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">1. المعلومات التي نجمعها:</strong><br>
+        نجمع فقط المعلومات اللازمة لتوصيل طلبك: الاسم الكامل، رقم الهاتف، الولاية، البلدية، والملاحظات الإضافية.</p>
+        
+        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">2. كيف نستخدم معلوماتك:</strong><br>
+        نستخدم معلوماتك فقط لتوصيل طلبك والتواصل معك لتأكيد الطلبية. لا نشارك معلوماتك مع أي طرف ثالث باستثناء شركة التوصيل.</p>
+        
+        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">3. مدة الاحتفاظ بالبيانات:</strong><br>
+        بعد توصيل طلبك، نقوم بحذف جميع بياناتك الشخصية (الاسم، الهاتف، العنوان) تلقائياً. نحتفظ فقط بالولاية وتفاصيل الطلب لأغراض إحصائية.</p>
+        
+        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">4. حقوقك:</strong><br>
+        وفقا للقانون الجزائري 18-07 (المعدل بالقانون 11-25)، لك الحق في الوصول إلى بياناتك، تصحيحها، أو طلب حذفها في أي وقت.</p>
+        
+        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">5. الأمان:</strong><br>
+        نستخدم تقنيات تشفير حديثة (JWT، bcrypt) لحماية بياناتك. جميع الاتصالات مشفرة عبر HTTPS.</p>
+        
+        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">6. التواصل:</strong><br>
+        لأي استفسار حول بياناتك، تواصلي معنا عبر WhatsApp أو البريد الإلكتروني.</p>
+    ` : `
+        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">1. Informations collectées :</strong><br>
+        Nous collectons uniquement les informations nécessaires à la livraison : nom complet, téléphone, wilaya, commune et notes.</p>
+        
+        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">2. Utilisation :</strong><br>
+        Vos informations sont utilisées uniquement pour livrer votre commande et vous contacter. Nous ne les partageons pas avec des tiers, sauf le transporteur.</p>
+        
+        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">3. Durée de conservation :</strong><br>
+        Après livraison, toutes vos données personnelles sont supprimées automatiquement. Seuls la wilaya et les détails de commande sont conservés pour les statistiques.</p>
+        
+        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">4. Vos droits :</strong><br>
+        Conformément à la loi algérienne 18-07 (modifiée par la loi 11-25), vous avez le droit d'accéder, corriger ou supprimer vos données.</p>
+        
+        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">5. Sécurité :</strong><br>
+        Nous utilisons un chiffrement moderne (JWT, bcrypt). Toutes les communications sont chiffrées via HTTPS.</p>
+        
+        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">6. Contact :</strong><br>
+        Pour toute question, contactez-nous via WhatsApp ou email.</p>
+    `;
+    document.getElementById("privacy-modal-text").innerHTML = content;
+    document.getElementById("privacy-modal").style.display = "flex";
+}
+
+function closePrivacyModal() {
+    document.getElementById("privacy-modal").style.display = "none";
 }
 
 function openFollowModal() {
@@ -2418,7 +2477,7 @@ async function trackVisit() {
 
 window.onload = async () => {
     trackVisit();
-    updateFollowersFromSettings();
+    updateAllSocialInfo();
     initHeroSlider();
     await loadShippingRates();
     await loadProducts();
@@ -2686,48 +2745,57 @@ function getWilayaNumber(wilayaName) {
     return wilayaNumbers[wilayaName] || "00";
 }
 
-function updateFollowersFromSettings() {
-    const igEl = document.getElementById("ig-followers");
-    const fbEl = document.getElementById("fb-followers");
-    const ttEl = document.getElementById("tt-followers");
-    if (igEl) igEl.innerText = localStorage.getItem("ig_followers") || "35,900+";
-    if (fbEl) fbEl.innerText = localStorage.getItem("fb_followers") || "30,800+";
-    if (ttEl) ttEl.innerText = localStorage.getItem("tt_followers") || "60,600+";
-}
+async function updateAllSocialInfo() {
+    try {
+        const res = await fetch(API_URL + "/settings");
+        const data = await res.json();
+        const settings = data.settings || {};
+        const social = settings.socialLinks || {};
+        const followers = settings.followersCount || {};
 
-function updateAllSocialInfo() {
-    updateFollowersFromSettings();
-    const igName = localStorage.getItem("social_instagram_name") || "radjaa_accessoiree";
-    const igLink = localStorage.getItem("social_instagram") || "https://www.instagram.com/radjaa_accessoiree/";
-    document.querySelectorAll('a[href*="instagram.com"]').forEach(el => {
-        el.href = igLink;
-    });
-    const igNameEl = document.querySelector('#follow-modal p:has(+ a[href*="instagram"]) span');
-    if (igNameEl) igNameEl.textContent = igName;
-    const fbName = localStorage.getItem("social_facebook_name") || "Radjaa Accessoire";
-    const fbLink = localStorage.getItem("social_facebook") || "https://www.facebook.com/radjaa.accessoire/";
-    document.querySelectorAll('a[href*="facebook.com"]').forEach(el => {
-        el.href = fbLink;
-    });
-    const ttName = localStorage.getItem("social_tiktok_name") || "radjaaaccessoire";
-    const ttLink = localStorage.getItem("social_tiktok") || "https://www.tiktok.com/@radjaaaccessoire";
-    document.querySelectorAll('a[href*="tiktok.com"]').forEach(el => {
-        el.href = ttLink;
-    });
-    const waNumber = (localStorage.getItem("social_whatsapp") || "213775087631").replace(/[^0-9]/g, "");
-    const waLink = "https://wa.me/" + waNumber;
-    document.querySelectorAll('a[href*="wa.me"]').forEach(el => {
-        el.href = waLink;
-    });
-    const igFollowP = document.querySelector('#follow-modal p:has(+ a[href*="instagram"])');
-    if (!igFollowP) {
+        const igEl = document.getElementById("ig-followers");
+        const fbEl = document.getElementById("fb-followers");
+        const ttEl = document.getElementById("tt-followers");
+        if (igEl) igEl.innerText = followers.instagram || "35,900+";
+        if (fbEl) fbEl.innerText = followers.facebook || "30,800+";
+        if (ttEl) ttEl.innerText = followers.tiktok || "60,600+";
+
+        const igLink = social.instagramUrl || "https://www.instagram.com/radjaa_accessoiree/";
+        document.querySelectorAll('a[href*="instagram.com"]').forEach(el => {
+            el.href = igLink;
+        });
+
+        const fbLink = social.facebookUrl || "https://www.facebook.com/radjaa.accessoire/";
+        document.querySelectorAll('a[href*="facebook.com"]').forEach(el => {
+            el.href = fbLink;
+        });
+
+        const ttLink = social.tiktokUrl || "https://www.tiktok.com/@radjaaaccessoire";
+        document.querySelectorAll('a[href*="tiktok.com"]').forEach(el => {
+            el.href = ttLink;
+        });
+
+        const waNumber = (social.whatsapp || "213775087631").replace(/[^0-9]/g, "");
+        const waLink = "https://wa.me/" + waNumber;
+        document.querySelectorAll('a[href*="wa.me"]').forEach(el => {
+            el.href = waLink;
+        });
+
+        const igName = social.instagramName || "radjaa_accessoiree";
+        const fbName = social.facebookName || "Radjaa Accessoire";
+        const ttName = social.tiktokName || "radjaaaccessoire";
+
         const igP = document.querySelector("#follow-modal i.fa-instagram")?.closest("div")?.querySelector("p");
-        if (igP) igP.innerHTML = '<span style="margin-left: 4px;"></span>' + igName;
+        if (igP) igP.textContent = igName;
+
+        const fbP = document.querySelector("#follow-modal i.fa-facebook")?.closest("div")?.querySelector("p");
+        if (fbP) fbP.textContent = fbName;
+
+        const ttP = document.querySelector("#follow-modal i.fa-tiktok")?.closest("div")?.querySelector("p");
+        if (ttP) ttP.textContent = ttName;
+    } catch (e) {
+        console.error("خطأ في تحديث السوشيال:", e);
     }
-    const fbP = document.querySelector("#follow-modal i.fa-facebook")?.closest("div")?.querySelector("p");
-    if (fbP) fbP.textContent = fbName;
-    const ttP = document.querySelector("#follow-modal i.fa-tiktok")?.closest("div")?.querySelector("p");
-    if (ttP) ttP.textContent = ttName;
 }
 
 function openFollowModal() {
@@ -2735,8 +2803,6 @@ function openFollowModal() {
     document.getElementById("follow-modal").style.display = "flex";
     if (document.getElementById("sidebar").classList.contains("open")) toggleSidebar();
 }
-
-updateAllSocialInfo();
 
 function getProductIdFromURL() {
     const params = new URLSearchParams(window.location.search);

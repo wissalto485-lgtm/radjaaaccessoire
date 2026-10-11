@@ -2521,27 +2521,42 @@ async function rejectReview(productId, reviewIndex) {
     }
 }
 
-function loadAboutContent() {
-    const savedAr = localStorage.getItem("aboutContentAr");
-    const savedFr = localStorage.getItem("aboutContentFr");
-    if (savedAr) {
-        document.getElementById("about-content-ar").value = savedAr;
-        document.getElementById("preview-about-ar").innerHTML = savedAr.replace(/\n/g, "<br>");
-    }
-    if (savedFr) {
-        document.getElementById("about-content-fr").value = savedFr;
-        document.getElementById("preview-about-fr").innerHTML = savedFr.replace(/\n/g, "<br>");
+async function loadAboutContent() {
+    try {
+        const res = await fetch(API_BASE + "/settings");
+        const data = await res.json();
+        const settings = data.settings || {};
+        document.getElementById("about-content-ar").value = settings.aboutContentAr || "";
+        document.getElementById("about-content-fr").value = settings.aboutContentFr || "";
+        document.getElementById("preview-about-ar").innerHTML = (settings.aboutContentAr || "").replace(/\n/g, "<br>") || "لا يوجد محتوى بعد";
+        document.getElementById("preview-about-fr").innerHTML = (settings.aboutContentFr || "").replace(/\n/g, "<br>") || "Aucun contenu pour le moment";
+    } catch (e) {
+        console.error("خطأ في تحميل محتوى من نحن:", e);
     }
 }
 
-function saveAboutContent() {
+async function saveAboutContent() {
     const contentAr = document.getElementById("about-content-ar").value;
     const contentFr = document.getElementById("about-content-fr").value;
-    localStorage.setItem("aboutContentAr", contentAr);
-    localStorage.setItem("aboutContentFr", contentFr);
-    document.getElementById("preview-about-ar").innerHTML = contentAr.replace(/\n/g, "<br>");
-    document.getElementById("preview-about-fr").innerHTML = contentFr.replace(/\n/g, "<br>");
-    showNotification('تم حفظ محتوى "من نحن" بنجاح');
+    
+    try {
+        const res = await fetchWithAuth(API_BASE + "/settings/about", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ aboutContentAr: contentAr, aboutContentFr: contentFr })
+        });
+        
+        const data = await res.json();
+        if (data.success) {
+            document.getElementById("preview-about-ar").innerHTML = contentAr.replace(/\n/g, "<br>");
+            document.getElementById("preview-about-fr").innerHTML = contentFr.replace(/\n/g, "<br>");
+            showNotification('تم حفظ محتوى "من نحن" بنجاح');
+        } else {
+            showNotification("فشل الحفظ", "error");
+        }
+    } catch (e) {
+        showNotification("خطأ في الاتصال", "error");
+    }
 }
 
 let shippingRatesCache = [];
@@ -4102,36 +4117,78 @@ function onYearChange() {
     }
 }
 
-function saveSocialLinks() {
-    localStorage.setItem("social_instagram_name", document.getElementById("settings-instagram-name").value);
-    localStorage.setItem("social_instagram", document.getElementById("settings-instagram").value);
-    localStorage.setItem("social_facebook_name", document.getElementById("settings-facebook-name").value);
-    localStorage.setItem("social_facebook", document.getElementById("settings-facebook").value);
-    localStorage.setItem("social_tiktok_name", document.getElementById("settings-tiktok-name").value);
-    localStorage.setItem("social_tiktok", document.getElementById("settings-tiktok").value);
-    localStorage.setItem("social_whatsapp", document.getElementById("settings-whatsapp").value);
-    showNotification("تم حفظ جميع الروابط والأسماء");
+async function saveSocialLinks() {
+    const socialLinks = {
+        instagramName: document.getElementById("settings-instagram-name").value,
+        instagramUrl: document.getElementById("settings-instagram").value,
+        facebookName: document.getElementById("settings-facebook-name").value,
+        facebookUrl: document.getElementById("settings-facebook").value,
+        tiktokName: document.getElementById("settings-tiktok-name").value,
+        tiktokUrl: document.getElementById("settings-tiktok").value,
+        whatsapp: document.getElementById("settings-whatsapp").value
+    };
+    
+    try {
+        const res = await fetchWithAuth(API_BASE + "/settings/social", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ socialLinks })
+        });
+        const data = await res.json();
+        if (data.success) {
+            showNotification("تم حفظ روابط السوشيال");
+            updateAllSocialInfo();
+        }
+    } catch (e) {
+        showNotification("خطأ في الاتصال", "error");
+    }
 }
 
-function saveFollowersCount() {
-    localStorage.setItem("ig_followers", document.getElementById("settings-ig-followers").value);
-    localStorage.setItem("fb_followers", document.getElementById("settings-fb-followers").value);
-    localStorage.setItem("tt_followers", document.getElementById("settings-tt-followers").value);
-    showNotification("تم حفظ عدد المتابعين");
+async function saveFollowersCount() {
+    const followersCount = {
+        instagram: document.getElementById("settings-ig-followers").value,
+        facebook: document.getElementById("settings-fb-followers").value,
+        tiktok: document.getElementById("settings-tt-followers").value
+    };
+    
+    try {
+        const res = await fetchWithAuth(API_BASE + "/settings/social", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ followersCount })
+        });
+        const data = await res.json();
+        if (data.success) {
+            showNotification("تم حفظ عدد المتابعين");
+        }
+    } catch (e) {
+        showNotification("خطأ في الاتصال", "error");
+    }
 }
 
-function loadSettings() {
-    document.getElementById("settings-instagram-name").value = localStorage.getItem("social_instagram_name") || "radjaa_accessoiree";
-    document.getElementById("settings-facebook-name").value = localStorage.getItem("social_facebook_name") || "Radjaa Accessoire";
-    document.getElementById("settings-tiktok-name").value = localStorage.getItem("social_tiktok_name") || "radjaaaccessoire";
-    document.getElementById("settings-instagram").value = localStorage.getItem("social_instagram") || "https://www.instagram.com/radjaa_accessoiree/";
-    document.getElementById("settings-facebook").value = localStorage.getItem("social_facebook") || "https://www.facebook.com/radjaa.accessoire/";
-    document.getElementById("settings-tiktok").value = localStorage.getItem("social_tiktok") || "https://www.tiktok.com/@radjaaaccessoire";
-    document.getElementById("settings-whatsapp").value = localStorage.getItem("social_whatsapp") || "213775087631";
-    document.getElementById("settings-ig-followers").value = localStorage.getItem("ig_followers") || "35,900+";
-    document.getElementById("settings-fb-followers").value = localStorage.getItem("fb_followers") || "30,800+";
-    document.getElementById("settings-tt-followers").value = localStorage.getItem("tt_followers") || "60,600+";
-    loadHeroImagesSettings();
+async function loadSettings() {
+    try {
+        const res = await fetch(API_BASE + "/settings");
+        const data = await res.json();
+        const settings = data.settings || {};
+        const social = settings.socialLinks || {};
+        const followers = settings.followersCount || {};
+        
+        document.getElementById("settings-instagram-name").value = social.instagramName || "radjaa_accessoiree";
+        document.getElementById("settings-facebook-name").value = social.facebookName || "Radjaa Accessoire";
+        document.getElementById("settings-tiktok-name").value = social.tiktokName || "radjaaaccessoire";
+        document.getElementById("settings-instagram").value = social.instagramUrl || "https://www.instagram.com/radjaa_accessoiree/";
+        document.getElementById("settings-facebook").value = social.facebookUrl || "https://www.facebook.com/radjaa.accessoire/";
+        document.getElementById("settings-tiktok").value = social.tiktokUrl || "https://www.tiktok.com/@radjaaaccessoire";
+        document.getElementById("settings-whatsapp").value = social.whatsapp || "213775087631";
+        document.getElementById("settings-ig-followers").value = followers.instagram || "35,900+";
+        document.getElementById("settings-fb-followers").value = followers.facebook || "30,800+";
+        document.getElementById("settings-tt-followers").value = followers.tiktok || "60,600+";
+        loadHeroImagesSettings();
+        loadTestimonials();
+    } catch (e) {
+        console.error("خطأ في تحميل الإعدادات:", e);
+    }
 }
 
 let currentHeroImages = [];
