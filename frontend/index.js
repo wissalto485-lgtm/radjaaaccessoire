@@ -77,6 +77,7 @@ const translations = {
         contactUs: "اتصلي بنا",
         aboutUs: "من نحن",
         aboutUsTitle: "من نحن",
+        testimonials: "شهادات الزبائن",
         home: "الرئيسية",
         categories: "الفئات",
         followUs: "تابعينا",
@@ -188,8 +189,9 @@ const translations = {
         total: "Total :",
         submitOrder: "Confirmer la commande",
         contactUs: "Contactez-nous",
-        aboutUs: "À propos",
+        aboutUs: "À propos de nous",
         aboutUsTitle: "À propos de nous",
+        testimonials: "Témoignages des clients",
         home: "Accueil",
         categories: "Catégories",
         followUs: "Suivez-nous",
@@ -949,18 +951,12 @@ function showPrivacyModal() {
         نجمع فقط المعلومات اللازمة لتوصيل طلبك: الاسم الكامل، رقم الهاتف، الولاية، البلدية، والملاحظات الإضافية.</p>
         
         <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">2. كيف نستخدم معلوماتك:</strong><br>
-        نستخدم معلوماتك فقط لتوصيل طلبك والتواصل معك لتأكيد الطلبية. لا نشارك معلوماتك مع أي طرف ثالث باستثناء شركة التوصيل.</p>
+        نستخدم معلوماتك فقط لتوصيل طلبك والتواصل معك لتأكيد الطلبية، لا نشارك معلوماتك مع أي طرف ثالث باستثناء شركة التوصيل.</p>
         
         <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">3. مدة الاحتفاظ بالبيانات:</strong><br>
-        بعد توصيل طلبك، نقوم بحذف جميع بياناتك الشخصية (الاسم، الهاتف، العنوان) تلقائياً. نحتفظ فقط بالولاية وتفاصيل الطلب لأغراض إحصائية.</p>
-        
-        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">4. حقوقك:</strong><br>
-        وفقا للقانون الجزائري 18-07 (المعدل بالقانون 11-25)، لك الحق في الوصول إلى بياناتك، تصحيحها، أو طلب حذفها في أي وقت.</p>
-        
-        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">5. الأمان:</strong><br>
-        نستخدم تقنيات تشفير حديثة (JWT، bcrypt) لحماية بياناتك. جميع الاتصالات مشفرة عبر HTTPS.</p>
-        
-        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">6. التواصل:</strong><br>
+         بعد توصيل طلبك، نقوم بحذف جميع بياناتك الشخصية (الاسم، الهاتف، العنوان) تلقائيا، نحتفظ فقط بالولاية وتفاصيل الطلب لأغراض إحصائية.</p>
+                       
+        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">4. التواصل:</strong><br>
         لأي استفسار حول بياناتك، تواصلي معنا عبر WhatsApp أو البريد الإلكتروني.</p>
     ` : `
         <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">1. Informations collectées :</strong><br>
@@ -972,13 +968,7 @@ function showPrivacyModal() {
         <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">3. Durée de conservation :</strong><br>
         Après livraison, toutes vos données personnelles sont supprimées automatiquement. Seuls la wilaya et les détails de commande sont conservés pour les statistiques.</p>
         
-        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">4. Vos droits :</strong><br>
-        Conformément à la loi algérienne 18-07 (modifiée par la loi 11-25), vous avez le droit d'accéder, corriger ou supprimer vos données.</p>
-        
-        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">5. Sécurité :</strong><br>
-        Nous utilisons un chiffrement moderne (JWT, bcrypt). Toutes les communications sont chiffrées via HTTPS.</p>
-        
-        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">6. Contact :</strong><br>
+        <p style="margin-bottom: 15px;"><strong style="color: #d4af37;">4. Contact :</strong><br>
         Pour toute question, contactez-nous via WhatsApp ou email.</p>
     `;
     document.getElementById("privacy-modal-text").innerHTML = content;
