@@ -2155,8 +2155,13 @@ function addToCartFromDetail() {
 }
 
 function orderNowFromDetail() {
+    // 1. إضافة المنتج أولاً
     addToCartFromDetail();
-    openCart();
+    
+    // 2. إجبار المتصفح على الانتظار جزءاً من الثانية لضمان اكتمال التحديث
+    setTimeout(() => {
+        openCart();
+    }, 50); 
 }
 
 async function loadProducts() {
