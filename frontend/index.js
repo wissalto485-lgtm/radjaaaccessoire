@@ -2159,11 +2159,6 @@ function orderNowFromDetail() {
     openCart();
 }
 
-function orderNowFromDetail() {
-    addToCartFromDetail();
-    openCart();
-}
-
 async function loadProducts() {
     delete currentFilter.category;
     currentFilter.category = "all";
