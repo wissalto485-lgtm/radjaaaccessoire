@@ -25,10 +25,32 @@ app.use(helmet({
         directives: {
             ...helmet.contentSecurityPolicy.getDefaultDirectives(),
             "script-src-attr": ["'unsafe-inline'"],
-            "script-src": ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
-            "connect-src": ["'self'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
-            "style-src": ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https:"],
-            "font-src": ["'self'", "https://cdnjs.cloudflare.com", "data:"],
+            "script-src": [
+                "'self'",
+                "'unsafe-inline'",
+                "https://cdn.jsdelivr.net",
+                "https://cdnjs.cloudflare.com"
+            ],
+            "connect-src": [
+                "'self'",
+                "https://cdn.jsdelivr.net",
+                "https://cdnjs.cloudflare.com",
+                "https://fonts.googleapis.com",
+                "https://fonts.gstatic.com"
+            ],
+            "style-src": [
+                "'self'",
+                "'unsafe-inline'",
+                "https://cdnjs.cloudflare.com",
+                "https://fonts.googleapis.com",
+                "https:"
+            ],
+            "font-src": [
+                "'self'",
+                "https://cdnjs.cloudflare.com",
+                "https://fonts.gstatic.com",
+                "data:"
+            ],
             "img-src": ["'self'", "data:", "https:", "blob:"],
         },
     },
@@ -59,7 +81,7 @@ const corsOptions = {
         }
     },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 };
 app.use(cors(corsOptions));

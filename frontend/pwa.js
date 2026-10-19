@@ -2,13 +2,14 @@ if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
             .then((registration) => {
-                console.log('Service Worker registered:', registration.scope);
+                console.log('[PWA] SW registered:', registration.scope);
 
                 registration.addEventListener('updatefound', () => {
                     const newWorker = registration.installing;
+                    if (!newWorker) return; // حماية
                     newWorker.addEventListener('statechange', () => {
                         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            console.log('New version available');
+                            console.log('[PWA] New version available');
                             if (confirm('تحديث جديد متوفر! هل تريد إعادة التحميل؟')) {
                                 newWorker.postMessage({ type: 'SKIP_WAITING' });
                                 window.location.reload();
@@ -18,7 +19,7 @@ if ('serviceWorker' in navigator) {
                 });
             })
             .catch((err) => {
-                console.warn('Service Worker registration failed:', err);
+                console.warn('[PWA] SW registration failed:', err);
             });
     });
 }
@@ -30,23 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function updateAppBadge() {
     try {
-        if (!('setAppBadge' in navigator)) {
-            return;
-        }
-
+        if (!('setAppBadge' in navigator)) return;
         const res = await fetch('/api/products/new-count');
         if (!res.ok) return;
-        
         const data = await res.json();
         const count = data.count || 0;
-
-        if (count > 0) {
-            await navigator.setAppBadge(count);
-        } else {
-            await navigator.clearAppBadge();
-        }
+        if (count > 0) await navigator.setAppBadge(count);
+        else await navigator.clearAppBadge();
     } catch (err) {
-        console.warn('Badge update failed:', err);
+        console.warn('[PWA] Badge update failed:', err);
     }
 }
 
