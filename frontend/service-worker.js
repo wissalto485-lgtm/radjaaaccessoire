@@ -1,4 +1,4 @@
-const CACHE_NAME = 'radjaa-v3.1.0';
+const CACHE_NAME = 'radjaa-v3.1.1';
 const STATIC_ASSETS = [
     '/',
     '/index.html',
@@ -21,11 +21,17 @@ self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
             return Promise.all(
-                STATIC_ASSETS.map((url) =>
-                    cache.add(new Request(url, { mode: 'no-cors' })).catch((err) => {
-                        console.warn('[SW] تعذّر تخزين:', url, err);
-                    })
-                )
+                STATIC_ASSETS.map((url) => {
+                    const isExternal = /^https?:\/\//i.test(url);
+                    const req = new Request(url, isExternal ? { mode: 'no-cors' } : {});
+                    return fetch(req)
+                        .then((response) => {
+                            if (response && (response.status === 200 || response.type === 'opaque')) {
+                                return cache.put(req, response).catch(() => {});
+                            }
+                        })
+                        .catch(() => {}); 
+                })
             );
         })
     );
@@ -50,24 +56,18 @@ self.addEventListener('fetch', (event) => {
     const { request } = event;
     const url = new URL(request.url);
 
-    // 1. تجاهل الطلبات غير المدعومة
     if (request.method !== 'GET') return;
 
-    // 2. تجاهل كل ما ليس http/https (chrome-extension, moz-extension, data, ...)
     if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
-    // 3. لا تعترضي طلبات API
     if (url.pathname.startsWith('/api/')) return;
 
-    // 4. لا تعترضي Cloudinary
     if (url.hostname.includes('cloudinary.com')) return;
 
-    // 5. اسمحي فقط بنطاقات محددة
     const isSameOrigin = url.origin === self.location.origin;
     const isAllowedExternal = ALLOWED_EXTERNAL_HOSTS.includes(url.hostname);
     if (!isSameOrigin && !isAllowedExternal) return;
 
-    // 6. استراتيجية: network-first مع cache fallback
     event.respondWith(
         fetch(request)
             .then((networkResponse) => {
